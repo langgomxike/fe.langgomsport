@@ -1,0 +1,23 @@
+.product-list-container {
+    padding: 20px;
+    position: relative;
+    min-height: 40vh;
+}
+
+.product-item-container {
+    padding: 10px;
+    min-height: 300px;
+}
+
+.product-list-empty {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.product-list-empty .text {
+    font-size: 0.8rem;
+    text-align: center;
+    font-style: italic;
+}
