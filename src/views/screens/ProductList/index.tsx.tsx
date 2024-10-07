@@ -5,6 +5,8 @@ import "./index.css";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import AProduct from "../../../apis/AProduct";
+import ProductItem from "../../components/productItem/ProductItem";
+import SkeletonProductItem from "../../components/productItem/SkeletonProductItem";
 
 const MAX_AMOUNT_PRODUCTS_PER_PAGE = 20;
 const PRODUCTS_PER_ROW_IN_WEB = 4;
@@ -20,7 +22,7 @@ const FAKE_LOADING_PRODUCTS = [
 export default function ProductListScreen() {
   //refs, contexts
   //state
-  const [products, setProducts] = useState<Array<unknown>>([]);
+  const [products, setProducts] = useState<Array<unknown>>([1,2,3,4,5,6]);
   const [loading, setLoading] = useState(true);
 
   //handlers
@@ -28,11 +30,12 @@ export default function ProductListScreen() {
   //effects
   useEffect(() => {
     setTimeout(() => {
-      AProduct.getAllProducts((products) => {
-        setProducts(products);
-        setLoading(false);
-      });
-    }, 3000);
+      // AProduct.getAllProducts((products) => {
+      //   setProducts(products);
+      //
+      // });
+      setLoading(false);
+    }, 2000);
   }, []);
 
   //ui
@@ -58,7 +61,7 @@ export default function ProductListScreen() {
                     sm={12 / PRODUCTS_PER_ROW_IN_TABLET}
                     xs={12 / PRODUCTS_PER_ROW_IN_MOBILE}
                   >
-                    <Skeleton height={DEFAULT_PRODUCT_ITEM_HEIGHT + "px"} />
+                    <SkeletonProductItem/>
                   </Col>
                 ))}
 
@@ -75,11 +78,12 @@ export default function ProductListScreen() {
                       sm={12 / PRODUCTS_PER_ROW_IN_TABLET}
                       xs={12 / PRODUCTS_PER_ROW_IN_MOBILE}
                     >
-                      <Card
-                        style={{ height: DEFAULT_PRODUCT_ITEM_HEIGHT + "px" }}
-                      >
-                        {JSON.stringify(product)}
-                      </Card>
+                      {/*<Card*/}
+                      {/*  style={{ height: DEFAULT_PRODUCT_ITEM_HEIGHT + "px" }}*/}
+                      {/*>*/}
+                      {/*  {JSON.stringify(product)}*/}
+                      {/*</Card>*/}
+                      <ProductItem/>
                     </Col>
                   ))}
             </Row>

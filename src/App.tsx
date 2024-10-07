@@ -1,9 +1,13 @@
 import "./App.css";
-import ProductListScreen from "./views/screens/ProductList/index.tsx";
 import "bootstrap/dist/css/bootstrap.min.css";
+import ProductListScreen from "./views/screens/ProductList/index.tsx";
 
 function App() {
-  return <ProductListScreen />;
+  return (
+    <>
+        <ProductListScreen />
+    </>
+  );
 }
 
 export default App;
