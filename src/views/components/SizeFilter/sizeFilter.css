@@ -1,0 +1,58 @@
+.size-filter-container {
+
+}
+
+.size-filter-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.size-block{
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-height: 210px;
+    overflow-y: scroll;
+}
+
+.size-block::-webkit-scrollbar{
+    width: 8px;
+}
+
+.size-block::-webkit-scrollbar-track{
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.size-block::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #FCC419C8;
+}
+
+.size-block::-webkit-scrollbar-thumb:hover {
+    background-color: #FCC419;
+}
+
+.size-item:hover {
+    background-color: #EAEAEAFF;
+}
+
+.size-item{
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: #f1f0f1;
+    cursor: pointer;
+    width: 45%;
+    font-size: 14px;
+    text-align: center;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.size-item.active {
+    background-color: #FCC419; /* Màu khi được chọn */
+    color: white;
+}

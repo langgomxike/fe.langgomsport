@@ -7,6 +7,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import AProduct from "../../../apis/AProduct";
 import ProductItem from "../../components/productItem/ProductItem";
 import SkeletonProductItem from "../../components/productItem/SkeletonProductItem";
+import SizeFilter from "../../components/SizeFilter/SizeFilter";
 import CategoryFilter from "../../components/Category/CategoryFIlter";
 
 const MAX_AMOUNT_PRODUCTS_PER_PAGE = 20;
@@ -42,11 +43,14 @@ export default function ProductListScreen() {
   //ui
   return (
     <RootLayout>
-      <Row>
+      <div className="container">
+        <Row>
         {/* filter */}
         <Col md={{ span: 3 }}>
+          {/*<h3>Here is the filter</h3>*/}
           {/* <h2>Here is the filter</h2> */}
           <CategoryFilter></CategoryFilter>
+          <SizeFilter/>
         </Col>
 
         {/* product list */}
@@ -100,6 +104,8 @@ export default function ProductListScreen() {
           </Container>
         </Col>
       </Row>
+
+      </div>
     </RootLayout>
   );
 }
