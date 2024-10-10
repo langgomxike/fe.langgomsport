@@ -2,11 +2,11 @@ import { Card, Col, Container, Image, Row } from "react-bootstrap";
 import RootLayout from "../../layouts/RootLayout";
 import { useCallback, useEffect, useState } from "react";
 import "./index.css";
-import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import AProduct from "../../../apis/AProduct";
 import ProductItem from "../../components/productItem/ProductItem";
 import SkeletonProductItem from "../../components/productItem/SkeletonProductItem";
+import PriceFilter from "../../components/filter/PriceFilter";
 
 const MAX_AMOUNT_PRODUCTS_PER_PAGE = 20;
 const PRODUCTS_PER_ROW_IN_WEB = 4;
@@ -22,7 +22,7 @@ const FAKE_LOADING_PRODUCTS = [
 export default function ProductListScreen() {
   //refs, contexts
   //state
-  const [products, setProducts] = useState<Array<unknown>>([1,2,3,4,5,6]);
+  const [products, setProducts] = useState<Array<unknown>>([1, 2, 3, 4, 5, 6]);
   const [loading, setLoading] = useState(true);
 
   //handlers
@@ -44,7 +44,7 @@ export default function ProductListScreen() {
       <Row>
         {/* filter */}
         <Col md={{ span: 3 }}>
-          <h2>Here is the filter</h2>
+          <PriceFilter></PriceFilter>
         </Col>
 
         {/* product list */}
@@ -61,7 +61,7 @@ export default function ProductListScreen() {
                     sm={12 / PRODUCTS_PER_ROW_IN_TABLET}
                     xs={12 / PRODUCTS_PER_ROW_IN_MOBILE}
                   >
-                    <SkeletonProductItem/>
+                    <SkeletonProductItem />
                   </Col>
                 ))}
 
@@ -83,7 +83,7 @@ export default function ProductListScreen() {
                       {/*>*/}
                       {/*  {JSON.stringify(product)}*/}
                       {/*</Card>*/}
-                      <ProductItem/>
+                      <ProductItem />
                     </Col>
                   ))}
             </Row>
