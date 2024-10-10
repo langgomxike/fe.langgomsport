@@ -1,0 +1,37 @@
+.icon-angle-item{
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+}
+.list-icon{
+    display: flex;
+    justify-content: center;
+    font-size: 18px;
+    margin: 0 4px;
+    transform: translateY(3px);
+}
+.title-item{
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    font-size: 18px;
+    font-weight: normal;
+}
+.title-block.item{
+    margin: 5px 0;
+}
+.item{
+    display: flex;
+    margin: 5px 0;
+    padding-right: 5px;
+}
+.list-icon.item{
+    font-size: 12px;
+    transform: translateY(0px);
+}
+.filter-box.child{
+    padding-left: 10px;
+}
+.item-category{
+    font-size: 14px;
+}
