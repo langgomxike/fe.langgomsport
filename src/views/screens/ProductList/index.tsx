@@ -8,6 +8,7 @@ import AProduct from "../../../apis/AProduct";
 import ProductItem from "../../components/productItem/ProductItem";
 import SkeletonProductItem from "../../components/productItem/SkeletonProductItem";
 import CategoryFilter from "../../components/Category/CategoryFIlter";
+import GoHeaderButton from "../../components/GoHeadButton/goHeaderButton";
 
 const MAX_AMOUNT_PRODUCTS_PER_PAGE = 20;
 const PRODUCTS_PER_ROW_IN_WEB = 4;
@@ -23,7 +24,7 @@ const FAKE_LOADING_PRODUCTS = [
 export default function ProductListScreen() {
   //refs, contexts
   //state
-  const [products, setProducts] = useState<Array<unknown>>([1,2,3,4,5,6]);
+  const [products, setProducts] = useState<Array<unknown>>([1,2,3,4,5,6,7,8,9,10,11,12,13 ,14,15,16]);
   const [loading, setLoading] = useState(true);
 
   //handlers
@@ -42,6 +43,7 @@ export default function ProductListScreen() {
   //ui
   return (
     <RootLayout>
+      <GoHeaderButton></GoHeaderButton>
       <Row>
         {/* filter */}
         <Col md={{ span: 3 }}>
