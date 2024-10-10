@@ -103,6 +103,8 @@ export default function ProductListScreen() {
           </Container>
         </Col>
       </Row>
+
+      </div>
     </RootLayout>
   );
 }
