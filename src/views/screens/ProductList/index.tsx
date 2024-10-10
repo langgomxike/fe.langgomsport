@@ -2,7 +2,6 @@ import { Card, Col, Container, Image, Row } from "react-bootstrap";
 import RootLayout from "../../layouts/RootLayout";
 import { useCallback, useEffect, useState } from "react";
 import "./index.css";
-import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import AProduct from "../../../apis/AProduct";
 import ProductItem from "../../components/productItem/ProductItem";
@@ -67,7 +66,7 @@ export default function ProductListScreen() {
                     sm={12 / PRODUCTS_PER_ROW_IN_TABLET}
                     xs={12 / PRODUCTS_PER_ROW_IN_MOBILE}
                   >
-                    <SkeletonProductItem/>
+                    <SkeletonProductItem />
                   </Col>
                 ))}
 
@@ -89,7 +88,7 @@ export default function ProductListScreen() {
                       {/*>*/}
                       {/*  {JSON.stringify(product)}*/}
                       {/*</Card>*/}
-                      <ProductItem/>
+                      <ProductItem />
                     </Col>
                   ))}
             </Row>
