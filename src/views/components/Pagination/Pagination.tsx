@@ -32,7 +32,7 @@ export default function ({totalPages, onPageChange}: PaginationProps) {
     };
 
     const goToPage = (page: number) => {
-        // onPageChange(page);
+        onPageChange(page);
         setCurrentPage(page);
     };
 

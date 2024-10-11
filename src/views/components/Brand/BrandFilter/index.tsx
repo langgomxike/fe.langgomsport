@@ -5,15 +5,9 @@ import BrandDTO from "../../../../dtos/BrandDTO";
 import ABrand from "../../../../apis/ABrand";
 import Brand from "../../../../models/Brand";
 
-const FAKE_BRAND = [
-  "HOKA",
-  "On Running",
-  "Saucony",
-  "Topo Athletics",
-  "Xeroshoes",
-  "New Balance",
-];
-
+// type BrandFilterProps = {
+//   onFilterChange:
+// }
 export default function BrandFilter() {
   const [isOpen, setIsOpen] = useState(true); // State để kiểm soát mở/đóng
   const [selectedBrands, setSelectedBrands] = useState<Array<string>>([]);

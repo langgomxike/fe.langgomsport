@@ -14,6 +14,7 @@ import ProductDTO from "../../../dtos/ProductDTO";
 import GoHeaderButton from "../../components/GoHeadButton/goHeaderButton";
 import CategoryItem from "../../components/Category/CategoryItem";
 import BrandFilter from "../../components/Brand/BrandFilter";
+import AProduct from "../../../apis/AProduct";
 
 const MAX_AMOUNT_PRODUCTS_PER_PAGE = 20;
 const PRODUCTS_PER_ROW_IN_WEB = 4;
@@ -27,29 +28,71 @@ const FAKE_LOADING_PRODUCTS = 20
 export default function ProductListScreen() {
   //refs, contexts
   //state
-  const [products, setProducts] = useState<Array<ProductDTO>>([]);
+  const [products, setProducts] = useState<ProductDTO[]>([]);
   const [loading, setLoading] = useState(true);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    perPage: 10,
+    totalPages: 0,
+    totalItems: 0
+  });
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalItems = 100; // Ví dụ tổng số sản phẩm từ API
-  const itemsPerPage = 10; // Số sản phẩm mỗi trang
-  const totalPages = Math.ceil(totalItems / itemsPerPage); // Tính số trang
+  const [filters, setFilters] = useState({
+    categoryId: undefined,
+    sizeId: undefined,
+    brandId: undefined,
+    minPrice: undefined,
+    maxPrice: undefined,
+  });
+
 
   //handlers
+  // handlers
   const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage); // Cập nhật trang hiện tại
+    setPagination(prev => ({
+      ...prev,
+      page: newPage, // Cập nhật số trang
+    }));
   };
 
-  //effects
+  // const updateFilter = (filterKey: string, value: any) => {
+  //   setFilters(prev => ({
+  //     ...prev,
+  //     [filterKey]: value
+  //   }));
+  //
+  // };
+
+  const updateFilter = (filterKey: string, value: any) => {
+    setFilters(prev => ({
+      ...prev,
+      [filterKey]: Array.isArray(value) ? value : [value] // Đảm bảo giá trị là một mảng
+    }));
+    console.log(filters)
+  };
+
+  // Effects
   useEffect(() => {
-    setTimeout(() => {
-      // AProduct.getAllProducts((products) => {
-      //   setProducts(products);
-      //
-      // });
-      setLoading(false);
-    }, 2000);
-  }, []);
+    const fetchProducts = (page: number) => {
+      AProduct.getProductsFilter(
+          page,
+          pagination.perPage,
+          (data) => {
+            setProducts(data.products);
+            setPagination(data.pagination);
+          },
+          setLoading,
+          filters.categoryId,
+          filters.sizeId,
+          filters.brandId,
+          filters.minPrice,
+          filters.maxPrice,
+          undefined, // sort
+      );
+    };
+
+    fetchProducts(pagination.page);
+  }, [pagination.page, filters]); // Fetch lại khi pagination.page hoặc filters thay đổi
 
   //ui
   return (
@@ -58,11 +101,19 @@ export default function ProductListScreen() {
         <Row>
           {/* filter */}
           <Col md={{ span: 3 }}>
-            {/*<h3>Here is the filter</h3>*/}
-            {/* <h2>Here is the filter</h2> */}
-            <CategoryFilter></CategoryFilter>
-            <PriceFilter></PriceFilter>
-            <SizeFilter />
+            <CategoryFilter onFilterChange={(categoryId) => updateFilter('categoryId', categoryId)} />
+            <PriceFilter onFilterChange={(minPrice, maxPrice) => {
+              updateFilter('minPrice', minPrice);
+              updateFilter('maxPrice', maxPrice);
+            }} />
+            <SizeFilter
+                categoryId={filters.categoryId}
+                onFilterChange={(sizeIds) => updateFilter('sizeId', sizeIds)}
+            />
+            {/*<BrandFilter onFilterChange={(brandId) => updateFilter('brandId', brandId)} />*/}
+            {/*<SizeFilter categoryId={filters.categoryId} />*/}
+            <BrandFilter />
+
           </Col>
 
         {/* product list */}
@@ -89,9 +140,7 @@ export default function ProductListScreen() {
 
               {/* when having data */}
               {!loading &&
-                products
-                  .slice(0, MAX_AMOUNT_PRODUCTS_PER_PAGE)
-                  .map((product, index) => (
+                  products.map((product, index) => (
                     // item container
                     <Col
                       className="product-item-container"
@@ -100,12 +149,7 @@ export default function ProductListScreen() {
                       sm={12 / PRODUCTS_PER_ROW_IN_TABLET}
                       xs={12 / PRODUCTS_PER_ROW_IN_MOBILE}
                     >
-                      {
-                        products.map((product) => (
-                            <ProductItem product={product}/>
-                        ))
-                      }
-
+                      <ProductItem data={product}/>
                     </Col>
                   ))}
             </Row>
@@ -122,8 +166,8 @@ export default function ProductListScreen() {
           {/*  Pagination */}
           <div className="pagination-container">
             <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
+                currentPage={pagination.page}
+                totalPages={pagination.totalPages}
                 onPageChange={handlePageChange}
             />
           </div>

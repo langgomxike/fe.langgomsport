@@ -9,36 +9,11 @@ import CategoryDTO from "../../../../dtos/CategoryDTO";
 import Skeleton from "react-loading-skeleton";
 import CategorySkeleton from "./CategorySkeleton";
 
-const demo: Array<CategoryItemProps> = [
-    {
-        parentCategory: new Category(1, "do nam"),
-        categories: [
-            new Category(4, "Ao Nam", 1),
-            new Category(5, "Quan Nam", 1),
-            new Category(6, "Giay Nam", 1),
-            new Category(7, "balo Nam", 1),
-        ]
-    },
-    {
-        parentCategory: new Category(2, "do nu"),
-        categories: [
-            new Category(8, "Ao nu", 2),
-            new Category(9, "Quan nu", 2),
-            new Category(10, "Giay nu", 2),
-            new Category(11, "balo nu", 2),
-        ]
-    },
-    {
-        parentCategory: new Category(3, " Phu Kien"),
-        categories: [
-            new Category(12, "Gay", 3),
-            new Category(13, "Non", 3),
-            new Category(14, "gel dinh duong", 3),
-        ]
-    }
-]
+type CategoryFilterProps = {
+    onFilterChange: (categoryId: number| null) => void
+}
 
-export default function CategoryFilter() {
+export default function CategoryFilter({onFilterChange}: CategoryFilterProps) {
     //ref, context
     //state
     const [isActive, setActive] = useState(true)
@@ -50,6 +25,17 @@ export default function CategoryFilter() {
         setActive(!isActive);
         console.log(categories);
     }
+
+    // Hàm nhận giá trị đã chọn từ CategoryItem
+    const handleCategorySelect = (id: number | null) => {
+        if (id !== null) {
+            onFilterChange(id); // Gọi hàm để cập nhật filter
+        } else {
+            onFilterChange(null); // Gọi với giá trị 0 nếu không có danh mục nào được chọn
+        }
+    };
+
+
     //effects
     useEffect(() => {
         ACategory.getAllCategories((categories) => {
@@ -59,7 +45,7 @@ export default function CategoryFilter() {
     },[]);
 
 
-    const icon = isActive ? <FaAngleUp/> : <FaAngleDown/>
+    const icon = isActive ? <FaAngleUp style={{fontSize: 20}}/> : <FaAngleDown style={{fontSize: 20}}/>
 
     return (
         <div className="category-container">
@@ -80,7 +66,7 @@ export default function CategoryFilter() {
                     <ul>
                         {categories.map((item, index) => (
                             <li key={item.categoryParent.id}>
-                                <CategoryItem parentCategory={item.categoryParent} categories={item.categories}/>
+                                <CategoryItem  onCategorySelect={handleCategorySelect} parentCategory={item.categoryParent} categories={item.categories}/>
                             </li>
                         ))}
                     </ul>

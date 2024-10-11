@@ -1,22 +1,28 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Range from "rc-slider";
 import "rc-slider/assets/index.css";
 import "./PriceFilter.css";
 
-function PriceSlider() {
-    const [priceRange, setPriceRange] = useState<number[]>([0, 2000000]); // Giá trị mặc định
-    const [error, setError] = useState<string>(""); // Trạng thái lỗi
-    const [isError, setIsError] = useState<boolean>(false); // Để kiểm soát khi nào tô đỏ
+type PriceFilterProps = {
+    onFilterChange: (minValue: number, maxValue:number) => void
+}
+
+function PriceFilter({onFilterChange}:PriceFilterProps) {
+    const [priceRange, setPriceRange] = useState<number[]>([0, 2000000]);
+    // biến để lưu thông báo lỗi
+    const [error, setError] = useState<string>("");
+    // biến để tô đỏ chữ
+    const [isError, setIsError] = useState<boolean>(false);
 
     // Hàm xử lý khi thay đổi giá trị của thanh trượt
     const handleSliderChange = (value: number | number[]) => {
         if (Array.isArray(value)) {
             if (value[0] > value[1]) {
-                setError("Min value cannot be greater than Max value");
-                setIsError(true); // Kích hoạt trạng thái tô đỏ
+                setError("Nhập số quá quy định cho phép !!!");
+                setIsError(true);
             } else {
                 setError("");
-                setIsError(false); // Tắt trạng thái tô đỏ nếu không có lỗi
+                setIsError(false);
                 setPriceRange(value);
             }
         }
@@ -25,26 +31,49 @@ function PriceSlider() {
     // Hàm xử lý khi nhấn nút "Search"
     const handleSubmit = () => {
         if (priceRange[0] > priceRange[1]) {
-            setError("Min value cannot be greater than Max value");
+            setError("Nhập số quá quy định cho phép !!!");
             setIsError(true);
         } else {
-            alert(
-                `Selected price range: ${priceRange[0].toLocaleString()}đ - ${priceRange[1].toLocaleString()}đ`
-            );
+            onFilterChange(priceRange[0], priceRange[1]);
         }
     };
 
-    // Ẩn thông báo lỗi sau 2 giây nếu có lỗi
     useEffect(() => {
         if (error) {
             const timer = setTimeout(() => {
                 setError("");
                 setIsError(false);
-            }, 2000); // Ẩn lỗi sau 2 giây
+            }, 2000);
 
-            return () => clearTimeout(timer); // Xóa bỏ timeout khi component unmount
+            return () => clearTimeout(timer);
         }
     }, [error]);
+
+    const handleMinInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value.replace(/^0+/, "");
+        const newMin = Number(value);
+        if (newMin > priceRange[1]) {
+            setError("Nhập số quá quy định cho phép !!!");
+            setIsError(true);
+        } else {
+            setError("");
+            setIsError(false);
+            setPriceRange([newMin, priceRange[1]]);
+        }
+    };
+
+    const handleMaxInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value.replace(/^0+/, "");
+        const newMax = Number(value);
+        if (priceRange[0] > newMax) {
+            setError("Nhập số quá quy định cho phép !!!");
+            setIsError(true);
+        } else {
+            setError("");
+            setIsError(false);
+            setPriceRange([priceRange[0], newMax]);
+        }
+    };
 
     return (
         <div className="price-filter">
@@ -52,60 +81,40 @@ function PriceSlider() {
             <Range
                 range
                 min={0}
-                max={2000000}
-                step={1}
+                // Giá trị tối đa của thanh trượt
+                max={20000000}
+                step={1000}
                 value={priceRange}
                 onChange={handleSliderChange}
                 allowCross={false}
-                style={{marginBottom: "20px", width: "100%", height: "5px"}}
+                style={{ marginBottom: "20px", width: "100%", height: "5px" }}
             />
-            <div style={{display: "flex", justifyContent: "space-between"}}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <span>{priceRange[0].toLocaleString()}đ</span>
                 <span>{priceRange[1].toLocaleString()}đ</span>
             </div>
             <div className="inputRangeContainer">
                 <input
                     type="number"
-                    value={priceRange[0]}
-                    onChange={(e) => {
-                        const newMin = Number(e.target.value);
-                        if (newMin > priceRange[1]) {
-                            setError("Min phải nhỏ hơn max");
-                            setIsError(true);
-                        } else {
-                            setError("");
-                            setIsError(false);
-                            setPriceRange([newMin, priceRange[1]]);
-                        }
-                    }}
+                    value={priceRange[0] === 0 ? "" : priceRange[0]} // Nếu giá trị là 0 thì hiển thị rỗng
+                    onInput={handleMinInputChange}
                     min="0"
                     max={priceRange[1]}
-                    className={isError ? "error-input" : ""} // Áp dụng class để tô đỏ
+                    className={isError ? "error-input" : ""}
                 />
-
                 <input
                     type="number"
-                    value={priceRange[1]}
-                    onChange={(e) => {
-                        const newMax = Number(e.target.value);
-                        if (priceRange[0] > newMax) {
-                            setError("Max phải lớn hơn min");
-                            setIsError(true);
-                        } else {
-                            setError("");
-                            setIsError(false);
-                            setPriceRange([priceRange[0], newMax]);
-                        }
-                    }}
+                    value={priceRange[1] === 0 ? "" : priceRange[1]}
+                    onInput={handleMaxInputChange}
                     min={priceRange[0]}
-                    max="2000000"
-                    className={isError ? "error-input" : ""} // Áp dụng class để tô đỏ
+                    max="20000000"
+                    className={isError ? "error-input" : ""}
                 />
             </div>
-            {error && <p className="textError" style={{color: "red"}}>{error}</p>}
-            <button onClick={handleSubmit}>Search</button>
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            <button onClick={handleSubmit}>Tìm kiếm</button>
         </div>
     );
 }
 
-export default PriceSlider;
+export default PriceFilter;
