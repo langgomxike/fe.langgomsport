@@ -1,6 +1,5 @@
 import axios from "axios";
 import SLog, { LogType } from "../services/SLog";
-import ProductDTO from "../dtos/ProductDTO";
 
 export default class AProduct {
 

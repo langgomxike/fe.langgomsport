@@ -1,6 +1,5 @@
 import React from "react";
 import "./productItem.css";
-import ProductDTO from "../../../dtos/ProductDTO";
 
 type ProductIemProps = {
     product: ProductDTO

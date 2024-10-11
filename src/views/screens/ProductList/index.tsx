@@ -11,6 +11,9 @@ import SizeFilter from "../../components/SizeFilter/SizeFilter";
 import CategoryFilter from "../../components/Category/CategoryFIlter";
 import Pagination from "../../components/Pagination/Pagination";
 import ProductDTO from "../../../dtos/ProductDTO";
+import GoHeaderButton from "../../components/GoHeadButton/goHeaderButton";
+import CategoryItem from "../../components/Category/CategoryItem";
+import BrandFilter from "../../components/Brand/BrandFilter";
 
 const MAX_AMOUNT_PRODUCTS_PER_PAGE = 20;
 const PRODUCTS_PER_ROW_IN_WEB = 4;
