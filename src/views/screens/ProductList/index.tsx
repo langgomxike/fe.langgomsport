@@ -10,6 +10,8 @@ import CategoryFilter from "../../components/Category/CategoryFIlter";
 import GoHeaderButton from "../../components/GoHeadButton/goHeaderButton";
 import CategoryItem from "../../components/Category/CategoryItem";
 import BrandFilter from "../../components/Brand/BrandFilter";
+import PriceSlider from "../../components/filter/PriceFilter";
+import PriceFilter from "../../components/filter/PriceFilter";
 
 const MAX_AMOUNT_PRODUCTS_PER_PAGE = 20;
 const PRODUCTS_PER_ROW_IN_WEB = 4;
@@ -25,7 +27,9 @@ const FAKE_LOADING_PRODUCTS = [
 export default function ProductListScreen() {
   //refs, contexts
   //state
-  const [products, setProducts] = useState<Array<unknown>>([1,2,3,4,5,6,7,8,9,10,11,12,13 ,14,15,16]);
+  const [products, setProducts] = useState<Array<unknown>>([
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+  ]);
   const [loading, setLoading] = useState(true);
 
   //handlers
@@ -49,7 +53,9 @@ export default function ProductListScreen() {
         {/* filter */}
         <Col md={{ span: 3 }}>
           {/* <h2>Here is the filter</h2> */}
+
           <CategoryFilter></CategoryFilter>
+          <PriceFilter></PriceFilter>
         </Col>
 
         {/* product list */}
