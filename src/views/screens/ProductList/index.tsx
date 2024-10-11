@@ -9,6 +9,7 @@ import ProductItem from "../../components/productItem/ProductItem";
 import SkeletonProductItem from "../../components/productItem/SkeletonProductItem";
 import CategoryFilter from "../../components/Category/CategoryFIlter";
 import GoHeaderButton from "../../components/GoHeadButton/goHeaderButton";
+import CategoryItem from "../../components/Category/CategoryItem";
 
 const MAX_AMOUNT_PRODUCTS_PER_PAGE = 20;
 const PRODUCTS_PER_ROW_IN_WEB = 4;
@@ -49,6 +50,7 @@ export default function ProductListScreen() {
         <Col md={{ span: 3 }}>
           {/* <h2>Here is the filter</h2> */}
           <CategoryFilter></CategoryFilter>
+         
         </Col>
 
         {/* product list */}
