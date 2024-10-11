@@ -8,6 +8,7 @@ import AProduct from "../../../apis/AProduct";
 import ProductItem from "../../components/productItem/ProductItem";
 import Header from "./header"
 import SkeletonProductItem from "../../components/productItem/SkeletonProductItem";
+import PriceFilter from "../../components/PriceFilter/PriceFilter";
 import SizeFilter from "../../components/SizeFilter/SizeFilter";
 import CategoryFilter from "../../components/Category/CategoryFIlter";
 import Pagination from "../../components/Pagination/Pagination";
@@ -47,13 +48,14 @@ export default function ProductListScreen() {
     <RootLayout>
       <div className="container py-5">
         <Row>
-        {/* filter */}
-        <Col md={{ span: 3 }}>
-          {/*<h3>Here is the filter</h3>*/}
-          {/* <h2>Here is the filter</h2> */}
-          <CategoryFilter></CategoryFilter>
-          <SizeFilter/>
-        </Col>
+          {/* filter */}
+          <Col md={{ span: 3 }}>
+            {/*<h3>Here is the filter</h3>*/}
+            {/* <h2>Here is the filter</h2> */}
+            <CategoryFilter></CategoryFilter>
+            <PriceFilter></PriceFilter>
+            <SizeFilter />
+          </Col>
 
         {/* product list */}
         <Col md={{ span: 9 }}>
