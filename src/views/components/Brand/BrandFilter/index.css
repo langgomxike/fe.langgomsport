@@ -1,0 +1,46 @@
+/* CSS BRANDS */
+.filter-panel {
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    max-width: 250px;
+  }
+  
+  .filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .filter-header h3 {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .toggle-icon {
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .filter-content {
+    max-height: 150px; /* Chiều cao tối đa cho khung nội dung */
+    overflow-y: auto; /* Kích hoạt thanh cuộn */
+  }
+  
+  .brand-item {
+    padding: 5px 0;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .brand-item:hover {
+    color: #6200ea; /* Màu sắc khi hover */
+  }
+  
+  .filter-content::-webkit-scrollbar {
+    width: 6px; /* Độ rộng của thanh cuộn */
+  }
+  
+  .filter-content::-webkit-scrollbar-thumb {
+    background-color: #6200ea; /* Màu của thanh cuộn */
+    border-radius: 10px;
+  }
