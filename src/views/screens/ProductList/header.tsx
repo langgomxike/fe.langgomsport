@@ -12,6 +12,7 @@ export default  function () {
                 <option selected>-- Sắp xếp theo --</option>
                 <option value="asc_price">Giá tăng dần</option>
                 <option value="desc_price">Giá giảm dần</option>
+                <option value="desc_price">Giảm giá</option>
             </select>
         </div>
     )

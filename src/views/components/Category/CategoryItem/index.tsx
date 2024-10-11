@@ -1,18 +1,19 @@
 import './style.css'
 import Category from '../../../../models/Category'
-import { FaAngleDown, FaCaretDown, FaCaretRight } from 'react-icons/fa6'
-import { useState } from 'react'
+import {FaAngleDown, FaCaretDown, FaCaretRight} from 'react-icons/fa6'
+import React, {useState} from 'react'
 
 export type CategoryItemProps = {
     parentCategory: Category,
     categories: Array<Category>
 }
 
-export default function CategoryItem({ parentCategory, categories }: CategoryItemProps) {
+export default function CategoryItem({parentCategory, categories}: CategoryItemProps) {
     //ref, context
 
     //state
-    const [isActive, setActive] = useState(false)
+    const [isActive, setActive] = useState(false);
+
 
     //handlers
     const handleIConCategory = () => {
@@ -23,7 +24,7 @@ export default function CategoryItem({ parentCategory, categories }: CategoryIte
         console.log(id)
     }
 
-    const icon = isActive ? <FaCaretDown /> : <FaCaretRight />
+    const icon = isActive ? <FaCaretDown/> : <FaCaretRight/>
 
     return (
         <div className='category-block'>
@@ -33,7 +34,7 @@ export default function CategoryItem({ parentCategory, categories }: CategoryIte
                 </span>
                 <h5 className='title-item'>{parentCategory.name}</h5>
                 <span onClick={handleIConCategory} className='icon-angle-item'>
-                    <FaAngleDown />
+                    <FaAngleDown/>
                 </span>
             </div>
             <div className={`filter-box child ${isActive ? 'active' : ''}`}>
@@ -41,9 +42,11 @@ export default function CategoryItem({ parentCategory, categories }: CategoryIte
                     {
                         categories.map((item, index) => (
                             <li key={index}>
-                                <div onClick={() => { handleOnClickCateory(item.id) }} key={item.id} className='item'>
+                                <div onClick={() => {
+                                    handleOnClickCateory(item.id)
+                                }} key={item.id} className='item'>
                                     <span className='list-icon item'>
-                                        <FaCaretRight />
+                                        <FaCaretRight/>
                                     </span>
                                     <div className='item-category'>
                                         {item.name}

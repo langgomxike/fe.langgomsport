@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react"
-import { Container } from "react-bootstrap"
+import React, {useEffect, useState} from "react"
+import {Container} from "react-bootstrap"
 import './index.css';
-import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
+import {FaAngleDown, FaAngleUp} from "react-icons/fa6";
 import Category from "../../../../models/Category";
-import CategoryItem, { CategoryItemProps } from "../CategoryItem";
+import CategoryItem, {CategoryItemProps} from "../CategoryItem";
 import ACategory from "../../../../apis/ACategory";
 import CategoryDTO from "../../../../dtos/CategoryDTO";
+import Skeleton from "react-loading-skeleton";
+import CategorySkeleton from "./CategorySkeleton";
 
 const demo: Array<CategoryItemProps> = [
     {
-        parentCategory : new Category(1, "do nam"),
+        parentCategory: new Category(1, "do nam"),
         categories: [
             new Category(4, "Ao Nam", 1),
             new Category(5, "Quan Nam", 1),
@@ -18,7 +20,7 @@ const demo: Array<CategoryItemProps> = [
         ]
     },
     {
-        parentCategory : new Category(2, "do nu"),
+        parentCategory: new Category(2, "do nu"),
         categories: [
             new Category(8, "Ao nu", 2),
             new Category(9, "Quan nu", 2),
@@ -27,35 +29,38 @@ const demo: Array<CategoryItemProps> = [
         ]
     },
     {
-        parentCategory :new Category(3, " Phu Kien"),
+        parentCategory: new Category(3, " Phu Kien"),
         categories: [
             new Category(12, "Gay", 3),
             new Category(13, "Non", 3),
             new Category(14, "gel dinh duong", 3),
         ]
     }
-] 
+]
 
 export default function CategoryFilter() {
     //ref, context
     //state
     const [isActive, setActive] = useState(true)
     const [categories, setCategories] = useState<Array<CategoryDTO>>([]);
-    
+    const [isLoading, setIsLoading] = useState(false);
+
     //handlers
     const handleIConCategory = () => {
         setActive(!isActive);
         console.log(categories);
     }
     //effects
-    useEffect(()=> {
-        ACategory.getAllCategories((categories)=> {
+    useEffect(() => {
+        ACategory.getAllCategories((categories) => {
             setCategories(categories);
-            
+
         })
     }, [])
 
+
     const icon = isActive ? <FaAngleUp/> : <FaAngleDown/>
+
     return (
         <div className="category-container">
             {/* Categories title */}
@@ -67,13 +72,19 @@ export default function CategoryFilter() {
             </div>
             {/* Categories list */}
             <div className={`filter-box ${isActive ? 'active' : ''}`}>
-                <ul>
-                    {categories.map((item, index) => (
-                        <li key={item.categoryParent.id}>
-                            <CategoryItem parentCategory={item.categoryParent} categories={item.categories}/>
-                        </li>
-                    ))}
-                </ul>
+                {
+                    isLoading && <CategorySkeleton/>
+                }
+                {
+                    !isLoading &&
+                    <ul>
+                        {categories.map((item, index) => (
+                            <li key={item.categoryParent.id}>
+                                <CategoryItem parentCategory={item.categoryParent} categories={item.categories}/>
+                            </li>
+                        ))}
+                    </ul>
+                }
             </div>
         </div>
     )

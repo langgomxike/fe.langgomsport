@@ -1,10 +1,8 @@
-import { Card, Col, Container, Image, Row } from "react-bootstrap";
+import {Col, Container, Image, Row} from "react-bootstrap";
 import RootLayout from "../../layouts/RootLayout";
-import { useCallback, useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import "./index.css";
-import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import AProduct from "../../../apis/AProduct";
 import ProductItem from "../../components/productItem/ProductItem";
 import Header from "./header"
 import SkeletonProductItem from "../../components/productItem/SkeletonProductItem";
@@ -12,6 +10,7 @@ import PriceFilter from "../../components/PriceFilter/PriceFilter";
 import SizeFilter from "../../components/SizeFilter/SizeFilter";
 import CategoryFilter from "../../components/Category/CategoryFIlter";
 import Pagination from "../../components/Pagination/Pagination";
+import ProductDTO from "../../../dtos/ProductDTO";
 
 const MAX_AMOUNT_PRODUCTS_PER_PAGE = 20;
 const PRODUCTS_PER_ROW_IN_WEB = 4;
@@ -20,17 +19,23 @@ const PRODUCTS_PER_ROW_IN_MOBILE = 2;
 
 export const DEFAULT_PRODUCT_ITEM_HEIGHT = 350;
 
-const FAKE_LOADING_PRODUCTS = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
-];
+const FAKE_LOADING_PRODUCTS = 20
 
 export default function ProductListScreen() {
   //refs, contexts
   //state
-  const [products, setProducts] = useState<Array<unknown>>([1,2,3,4,5,6]);
+  const [products, setProducts] = useState<Array<ProductDTO>>([]);
   const [loading, setLoading] = useState(true);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalItems = 100; // Ví dụ tổng số sản phẩm từ API
+  const itemsPerPage = 10; // Số sản phẩm mỗi trang
+  const totalPages = Math.ceil(totalItems / itemsPerPage); // Tính số trang
+
   //handlers
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage); // Cập nhật trang hiện tại
+  };
 
   //effects
   useEffect(() => {
@@ -66,17 +71,18 @@ export default function ProductListScreen() {
             <Row>
               {/* when loading */}
               {loading &&
-                  FAKE_LOADING_PRODUCTS.map((_, index) => (
+                  Array.from({length: FAKE_LOADING_PRODUCTS}).map((_, index)=> (
                       <Col
-                    className="product-item-container"
-                    key={index}
-                    lg={12 / PRODUCTS_PER_ROW_IN_WEB}
-                    sm={12 / PRODUCTS_PER_ROW_IN_TABLET}
-                    xs={12 / PRODUCTS_PER_ROW_IN_MOBILE}
-                  >
-                    <SkeletonProductItem/>
-                  </Col>
-                ))}
+                          className="product-item-container"
+                          key={index}
+                          lg={12 / PRODUCTS_PER_ROW_IN_WEB}
+                          sm={12 / PRODUCTS_PER_ROW_IN_TABLET}
+                          xs={12 / PRODUCTS_PER_ROW_IN_MOBILE}
+                      >
+                        <SkeletonProductItem/>
+                      </Col>
+                  ))
+              }
 
               {/* when having data */}
               {!loading &&
@@ -91,12 +97,12 @@ export default function ProductListScreen() {
                       sm={12 / PRODUCTS_PER_ROW_IN_TABLET}
                       xs={12 / PRODUCTS_PER_ROW_IN_MOBILE}
                     >
-                      {/*<Card*/}
-                      {/*  style={{ height: DEFAULT_PRODUCT_ITEM_HEIGHT + "px" }}*/}
-                      {/*>*/}
-                      {/*  {JSON.stringify(product)}*/}
-                      {/*</Card>*/}
-                      <ProductItem/>
+                      {
+                        products.map((product) => (
+                            <ProductItem product={product}/>
+                        ))
+                      }
+
                     </Col>
                   ))}
             </Row>
@@ -112,7 +118,11 @@ export default function ProductListScreen() {
 
           {/*  Pagination */}
           <div className="pagination-container">
-            <Pagination/>
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+            />
           </div>
 
         </Col>

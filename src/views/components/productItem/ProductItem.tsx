@@ -1,9 +1,13 @@
 import React from "react";
 import "./productItem.css";
+import ProductDTO from "../../../dtos/ProductDTO";
 
-type ProductIem = {};
+type ProductIemProps = {
+    product: ProductDTO
+};
 
-export default function () {
+export default function ({product}:ProductIemProps) {
+    console.log(product)
   return (
     <div className="product-item">
       <div className="product-image">
