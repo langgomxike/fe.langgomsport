@@ -53,7 +53,7 @@ export default function CategoryFilter() {
             setCategories(categories);
             
         })
-    }, [])
+    },[]);
 
     const icon = isActive ? <FaAngleUp/> : <FaAngleDown/>
     return (

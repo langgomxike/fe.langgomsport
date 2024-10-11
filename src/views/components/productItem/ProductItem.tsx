@@ -1,7 +1,12 @@
 import React from "react";
 import "./productItem.css";
 
-type ProductIem = {};
+type ProductIem = {
+    image: string;
+    name: string;
+    price: number;
+    salePrice: number;
+}
 
 export default function () {
   return (
