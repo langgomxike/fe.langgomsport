@@ -39,7 +39,7 @@ const demo: Array<CategoryItemProps> = [
 export default function CategoryFilter() {
     //ref, context
     //state
-    const [isActive, setActive] = useState(false)
+    const [isActive, setActive] = useState(true)
     const [categories, setCategories] = useState<Array<CategoryDTO>>([]);
     
     //handlers
@@ -57,7 +57,7 @@ export default function CategoryFilter() {
 
     const icon = isActive ? <FaAngleUp/> : <FaAngleDown/>
     return (
-        <Container>
+        <div className="category-container">
             {/* Categories title */}
             <div className="title-block">
                 <h2 className="title">Danh Mục</h2>
@@ -75,7 +75,6 @@ export default function CategoryFilter() {
                     ))}
                 </ul>
             </div>
-            <hr />
-        </Container>
+        </div>
     )
 }

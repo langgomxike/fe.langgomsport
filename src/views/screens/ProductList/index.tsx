@@ -6,9 +6,11 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import AProduct from "../../../apis/AProduct";
 import ProductItem from "../../components/productItem/ProductItem";
+import Header from "./header"
 import SkeletonProductItem from "../../components/productItem/SkeletonProductItem";
 import SizeFilter from "../../components/SizeFilter/SizeFilter";
 import CategoryFilter from "../../components/Category/CategoryFIlter";
+import Pagination from "../../components/Pagination/Pagination";
 
 const MAX_AMOUNT_PRODUCTS_PER_PAGE = 20;
 const PRODUCTS_PER_ROW_IN_WEB = 4;
@@ -43,7 +45,7 @@ export default function ProductListScreen() {
   //ui
   return (
     <RootLayout>
-      <div className="container">
+      <div className="container py-5">
         <Row>
         {/* filter */}
         <Col md={{ span: 3 }}>
@@ -55,12 +57,15 @@ export default function ProductListScreen() {
 
         {/* product list */}
         <Col md={{ span: 9 }}>
+          {/* Title of product list */}
+          <Header/>
+
           <Container className="product-list-container">
             <Row>
               {/* when loading */}
               {loading &&
-                FAKE_LOADING_PRODUCTS.map((_, index) => (
-                  <Col
+                  FAKE_LOADING_PRODUCTS.map((_, index) => (
+                      <Col
                     className="product-item-container"
                     key={index}
                     lg={12 / PRODUCTS_PER_ROW_IN_WEB}
@@ -102,6 +107,12 @@ export default function ProductListScreen() {
               </div>
             )}
           </Container>
+
+          {/*  Pagination */}
+          <div className="pagination-container">
+            <Pagination/>
+          </div>
+
         </Col>
       </Row>
 
