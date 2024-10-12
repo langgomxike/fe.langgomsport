@@ -61,7 +61,7 @@ function PriceFilter() {
   };
 
   const handleMaxInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/^0+/, ""); 
+    const value = e.target.value.replace(/^0+/, "");
     const newMax = Number(value);
     if (priceRange[0] > newMax) {
       setError("Nhập số quá quy định cho phép !!!");
@@ -79,7 +79,7 @@ function PriceFilter() {
       <Range
         range
         min={0}
-        // Giá trị tối đa của thanh trượt 
+        // Giá trị tối đa của thanh trượt
         max={20000000}
         step={1000}
         value={priceRange}
@@ -95,7 +95,7 @@ function PriceFilter() {
         <input
           type="number"
           value={priceRange[0] === 0 ? "" : priceRange[0]} // Nếu giá trị là 0 thì hiển thị rỗng
-          onInput={handleMinInputChange} 
+          onInput={handleMinInputChange}
           min="0"
           max={priceRange[1]}
           className={isError ? "error-input" : ""}
@@ -103,7 +103,7 @@ function PriceFilter() {
         <span> - </span>
         <input
           type="number"
-          value={priceRange[1] === 0 ? "" : priceRange[1]} 
+          value={priceRange[1] === 0 ? "" : priceRange[1]}
           onInput={handleMaxInputChange}
           min={priceRange[0]}
           max="20000000"
