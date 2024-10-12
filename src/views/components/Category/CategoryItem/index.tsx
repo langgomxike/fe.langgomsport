@@ -6,7 +6,7 @@ import React, {useState} from 'react'
 export type CategoryItemProps = {
     parentCategory: Category,
     categories: Array<Category>,
-    onCategorySelect: (id: number | null) => void; // Hàm để gửi ID về component cha
+    onCategorySelect: (id: number | null, name:string) => void; // Hàm để gửi ID về component cha
 }
 
 export default function CategoryItem({parentCategory, categories, onCategorySelect}: CategoryItemProps) {
@@ -21,9 +21,9 @@ export default function CategoryItem({parentCategory, categories, onCategorySele
         setActiveCategory(activeCategory === null ? -1 : null); // Toggle trạng thái mở/đóng toàn bộ
     }
 
-    const handleOnClickCategory = (id: number) => {
+    const handleOnClickCategory = (id: number, name:string) => {
         setActiveCategory(id); // Cập nhật trạng thái active cho mục được chọn
-        onCategorySelect(id);
+        onCategorySelect(id, name);
     }
 
     const icon = activeCategory !== null ? <FaCaretDown style={{fontSize: 15}}/> : <FaCaretRight style={{fontSize: 15}}/>
@@ -34,7 +34,7 @@ export default function CategoryItem({parentCategory, categories, onCategorySele
                 <span className='list-icon'>
                     {icon}
                 </span>
-                <h5 className='title-item'>{parentCategory.name}</h5>
+                <h5 className='title-item' onClick={() => handleOnClickCategory(parentCategory.id, parentCategory.name)}>{parentCategory.name}</h5>
                 <span onClick={handleIconCategory} className='icon-angle-item'>
                     <FaAngleDown style={{fontSize: 15}}/>
                 </span>
@@ -44,7 +44,7 @@ export default function CategoryItem({parentCategory, categories, onCategorySele
                     {
                         categories.map((item, index) => (
                             <li key={index}>
-                                <div onClick={() => handleOnClickCategory(item.id)} className='item'>
+                                <div onClick={() => handleOnClickCategory(item.id, item.name)} className='item'>
                                     <span className='list-icon item'>
                                         <FaCaretRight/>
                                     </span>

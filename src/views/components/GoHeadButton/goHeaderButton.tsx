@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./goHeaderButton.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
+import { IoHomeOutline } from "react-icons/io5";
 
 const GoHeaderButton: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -45,7 +44,7 @@ const GoHeaderButton: React.FC = () => {
     <>
       {isDelayedVisible && (
         <button className="button" onClick={handleClick}>
-          <i className="bi bi-house-door icon"></i>
+          <IoHomeOutline />
         </button>
       )}
     </>

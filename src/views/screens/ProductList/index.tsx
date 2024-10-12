@@ -9,12 +9,13 @@ import SkeletonProductItem from "../../components/productItem/SkeletonProductIte
 import PriceFilter from "../../components/PriceFilter/PriceFilter";
 import SizeFilter from "../../components/SizeFilter/SizeFilter";
 import CategoryFilter from "../../components/Category/CategoryFIlter";
-import Pagination from "../../components/Pagination/Pagination";
+import PaginationComponent from "../../components/Pagination/Pagination";
 import ProductDTO from "../../../dtos/ProductDTO";
 import GoHeaderButton from "../../components/GoHeadButton/goHeaderButton";
 import CategoryItem from "../../components/Category/CategoryItem";
 import BrandFilter from "../../components/Brand/BrandFilter";
 import AProduct from "../../../apis/AProduct";
+import Pagination from "../../../models/Pagination";
 
 const MAX_AMOUNT_PRODUCTS_PER_PAGE = 20;
 const PRODUCTS_PER_ROW_IN_WEB = 4;
@@ -30,12 +31,8 @@ export default function ProductListScreen() {
   //state
   const [products, setProducts] = useState<ProductDTO[]>([]);
   const [loading, setLoading] = useState(true);
-  const [pagination, setPagination] = useState({
-    page: 1,
-    perPage: 10,
-    totalPages: 0,
-    totalItems: 0
-  });
+  const [pagination, setPagination] = useState<Pagination>(new Pagination());
+  const [categoryName, setCategoryName] = useState("")
 
   const [filters, setFilters] = useState({
     categoryId: undefined,
@@ -43,6 +40,7 @@ export default function ProductListScreen() {
     brandId: undefined,
     minPrice: undefined,
     maxPrice: undefined,
+    sort: undefined,
   });
 
 
@@ -79,7 +77,11 @@ export default function ProductListScreen() {
           pagination.perPage,
           (data) => {
             setProducts(data.products);
-            setPagination(data.pagination);
+            setPagination(prev => {
+              const updatedPagination = data.pagination;
+              console.log("pagination: ", updatedPagination);
+              return updatedPagination;
+            });
           },
           setLoading,
           filters.categoryId,
@@ -87,7 +89,7 @@ export default function ProductListScreen() {
           filters.brandId,
           filters.minPrice,
           filters.maxPrice,
-          undefined, // sort
+          filters.sort, // sort
       );
     };
 
@@ -97,11 +99,17 @@ export default function ProductListScreen() {
   //ui
   return (
     <RootLayout>
+        <GoHeaderButton/>
       <div className="container py-5">
         <Row>
           {/* filter */}
           <Col md={{ span: 3 }}>
-            <CategoryFilter onFilterChange={(categoryId) => updateFilter('categoryId', categoryId)} />
+            <CategoryFilter
+                onFilterChange={(categoryId, categoryName: string) => {
+                  updateFilter('categoryId', categoryId);
+                  setCategoryName(categoryName);
+                }}
+            />
             <PriceFilter onFilterChange={(minPrice, maxPrice) => {
               updateFilter('minPrice', minPrice);
               updateFilter('maxPrice', maxPrice);
@@ -110,16 +118,17 @@ export default function ProductListScreen() {
                 categoryId={filters.categoryId}
                 onFilterChange={(sizeIds) => updateFilter('sizeId', sizeIds)}
             />
-            {/*<BrandFilter onFilterChange={(brandId) => updateFilter('brandId', brandId)} />*/}
-            {/*<SizeFilter categoryId={filters.categoryId} />*/}
-            <BrandFilter />
-
+            <BrandFilter onFilterChange={(brandIds) => updateFilter('brandId', brandIds)} />
           </Col>
 
         {/* product list */}
         <Col md={{ span: 9 }}>
           {/* Title of product list */}
-          <Header/>
+          <Header
+              productQuantity={pagination.totalItems}
+              categoryName={categoryName}
+              onFilterChange={(sort) => updateFilter('sort', sort)}
+          />
 
           <Container className="product-list-container">
             <Row>
@@ -165,11 +174,11 @@ export default function ProductListScreen() {
 
           {/*  Pagination */}
           <div className="pagination-container">
-            <Pagination
+            {!loading && pagination.totalPages > 1 && <PaginationComponent
                 currentPage={pagination.page}
                 totalPages={pagination.totalPages}
                 onPageChange={handlePageChange}
-            />
+            />}
           </div>
 
         </Col>

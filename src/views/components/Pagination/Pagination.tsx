@@ -11,29 +11,31 @@ type PaginationProps = {
 const maxPagesToShow = 4; // Số lượng trang tối đa hiển thị
 
 
-export default function ({totalPages, onPageChange}: PaginationProps) {
+export default function ({currentPage, totalPages, onPageChange}: PaginationProps) {
     //state
-    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [currentPage1, setCurrentPage1] = useState<number>(currentPage);
     const [pages, setPages] = useState<(string|number)[]>()
+
+    console.log(totalPages);
 
     //handle
     const goToNextPage = () => {
-        if (currentPage < totalPages) {
+        if (currentPage1 < totalPages) {
             // onPageChange(currentPage + 1); // Gọi hàm onPageChange để cập nhật trang
-            goToPage(currentPage + 1);
+            goToPage(currentPage1 + 1);
         }
     }
 
     const goToPreviousPage = () => {
-        if (currentPage > 1) {
+        if (currentPage1 > 1) {
             // onPageChange(currentPage - 1);
-            goToPage(currentPage - 1);
+            goToPage(currentPage1 - 1);
         }
     };
 
     const goToPage = (page: number) => {
         onPageChange(page);
-        setCurrentPage(page);
+        setCurrentPage1(page);
     };
 
     const goToFirstPage = () => {
@@ -51,8 +53,8 @@ export default function ({totalPages, onPageChange}: PaginationProps) {
             if (totalPages <= maxPagesToShow) {
                 pages = [...Array(totalPages)].map((_, index) => index + 1);
             } else {
-                const startPage = Math.max(1, currentPage - 2);
-                const endPage = Math.min(totalPages, currentPage + 2);
+                const startPage = Math.max(1, currentPage1 - 2);
+                const endPage = Math.min(totalPages, currentPage1 + 2);
 
                 // Trang đầu tiên luôn hiển thị
                 if (startPage > 1) {
@@ -81,10 +83,9 @@ export default function ({totalPages, onPageChange}: PaginationProps) {
             }
 
             setPages(pages);
-            console.log("current page: ", currentPage)
         };
         getPageNumber()
-    }, [currentPage])
+    }, [currentPage1])
     // Hàm để tính số trang
 
 
@@ -94,14 +95,14 @@ export default function ({totalPages, onPageChange}: PaginationProps) {
     return (
         <nav aria-label="Page navigation example">
             <ul className="pagination">
-                {currentPage > 1 && (
+                {currentPage1 > 1 && (
                     <li className="page-item" onClick={goToFirstPage}>
                         <a className="page-link" href="#" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                 )}
-                {currentPage > 1 && (
+                {currentPage1 > 1 && (
                     <li className="page-item" onClick={goToPreviousPage}>
                         <a className="page-link" href="#">
                             <IoChevronBack className="icChevron"/>
@@ -111,7 +112,7 @@ export default function ({totalPages, onPageChange}: PaginationProps) {
 
                 {pages?.map((page) => (
                         <li key={page}
-                            className={`page-item ${page === currentPage ? "active" : ""}`}>
+                            className={`page-item ${page === currentPage1 ? "active" : ""}`}>
                             {page === '...' ? (
                                 <span className="page-link">...</span> // Dấu `...`
                             ) : (
@@ -122,14 +123,14 @@ export default function ({totalPages, onPageChange}: PaginationProps) {
                         </li>
                 ))}
 
-                {currentPage < totalPages && (
+                {currentPage1 < totalPages && (
                     <li className="page-item" onClick={goToNextPage}>
                         <a className="page-link" href="#">
                             <IoChevronForward className="icChevron"/>
                         </a>
                     </li>
                 )}
-                {currentPage < totalPages && (
+                {currentPage1 < totalPages && (
                     <li className="page-item" onClick={goToLastPage}>
                         <a className="page-link" href="#" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>

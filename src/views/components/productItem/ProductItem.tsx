@@ -1,6 +1,7 @@
 import React from "react";
 import "./productItem.css";
 import ProductDTO from "../../../dtos/ProductDTO";
+import { Link } from "react-router-dom";
 
 type ProductIemProps = {
     data: ProductDTO
@@ -13,6 +14,7 @@ export default function ({data}:ProductIemProps) {
     }
   return (
     <div className="product-item">
+        <Link to={`/about`} title={data.product.name}>
       <div className="product-image">
         <img
           className="img-fluid img-main"
@@ -28,10 +30,11 @@ export default function ({data}:ProductIemProps) {
         {/*  <span>50%</span>*/}
         {/*</div>*/}
       </div>
+        </Link>
       <h3 className="product-title">
-        <a href={"#"} title={data.product.name}>
-            {data.product.name}
-        </a>
+          <Link to={`/about`} title={data.product.name}>
+              {data.product.name}
+          </Link>
       </h3>
       <div className="product-price">
         <span>{formatPrice(data.product.price)}</span>

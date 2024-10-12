@@ -12,6 +12,11 @@
 .title{
     flex: 1;
 }
+
+.title-item {
+    cursor: pointer;
+}
+
 .icon-angle{
     font-size: 24px;
     display: flex;

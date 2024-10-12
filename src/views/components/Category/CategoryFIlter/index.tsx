@@ -10,7 +10,7 @@ import Skeleton from "react-loading-skeleton";
 import CategorySkeleton from "./CategorySkeleton";
 
 type CategoryFilterProps = {
-    onFilterChange: (categoryId: number| null) => void
+    onFilterChange: (categoryId: number| null, categoryName:string) => void
 }
 
 export default function CategoryFilter({onFilterChange}: CategoryFilterProps) {
@@ -27,11 +27,11 @@ export default function CategoryFilter({onFilterChange}: CategoryFilterProps) {
     }
 
     // Hàm nhận giá trị đã chọn từ CategoryItem
-    const handleCategorySelect = (id: number | null) => {
+    const handleCategorySelect = (id: number | null, name:string) => {
         if (id !== null) {
-            onFilterChange(id); // Gọi hàm để cập nhật filter
+            onFilterChange(id, name); // Gọi hàm để cập nhật filter
         } else {
-            onFilterChange(null); // Gọi với giá trị 0 nếu không có danh mục nào được chọn
+            onFilterChange(null, name); // Gọi với giá trị 0 nếu không có danh mục nào được chọn
         }
     };
 
@@ -41,7 +41,7 @@ export default function CategoryFilter({onFilterChange}: CategoryFilterProps) {
         ACategory.getAllCategories((categories) => {
             setCategories(categories);
 
-        })
+        }, setIsLoading)
     },[]);
 
 
