@@ -7,7 +7,7 @@ export default class Pagination {
 
     constructor() {
         this.page = 1;
-        this.perPage = 10;
+        this.perPage = 20;
         this.totalPages = 0;
         this.totalItems = 0;
     }

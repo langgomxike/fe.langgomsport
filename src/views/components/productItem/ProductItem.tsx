@@ -26,9 +26,9 @@ export default function ({data}:ProductIemProps) {
           src={data.files[1].filePath}
           alt=""
         />
-        {/*<div className="product-sale">*/}
-        {/*  <span>50%</span>*/}
-        {/*</div>*/}
+        <div className="product-sale">
+          <span>50%</span>
+        </div>
       </div>
         </Link>
       <h3 className="product-title">
@@ -38,7 +38,7 @@ export default function ({data}:ProductIemProps) {
       </h3>
       <div className="product-price">
         <span>{formatPrice(data.product.price)}</span>
-        {/*<del>1,953,818₫</del>*/}
+        <del>1,953,818₫</del>
       </div>
       <div className="product-bottom"></div>
     </div>

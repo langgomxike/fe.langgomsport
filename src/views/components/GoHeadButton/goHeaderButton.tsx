@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./goHeaderButton.css";
-import { IoHomeOutline } from "react-icons/io5";
-
+import { IoIosArrowUp } from "react-icons/io";
 const GoHeaderButton: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isDelayedVisible, setIsDelayedVisible] = useState(false);
@@ -44,7 +43,7 @@ const GoHeaderButton: React.FC = () => {
     <>
       {isDelayedVisible && (
         <button className="button" onClick={handleClick}>
-          <IoHomeOutline />
+          <IoIosArrowUp style={{fontSize:20}} />
         </button>
       )}
     </>

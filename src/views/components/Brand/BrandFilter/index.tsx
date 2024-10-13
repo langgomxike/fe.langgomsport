@@ -4,6 +4,7 @@ import "./index.css";
 import BrandDTO from "../../../../dtos/BrandDTO";
 import ABrand from "../../../../apis/ABrand";
 import Brand from "../../../../models/Brand";
+import BrandSkeleton from "./BrandSkeleton";
 
 type BrandFilterProps = {
   onFilterChange: (brandIds:number[]) => void
@@ -15,6 +16,7 @@ export default function BrandFilter({onFilterChange}:BrandFilterProps) {
   const togglePanel = () => {
     setIsOpen(!isOpen); // Đảo ngược trạng thái mở/đóng
   };
+  const [loading, setLoading] = useState(true);
 
   const handleFilterByBrand = (brand: number) => {
     if (selectedBrands.includes(brand)) {
@@ -33,8 +35,7 @@ export default function BrandFilter({onFilterChange}:BrandFilterProps) {
   useEffect(() => {
     ABrand.getAllBrands((brands) => {
       setBrands(brands);
-      console.log(brands);
-    })
+    }, setLoading)
   }, []);
 
   return (
@@ -49,7 +50,10 @@ export default function BrandFilter({onFilterChange}:BrandFilterProps) {
           )}
         </span>
       </div>
-      {isOpen && (
+      {loading &&
+          <BrandSkeleton/>
+      }
+      { !loading && isOpen && (
         <div className="filter-content">
           {brands.map((brand) => (
             <div

@@ -2,13 +2,14 @@ import React, {useEffect, useState} from "react";
 import './sizeFilter.css'
 import ASize from "../../../apis/ASize";
 import SizeDTO from "../../../dtos/SizeDTO";
+import SizeSkeleton from "./SizeSkeleton";
 
 type SizeFilterProps = {
     categoryId: number | undefined; // Nhận categoryId từ props
     onFilterChange: (sizeIds: number[]) => void;
 };
 
-export default function ({ categoryId, onFilterChange  }: SizeFilterProps) {
+export default function ({categoryId, onFilterChange}: SizeFilterProps) {
     // state
     const [selectedSizes, setSelectedSizes] = useState<number[]>([]);
     const [sizes, setSizes] = useState<SizeDTO[]>([]);
@@ -48,28 +49,29 @@ export default function ({ categoryId, onFilterChange  }: SizeFilterProps) {
     }, [categoryId]); // Chạy lại khi categoryId thay đổi
 
     //render
-    if (loading) {
-        return <div>Loading...</div>;
-    }
 
     return (
         <div className="size-filter-container">
             <h3 className="size-filter-title">
                 Kích cỡ
             </h3>
-            <div className="size-block">
-                {
-                    sizes.map((item) => (
-                        <div
-                            key={item.id}
-                            className={`size-item ${selectedSizes.includes(item.id) ? 'active' : ''}`}
-                            onClick={() => toggleSize(item.id)}
-                        >
-                            <span>{item.size}</span>
-                        </div>
-                    ))
-                }
-            </div>
+            {loading && <SizeSkeleton/>}
+            {
+                !loading &&
+                <div className="size-block">
+                    {
+                        sizes.map((item) => (
+                            <div
+                                key={item.id}
+                                className={`size-item ${selectedSizes.includes(item.id) ? 'active' : ''}`}
+                                onClick={() => toggleSize(item.id)}
+                            >
+                                <span>{item.size}</span>
+                            </div>
+                        ))
+                    }
+                </div>
+            }
         </div>
     );
 }

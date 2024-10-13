@@ -95,48 +95,46 @@ export default function ({currentPage, totalPages, onPageChange}: PaginationProp
     return (
         <nav aria-label="Page navigation example">
             <ul className="pagination">
-                {currentPage1 > 1 && (
-                    <li className="page-item" onClick={goToFirstPage}>
-                        <a className="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                )}
-                {currentPage1 > 1 && (
-                    <li className="page-item" onClick={goToPreviousPage}>
-                        <a className="page-link" href="#">
-                            <IoChevronBack className="icChevron"/>
-                        </a>
-                    </li>
-                )}
+                <li className={`page-item ${currentPage1 === 1 ? 'disabled' : ''}`}
+                    onClick={currentPage1 > 1 ? goToFirstPage : undefined}>
+                    <a className="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                <li className={`page-item ${currentPage1 === 1 ? 'disabled' : ''}`}
+                    onClick={currentPage1 > 1 ? goToPreviousPage : undefined}>
+                    <a className="page-link" href="#">
+                        <IoChevronBack className="icChevron"/>
+                    </a>
+                </li>
 
                 {pages?.map((page) => (
-                        <li key={page}
-                            className={`page-item ${page === currentPage1 ? "active" : ""}`}>
-                            {page === '...' ? (
-                                <span className="page-link">...</span> // Dấu `...`
-                            ) : (
-                                <a className="page-link" onClick={() => goToPage(Number(page))}>
-                                    {page}
-                                </a>
-                            )}
-                        </li>
+                    <li key={page}
+                        className={`page-item ${page === currentPage1 ? "active" : ""}`}>
+                        {page === '...' ? (
+                            <span className="page-link">...</span> // Dấu `...`
+                        ) : (
+                            <a className="page-link" onClick={() => goToPage(Number(page))}>
+                                {page}
+                            </a>
+                        )}
+                    </li>
                 ))}
 
-                {currentPage1 < totalPages && (
-                    <li className="page-item" onClick={goToNextPage}>
-                        <a className="page-link" href="#">
-                            <IoChevronForward className="icChevron"/>
-                        </a>
-                    </li>
-                )}
-                {currentPage1 < totalPages && (
-                    <li className="page-item" onClick={goToLastPage}>
-                        <a className="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                )}
+                <li className={`page-item ${currentPage1 === totalPages ? 'disabled' : ''}`}
+                    onClick={currentPage1 < totalPages ? goToNextPage : undefined}>
+                    <a className="page-link" href="#">
+                        <IoChevronForward className="icChevron"/>
+                    </a>
+                </li>
+
+                <li className={`page-item ${currentPage1 === totalPages ? 'disabled' : ''}`}
+                    onClick={currentPage1 < totalPages ? goToLastPage : undefined}>
+                    <a className="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
             </ul>
         </nav>
     );

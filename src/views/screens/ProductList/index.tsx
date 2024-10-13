@@ -24,7 +24,7 @@ const PRODUCTS_PER_ROW_IN_MOBILE = 2;
 
 export const DEFAULT_PRODUCT_ITEM_HEIGHT = 350;
 
-const FAKE_LOADING_PRODUCTS = 20
+let FAKE_LOADING_PRODUCTS = 20
 
 export default function ProductListScreen() {
   //refs, contexts
@@ -66,34 +66,48 @@ export default function ProductListScreen() {
       ...prev,
       [filterKey]: Array.isArray(value) ? value : [value] // Đảm bảo giá trị là một mảng
     }));
-    console.log(filters)
   };
+
+  let timeoutId: NodeJS.Timeout | undefined = undefined;
+  const fetchProducts = (page: number) => {
+    AProduct.getProductsFilter(
+        page,
+        pagination.perPage,
+        (data) => {
+          setProducts(data.products);
+          setPagination(prev => {
+            const updatedPagination = data.pagination;
+            return updatedPagination;
+          });
+        },
+        setLoading,
+        filters.categoryId,
+        filters.sizeId,
+        filters.brandId,
+        filters.minPrice,
+        filters.maxPrice,
+        filters.sort, // sort
+    );
+  };
+  //
+  // console.log(pagination)
 
   // Effects
   useEffect(() => {
-    const fetchProducts = (page: number) => {
-      AProduct.getProductsFilter(
-          page,
-          pagination.perPage,
-          (data) => {
-            setProducts(data.products);
-            setPagination(prev => {
-              const updatedPagination = data.pagination;
-              console.log("pagination: ", updatedPagination);
-              return updatedPagination;
-            });
-          },
-          setLoading,
-          filters.categoryId,
-          filters.sizeId,
-          filters.brandId,
-          filters.minPrice,
-          filters.maxPrice,
-          filters.sort, // sort
-      );
-    };
+    // Nếu timeout trước đó tồn tại, hủy nó
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    setLoading(true)
+    FAKE_LOADING_PRODUCTS = 5
+    // Thiết lập một timeout mới để gọi API sau 100ms
+    timeoutId = setTimeout(() => {
 
-    fetchProducts(pagination.page);
+      fetchProducts(pagination.page);
+    }, 1000);
+
+    // Cleanup để hủy timeout khi component bị unmount hoặc filter/pagination thay đổi nhanh
+    return () => clearTimeout(timeoutId);
   }, [pagination.page, filters]); // Fetch lại khi pagination.page hoặc filters thay đổi
 
   //ui
@@ -108,6 +122,7 @@ export default function ProductListScreen() {
                 onFilterChange={(categoryId, categoryName: string) => {
                   updateFilter('categoryId', categoryId);
                   setCategoryName(categoryName);
+
                 }}
             />
             <PriceFilter onFilterChange={(minPrice, maxPrice) => {
@@ -128,6 +143,7 @@ export default function ProductListScreen() {
               productQuantity={pagination.totalItems}
               categoryName={categoryName}
               onFilterChange={(sort) => updateFilter('sort', sort)}
+              setPageFirst={(page) => handlePageChange(page)}
           />
 
           <Container className="product-list-container">
