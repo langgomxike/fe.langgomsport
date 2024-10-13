@@ -5,15 +5,18 @@ import "./index.css";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import AProduct from "../../../apis/AProduct";
+import Pagination from "../../components/ExampleComponent/Pagination";
 
-const MAX_AMOUNT_PRODUCTS_PER_PAGE = 20;
+const MAX_AMOUNT_PRODUCTS_PER_PAGE = 2;
 const PRODUCTS_PER_ROW_IN_WEB = 4;
 const PRODUCTS_PER_ROW_IN_TABLET = 3;
 const PRODUCTS_PER_ROW_IN_MOBILE = 2;
+const DEFAULT_OFFSET = 2;
 
 export const DEFAULT_PRODUCT_ITEM_HEIGHT = 350;
 
 const FAKE_LOADING_PRODUCTS = [
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
   1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
 ];
 
@@ -21,18 +24,22 @@ export default function ProductListScreen() {
   //refs, contexts
   //state
   const [products, setProducts] = useState<Array<unknown>>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   //handlers
 
   //effects
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     AProduct.getAllProducts((products) => {
+  //       setProducts(products);
+  //       setLoading(false);
+  //     });
+  //   }, 3000);
+  // }, []);
+
   useEffect(() => {
-    setTimeout(() => {
-      AProduct.getAllProducts((products) => {
-        setProducts(products);
-        setLoading(false);
-      });
-    }, 3000);
+    setProducts(FAKE_LOADING_PRODUCTS);
   }, []);
 
   //ui
@@ -91,9 +98,15 @@ export default function ProductListScreen() {
                 <p className="text">{"Không tìm thấy sản phẩm"}</p>
               </div>
             )}
+
+            {!loading && products.length > MAX_AMOUNT_PRODUCTS_PER_PAGE && (
+              <div className="text-center">
+                <Pagination defaultPage={5} total={products.length / MAX_AMOUNT_PRODUCTS_PER_PAGE} offset={DEFAULT_OFFSET}/>
+              </div>
+            )}
           </Container>
         </Col>
       </Row>
     </RootLayout>
   );
-}
+} 
