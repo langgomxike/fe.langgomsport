@@ -4,38 +4,38 @@ import "./index.css";
 import BrandDTO from "../../../../dtos/BrandDTO";
 import ABrand from "../../../../apis/ABrand";
 import Brand from "../../../../models/Brand";
+import BrandSkeleton from "./BrandSkeleton";
 
-const FAKE_BRAND = [
-  "HOKA",
-  "On Running",
-  "Saucony",
-  "Topo Athletics",
-  "Xeroshoes",
-  "New Balance",
-];
-
-export default function BrandFilter() {
+type BrandFilterProps = {
+  onFilterChange: (brandIds:number[]) => void
+}
+export default function BrandFilter({onFilterChange}:BrandFilterProps) {
   const [isOpen, setIsOpen] = useState(true); // State để kiểm soát mở/đóng
-  const [selectedBrands, setSelectedBrands] = useState<Array<string>>([]);
+  const [selectedBrands, setSelectedBrands] = useState<number[]>([]);
   const [brands, setBrands] = useState<Array<Brand>>([]);
   const togglePanel = () => {
     setIsOpen(!isOpen); // Đảo ngược trạng thái mở/đóng
   };
+  const [loading, setLoading] = useState(true);
 
-  const handleFilterByBrand = (brand: string) => {
+  const handleFilterByBrand = (brand: number) => {
     if (selectedBrands.includes(brand)) {
-      setSelectedBrands(selectedBrands.filter((b) => b !== brand));
+      const newSelectedBrands = selectedBrands.filter((b) => b !== brand)
+      setSelectedBrands(newSelectedBrands);
+      onFilterChange(newSelectedBrands);
     } else {
       // chua chon thi them vao danh sach
-      setSelectedBrands([...selectedBrands, brand]);
+      const newSelectedBrands = [...selectedBrands, brand]
+      setSelectedBrands(newSelectedBrands);
+      onFilterChange(newSelectedBrands);
     }
   };
+
 
   useEffect(() => {
     ABrand.getAllBrands((brands) => {
       setBrands(brands);
-      console.log(brands);
-    })
+    }, setLoading)
   }, []);
 
   return (
@@ -50,16 +50,19 @@ export default function BrandFilter() {
           )}
         </span>
       </div>
-      {isOpen && (
+      {loading &&
+          <BrandSkeleton/>
+      }
+      { !loading && isOpen && (
         <div className="filter-content">
           {brands.map((brand) => (
             <div
               key={brand.id}
               className="brand-item"
-              onClick={() => handleFilterByBrand(brand.name)}
+              onClick={() => handleFilterByBrand(brand.id)}
               style={{
                 cursor: "pointer",
-                fontWeight: selectedBrands.includes(brand.name) ? "bold" : "normal",
+                fontWeight: selectedBrands.includes(brand.id) ? "bold" : "normal",
               }}
             >
               {brand.name}

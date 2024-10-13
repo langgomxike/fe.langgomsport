@@ -1,9 +1,18 @@
 .price-filter {
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  width: 300px;
-  margin-left: 50px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #ebebeb;
+  margin-bottom: 30px;
+}
+
+.price-filter h3 {
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.inputRangeContainer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 input[type="number"] {
@@ -12,15 +21,18 @@ input[type="number"] {
   font-size: 16px;
   margin-top: 10px;
   margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 button {
   margin-top: 10px;
   padding: 8px 15px;
+  width: 100%;
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
 }
 
@@ -33,9 +45,9 @@ button:hover {
 }
 
 .rc-slider-handle {
-  width: 24px;
-  height: 24px;
-  margin-top: -10px;
+  width: 20px;
+  height: 20px;
+  margin-top: -8px;
   border: solid 2px #1890ff;
   background-color: white;
   cursor: pointer; /* Con trỏ khi di chuột qua tay nắm */
@@ -48,4 +60,8 @@ button:hover {
 
 .rc-slider {
   margin: 20px 0;
+}
+
+.textError {
+  font-size: 13px;
 }

@@ -1,17 +1,29 @@
+import Variant from "./Variant";
+import File from "./File";
+
 export default class Product {
+
+    // properties
     id: number;
     name: string;
+    price: number;
     description: string;
-    brandId: number;
-    createdAt: Date;
-    updatedAt: Date;
+    brand_id: number;
+    variant: Variant;
+    files: File[]
+    created_at: number;
+    updated_at: number
 
-    constructor(id = -1, name: "", description: "", brandId = -1, createdAt = new Date(), updatedAt = new Date()) {
+
+    constructor(id: number, name: string, price: number, description: string, brand_id: number, variant: Variant, files: File[], created_at: number, updated_at: number) {
         this.id = id;
         this.name = name;
+        this.price = price;
         this.description = description;
-        this.brandId = brandId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.brand_id = brand_id;
+        this.variant = variant;
+        this.files = files;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
     }
 }

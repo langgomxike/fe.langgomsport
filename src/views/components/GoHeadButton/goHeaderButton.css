@@ -5,8 +5,8 @@
     background-color: rgb(255, 157, 0);
     border-radius: 100px;
     color: azure;
-    margin-top:50%;
-    margin-left: 93%;
+    top: 85vh;
+    left: 95vw;
     z-index: 100;
     opacity: .3;
     border: none;
