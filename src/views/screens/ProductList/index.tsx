@@ -1,10 +1,10 @@
-import {Col, Container, Image, Row} from "react-bootstrap";
+import { Col, Container, Image, Row } from "react-bootstrap";
 import RootLayout from "../../layouts/RootLayout";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import "./index.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import ProductItem from "../../components/productItem/ProductItem";
-import Header from "./header"
+import Header from "./header";
 import SkeletonProductItem from "../../components/productItem/SkeletonProductItem";
 import PriceFilter from "../../components/PriceFilter/PriceFilter";
 import SizeFilter from "../../components/SizeFilter/SizeFilter";
@@ -24,15 +24,15 @@ const PRODUCTS_PER_ROW_IN_MOBILE = 2;
 
 export const DEFAULT_PRODUCT_ITEM_HEIGHT = 350;
 
-let FAKE_LOADING_PRODUCTS = 20
+let FAKE_LOADING_PRODUCTS = 20;
 
 export default function ProductListScreen() {
   //refs, contexts
-  //state
+  //states
   const [products, setProducts] = useState<ProductDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState<Pagination>(new Pagination());
-  const [categoryName, setCategoryName] = useState("")
+  const [categoryName, setCategoryName] = useState("");
 
   const [filters, setFilters] = useState({
     categoryId: undefined,
@@ -43,11 +43,9 @@ export default function ProductListScreen() {
     sort: undefined,
   });
 
-
   //handlers
-  // handlers
   const handlePageChange = (newPage: number) => {
-    setPagination(prev => ({
+    setPagination((prev) => ({
       ...prev,
       page: newPage, // Cập nhật số trang
     }));
@@ -62,31 +60,30 @@ export default function ProductListScreen() {
   // };
 
   const updateFilter = (filterKey: string, value: any) => {
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
-      [filterKey]: Array.isArray(value) ? value : [value] // Đảm bảo giá trị là một mảng
+      [filterKey]: Array.isArray(value) ? value : [value], // Đảm bảo giá trị là một mảng
     }));
   };
 
-  let timeoutId: NodeJS.Timeout | undefined = undefined;
   const fetchProducts = (page: number) => {
     AProduct.getProductsFilter(
-        page,
-        pagination.perPage,
-        (data) => {
-          setProducts(data.products);
-          setPagination(prev => {
-            const updatedPagination = data.pagination;
-            return updatedPagination;
-          });
-        },
-        setLoading,
-        filters.categoryId,
-        filters.sizeId,
-        filters.brandId,
-        filters.minPrice,
-        filters.maxPrice,
-        filters.sort, // sort
+      page,
+      pagination.perPage,
+      (data) => {
+        setProducts(data.products);
+        setPagination((prev) => {
+          const updatedPagination = data.pagination;
+          return updatedPagination;
+        });
+      },
+      setLoading,
+      filters.categoryId,
+      filters.sizeId,
+      filters.brandId,
+      filters.minPrice,
+      filters.maxPrice,
+      filters.sort // sort
     );
   };
   //
@@ -94,15 +91,17 @@ export default function ProductListScreen() {
 
   // Effects
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout | undefined = undefined;
+
     // Nếu timeout trước đó tồn tại, hủy nó
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
-    setLoading(true)
-    FAKE_LOADING_PRODUCTS = 5
+    setLoading(true);
+    FAKE_LOADING_PRODUCTS = 5;
     // Thiết lập một timeout mới để gọi API sau 100ms
-    timeoutId = setTimeout(() => {
 
+    timeoutId = setTimeout(() => {
       fetchProducts(pagination.page);
     }, 1000);
 
@@ -113,58 +112,62 @@ export default function ProductListScreen() {
   //ui
   return (
     <RootLayout>
-        <GoHeaderButton/>
+      <GoHeaderButton />
       <div className="container py-5">
         <Row>
           {/* filter */}
           <Col md={{ span: 3 }}>
             <CategoryFilter
-                onFilterChange={(categoryId, categoryName: string) => {
-                  updateFilter('categoryId', categoryId);
-                  setCategoryName(categoryName);
-
-                }}
+              onFilterChange={(categoryId, categoryName: string) => {
+                updateFilter("categoryId", categoryId);
+                setCategoryName(categoryName);
+              }}
             />
-            <PriceFilter onFilterChange={(minPrice, maxPrice) => {
-              updateFilter('minPrice', minPrice);
-              updateFilter('maxPrice', maxPrice);
-            }} />
+            <PriceFilter
+              onFilterChange={(minPrice, maxPrice) => {
+                updateFilter("minPrice", minPrice);
+                updateFilter("maxPrice", maxPrice);
+              }}
+            />
             <SizeFilter
-                categoryId={filters.categoryId}
-                onFilterChange={(sizeIds) => updateFilter('sizeId', sizeIds)}
+              categoryId={filters.categoryId}
+              onFilterChange={(sizeIds) => updateFilter("sizeId", sizeIds)}
             />
-            <BrandFilter onFilterChange={(brandIds) => updateFilter('brandId', brandIds)} />
+            <BrandFilter
+              onFilterChange={(brandIds) => updateFilter("brandId", brandIds)}
+            />
           </Col>
 
-        {/* product list */}
-        <Col md={{ span: 9 }}>
-          {/* Title of product list */}
-          <Header
+          {/* product list */}
+          <Col md={{ span: 9 }}>
+            {/* Title of product list */}
+            <Header
               productQuantity={pagination.totalItems}
               categoryName={categoryName}
-              onFilterChange={(sort) => updateFilter('sort', sort)}
+              onFilterChange={(sort) => updateFilter("sort", sort)}
               setPageFirst={(page) => handlePageChange(page)}
-          />
+            />
 
-          <Container className="product-list-container">
-            <Row>
-              {/* when loading */}
-              {loading &&
-                  Array.from({length: FAKE_LOADING_PRODUCTS}).map((_, index)=> (
+            <Container className="product-list-container">
+              <Row>
+                {/* when loading */}
+                {loading &&
+                  Array.from({ length: FAKE_LOADING_PRODUCTS }).map(
+                    (_, index) => (
                       <Col
-                          className="product-item-container"
-                          key={index}
-                          lg={12 / PRODUCTS_PER_ROW_IN_WEB}
-                          sm={12 / PRODUCTS_PER_ROW_IN_TABLET}
-                          xs={12 / PRODUCTS_PER_ROW_IN_MOBILE}
+                        className="product-item-container"
+                        key={index}
+                        lg={12 / PRODUCTS_PER_ROW_IN_WEB}
+                        sm={12 / PRODUCTS_PER_ROW_IN_TABLET}
+                        xs={12 / PRODUCTS_PER_ROW_IN_MOBILE}
                       >
-                        <SkeletonProductItem/>
+                        <SkeletonProductItem />
                       </Col>
-                  ))
-              }
+                    )
+                  )}
 
-              {/* when having data */}
-              {!loading &&
+                {/* when having data */}
+                {!loading &&
                   products.map((product, index) => (
                     // item container
                     <Col
@@ -174,32 +177,32 @@ export default function ProductListScreen() {
                       sm={12 / PRODUCTS_PER_ROW_IN_TABLET}
                       xs={12 / PRODUCTS_PER_ROW_IN_MOBILE}
                     >
-                      <ProductItem data={product}/>
+                      <ProductItem data={product} />
                     </Col>
                   ))}
-            </Row>
+              </Row>
 
-            {/* when empty */}
-            {!loading && products.length < 1 && (
-              <div className="product-list-empty">
-                <Image src={"empty-product-list.png"} />
-                <p className="text">{"Không tìm thấy sản phẩm"}</p>
-              </div>
-            )}
-          </Container>
+              {/* when empty */}
+              {!loading && products.length < 1 && (
+                <div className="product-list-empty">
+                  <Image src={"empty-product-list.png"} />
+                  <p className="text">{"Không tìm thấy sản phẩm"}</p>
+                </div>
+              )}
+            </Container>
 
-          {/*  Pagination */}
-          <div className="pagination-container">
-            {!loading && pagination.totalPages > 1 && <PaginationComponent
-                currentPage={pagination.page}
-                totalPages={pagination.totalPages}
-                onPageChange={handlePageChange}
-            />}
-          </div>
-
-        </Col>
-      </Row>
-
+            {/*  Pagination */}
+            <div className="pagination-container">
+              {!loading && pagination.totalPages > 1 && (
+                <PaginationComponent
+                  currentPage={pagination.page}
+                  totalPages={pagination.totalPages}
+                  onPageChange={handlePageChange}
+                />
+              )}
+            </div>
+          </Col>
+        </Row>
       </div>
     </RootLayout>
   );
