@@ -34,4 +34,9 @@
 }
 .item-category{
     font-size: 14px;
+    cursor: pointer;
+}
+
+.item-category.active{
+   font-weight: bold;
 }
