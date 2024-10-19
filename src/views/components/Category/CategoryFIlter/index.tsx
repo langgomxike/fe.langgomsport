@@ -5,9 +5,10 @@ import {FaAngleDown, FaAngleUp} from "react-icons/fa6";
 import Category from "../../../../models/Category";
 import CategoryItem, {CategoryItemProps} from "../CategoryItem";
 import ACategory from "../../../../apis/ACategory";
-import CategoryDTO from "../../../../dtos/CategoryDTO";
+import CategoryInCategories from "../../../../models/CategoryInCategories";
 import Skeleton from "react-loading-skeleton";
 import CategorySkeleton from "./CategorySkeleton";
+import { log } from "console";
 
 type CategoryFilterProps = {
     onFilterChange: (categoryId: number| null, categoryName:string) => void
@@ -17,7 +18,7 @@ export default function CategoryFilter({onFilterChange}: CategoryFilterProps) {
     //ref, context
     //state
     const [isActive, setActive] = useState(true)
-    const [categories, setCategories] = useState<Array<CategoryDTO>>([]);
+    const [categories, setCategories] = useState<Array<CategoryInCategories>>([]);
     const [isLoading, setIsLoading] = useState(false);
 
     //handlers
@@ -40,7 +41,6 @@ export default function CategoryFilter({onFilterChange}: CategoryFilterProps) {
     useEffect(() => {
         ACategory.getAllCategories((categories) => {
             setCategories(categories);
-
         }, setIsLoading)
     },[]);
 
@@ -66,7 +66,7 @@ export default function CategoryFilter({onFilterChange}: CategoryFilterProps) {
                     <ul>
                         {categories.map((item, index) => (
                             <li key={item.categoryParent.id}>
-                                <CategoryItem  onCategorySelect={handleCategorySelect} parentCategory={item.categoryParent} categories={item.categories}/>
+                                <CategoryItem onCategorySelect={handleCategorySelect} parentCategory={item.categoryParent} categories={item.categories}/>
                             </li>
                         ))}
                     </ul>
