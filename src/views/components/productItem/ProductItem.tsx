@@ -1,10 +1,10 @@
 import React from "react";
 import "./productItem.css";
-import ProductDTO from "../../../dtos/ProductDTO";
+import ProductFiles from "../../../models/ProductFiles";
 import { Link } from "react-router-dom";
 
 type ProductIemProps = {
-  data: ProductDTO;
+  data: ProductFiles;
 };
 
 export default function ProductIem({ data }: ProductIemProps) {
@@ -13,6 +13,12 @@ export default function ProductIem({ data }: ProductIemProps) {
     return price
       .toLocaleString("vi-VN", { style: "currency", currency: "VND" })
       .replace("₫", "đ");
+  }
+
+  function calculateDiscountedPrice(price: number, discount: number) {
+    if (!discount) return null; // Nếu không có discount, trả về null
+    const discountedPrice = price - (price * discount) / 100;
+    return formatPrice(discountedPrice);
   }
 
   //ui
@@ -30,9 +36,11 @@ export default function ProductIem({ data }: ProductIemProps) {
             src={data.files[1].filePath}
             alt=""
           />
-          <div className="product-sale">
-            <span>50%</span>
-          </div>
+          {data.product.discount > 0 && data.product.discount !== null && (
+            <div className="product-sale">
+              <span>{data.product.discount}%</span>
+            </div>
+          )}
         </div>
       </Link>
       <h3 className="product-title">
@@ -41,8 +49,15 @@ export default function ProductIem({ data }: ProductIemProps) {
         </Link>
       </h3>
       <div className="product-price">
-        <span>{formatPrice(data.product.price)}</span>
-        <del>1,953,818₫</del>
+        <span>
+          {(data.product.discount > 0 && data.product)
+            ? calculateDiscountedPrice(
+                  data.product.price,
+                  data.product.discount
+                )
+            : formatPrice(data.product.price)}
+        </span>
+        <del>{formatPrice(data.product.price)}</del>
       </div>
       <div className="product-bottom"></div>
     </div>

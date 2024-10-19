@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import RootLayout from "../../layouts/RootLayout";
 import { Col, Container, Row } from "react-bootstrap";
+import "./detail.css";
+import { FiHeart, FiMinus, FiPlus } from "react-icons/fi";
+import BreadCrumbContainer from "../../components/Breadcrumb/BreadCrumbContainer";
+import DetailInfo from "../../components/ProductDetail/product-detail";
 
 export default function DetailScreen() {
   //contexts
@@ -17,14 +21,24 @@ export default function DetailScreen() {
 
   return (
     <RootLayout>
-      <Container>
+      <Container className="detail-container">
+        {/* breadcrumb */}
+        <BreadCrumbContainer />
+
         {/* common information */}
         <Row>
           {/* image carousel */}
-          <Col md={{ span: 6 }}></Col>
+          <Col md={{ span: 6 }}>
+            <img
+              className="img-fluid"
+              src="https://pos.nvncdn.com/be3294-43017/ps/20230411_VmJ2SfyO69.jpeg"
+            />
+          </Col>
 
           {/* image size, brand, ... */}
-          <Col md={{ span: 6 }}></Col>
+          <Col md={{ span: 6 }}>
+            <DetailInfo/>
+          </Col>
         </Row>
 
         {/* detail description */}

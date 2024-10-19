@@ -10,7 +10,7 @@ import PriceFilter from "../../components/PriceFilter/PriceFilter";
 import SizeFilter from "../../components/SizeFilter/SizeFilter";
 import CategoryFilter from "../../components/Category/CategoryFIlter";
 import PaginationComponent from "../../components/Pagination/Pagination";
-import ProductDTO from "../../../dtos/ProductDTO";
+import ProductFiles from "../../../models/ProductFiles";
 import GoHeaderButton from "../../components/GoHeadButton/goHeaderButton";
 import CategoryItem from "../../components/Category/CategoryItem";
 import BrandFilter from "../../components/Brand/BrandFilter";
@@ -29,7 +29,7 @@ let FAKE_LOADING_PRODUCTS = 20;
 export default function ProductListScreen() {
   //refs, contexts
   //states
-  const [products, setProducts] = useState<ProductDTO[]>([]);
+  const [products, setProducts] = useState<ProductFiles[]>([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState<Pagination>(new Pagination());
   const [categoryName, setCategoryName] = useState("");
@@ -51,13 +51,6 @@ export default function ProductListScreen() {
     }));
   };
 
-  // const updateFilter = (filterKey: string, value: any) => {
-  //   setFilters(prev => ({
-  //     ...prev,
-  //     [filterKey]: value
-  //   }));
-  //
-  // };
 
   const updateFilter = (filterKey: string, value: any) => {
     setFilters((prev) => ({

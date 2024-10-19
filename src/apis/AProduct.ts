@@ -1,7 +1,6 @@
 import axios from "axios";
 import SLog, { LogType } from "../services/SLog";
-import ProductDTO from "../dtos/ProductDTO";
-import pagination from "../views/components/Pagination/Pagination";
+import ProductFiles from "../models/ProductFiles";
 import Pagination from "../models/Pagination";
 
 
@@ -34,7 +33,7 @@ export default class AProduct {
         page: number,
         perPage: number,
         onNext: (data: {
-            products: Array<ProductDTO>,
+            products: Array<ProductFiles>,
             pagination: Pagination
         }) => void,
         onLoading: (loading: boolean) => void,
@@ -81,6 +80,7 @@ export default class AProduct {
                 products: response.data.products, // Array of ProductDTOs
                 pagination: response.data.pagination // Pagination object
             });
+            
 
             onLoading(false);
 
