@@ -1,5 +1,6 @@
 import Variant from "./Variant";
 import File from "./File";
+import ProductDTO from "../dtos/ProductDTO";
 
 export default class Product {
 
@@ -10,9 +11,9 @@ export default class Product {
     description: string;
     brand_id: number;
     variant: Variant;
-    files: File[]
+    files: File[];
     created_at: number;
-    updated_at: number
+    updated_at: number;
 
 
     constructor(id: number, name: string, price: number, description: string, brand_id: number, variant: Variant, files: File[], created_at: number, updated_at: number) {
