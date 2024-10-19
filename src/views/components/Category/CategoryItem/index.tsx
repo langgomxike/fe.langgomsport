@@ -31,7 +31,7 @@ export default function CategoryItem({ parentCategory, categories }: CategoryIte
                 <span className='list-icon'>
                     {icon}
                 </span>
-                <h5 className='title-item'>{parentCategory.name}</h5>
+                <h5 onClick={()=> handleOnClickCateory(parentCategory.id)} className='title-item cursor-effect'>{parentCategory.name}</h5>
                 <span onClick={handleIConCategory} className='icon-angle-item'>
                     <FaAngleDown />
                 </span>
@@ -45,7 +45,7 @@ export default function CategoryItem({ parentCategory, categories }: CategoryIte
                                     <span className='list-icon item'>
                                         <FaCaretRight />
                                     </span>
-                                    <div className='item-category'>
+                                    <div className='item-category cursor-effect'>
                                         {item.name}
                                     </div>
                                 </div>

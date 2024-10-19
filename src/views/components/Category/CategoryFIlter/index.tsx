@@ -39,7 +39,7 @@ const demo: Array<CategoryItemProps> = [
 export default function CategoryFilter() {
     //ref, context
     //state
-    const [isActive, setActive] = useState(false)
+    const [isActive, setActive] = useState(true)
     const [categories, setCategories] = useState<Array<CategoryDTO>>([]);
     
     //handlers
