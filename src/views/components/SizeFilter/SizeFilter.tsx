@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import './sizeFilter.css'
 import ASize from "../../../apis/ASize";
-import SizeDTO from "../../../dtos/SizeDTO";
+import Size from "../../../models/Size";
 import SizeSkeleton from "./SizeSkeleton";
 
 type SizeFilterProps = {
@@ -12,7 +12,7 @@ type SizeFilterProps = {
 export default function ({categoryId, onFilterChange}: SizeFilterProps) {
     // state
     const [selectedSizes, setSelectedSizes] = useState<number[]>([]);
-    const [sizes, setSizes] = useState<SizeDTO[]>([]);
+    const [sizes, setSizes] = useState<Size[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
 
@@ -35,7 +35,7 @@ export default function ({categoryId, onFilterChange}: SizeFilterProps) {
             // Gọi phương thức getSizesByCategory với categoryId
             ASize.getSizesByCategory(
                 categoryId ?? 1,
-                (data: SizeDTO[]) => {
+                (data: Size[]) => {
                     setSizes(data);
                 },
                 setLoading

@@ -1,11 +1,10 @@
 import { PropsWithChildren } from "react";
+import HeaderComponent from "../components/Header/Header";
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <div>
-      {/* <header style={{ height: "15vh", backgroundColor: "red" }}>
-        <h1>HERE IS HEADER</h1>
-      </header> */}
+      <HeaderComponent/>
 
       {/* <section style={{ height: "10vh", backgroundColor: "red" }}>
         <h1>HERE IS BREADCRUMB</h1>

@@ -16,7 +16,6 @@ export default function ({currentPage, totalPages, onPageChange}: PaginationProp
     const [currentPage1, setCurrentPage1] = useState<number>(currentPage);
     const [pages, setPages] = useState<(string|number)[]>()
 
-    console.log(totalPages);
 
     //handle
     const goToNextPage = () => {

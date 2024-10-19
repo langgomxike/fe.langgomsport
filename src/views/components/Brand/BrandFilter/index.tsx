@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
 import "./index.css";
-import BrandDTO from "../../../../dtos/BrandDTO";
 import ABrand from "../../../../apis/ABrand";
 import Brand from "../../../../models/Brand";
 import BrandSkeleton from "./BrandSkeleton";

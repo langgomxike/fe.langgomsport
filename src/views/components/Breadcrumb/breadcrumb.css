@@ -1,0 +1,10 @@
+.breadcrumb-container {
+    margin-top: 20px;
+}
+.breadcrumb-item {
+    font-weight: 600 !important;
+}
+
+.breadcrumb-item a {
+    text-decoration: none !important;
+}

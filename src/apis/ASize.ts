@@ -1,5 +1,5 @@
 import axios from "axios";
-import SizeDTO from "../dtos/SizeDTO";
+import Size from "../models/Size";
 import SLog, { LogType } from "../services/SLog";
 
 export default class ASize {
@@ -8,7 +8,7 @@ export default class ASize {
     // Thêm tham số categoryId vào phương thức
     public static getSizesByCategory(
         categoryId: number, // Tham số cho category
-        onNext: (sizes: SizeDTO[]) => void,
+        onNext: (sizes: Size[]) => void,
         onLoading: (loading: boolean) => void
     ) {
         onLoading(true);

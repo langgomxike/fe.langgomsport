@@ -5,10 +5,11 @@ export default class Pagination {
     public totalItems: number;
 
 
-    constructor() {
-        this.page = 1;
-        this.perPage = 20;
-        this.totalPages = 0;
-        this.totalItems = 0;
+    constructor(page: number = 0, perPage: number = 20, totalPages: number = 0, totalItems = 0) {
+        this.page = page;
+        this.perPage = perPage;
+        this.totalPages = totalPages;
+        this.totalItems = totalItems;
     }
+    
 }

@@ -1,6 +1,6 @@
-import Category from "../models/Category";
+import Category from "./Category";
 
-export default class CategoryDTO {
+export default class CategoryInCategories {
     public categoryParent: Category;
     public categories: Array<Category>;
 
