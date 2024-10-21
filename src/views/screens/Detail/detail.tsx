@@ -6,7 +6,7 @@ import "./detail.css";
 import { FiHeart, FiMinus, FiPlus } from "react-icons/fi";
 import BreadCrumbContainer from "../../components/Breadcrumb/BreadCrumbContainer";
 import DetailInfo from "../../components/ProductDetail/product-detail";
-import relatedProduct from "../../components/RelatedProduct/relatedProduct";
+import RelatedProduct from "../../components/RelatedProduct/relatedProduct";
 
 export default function DetailScreen() {
   //contexts
@@ -43,7 +43,9 @@ export default function DetailScreen() {
         </Row>
 
         {/* detail description */}
-        <Row></Row>
+        <Row>
+          <RelatedProduct />
+        </Row>
       </Container>
     </RootLayout>
   );
