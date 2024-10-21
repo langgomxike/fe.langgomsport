@@ -1,0 +1,67 @@
+.price-filter {
+  padding-bottom: 30px;
+  border-bottom: 1px solid #ebebeb;
+  margin-bottom: 30px;
+}
+
+.price-filter h3 {
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.inputRangeContainer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.price-filter input[type="number"] {
+  width: 100px;
+  padding: 5px;
+  font-size: 16px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.price-filter button {
+  margin-top: 10px;
+  padding: 8px 15px;
+  width: 100%;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.price-filter button:hover {
+  background-color: #0056b3;
+}
+
+.price-filter .rc-slider-track {
+  background-color: #1890ff;
+}
+
+.price-filter .rc-slider-handle {
+  width: 20px;
+  height: 20px;
+  margin-top: -8px;
+  border: solid 2px #1890ff;
+  background-color: white;
+  cursor: pointer; /* Con trỏ khi di chuột qua tay nắm */
+}
+
+.price-filter .rc-slider-handle:hover {
+  border-color: #0056b3 !important;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Hiệu ứng đổ bóng */
+}
+
+.price-filter .rc-slider {
+  margin: 20px 0;
+}
+
+.textError {
+  font-size: 13px;
+}

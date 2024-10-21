@@ -1,3 +1,9 @@
+.category-container{
+    padding-bottom: 30px;
+    border-bottom: 1px solid #ebebeb;
+    margin-bottom: 30px;
+}
+
 .title-block{
     display: flex;
     justify-content: flex-start;
@@ -6,6 +12,11 @@
 .title{
     flex: 1;
 }
+
+.title-item {
+    cursor: pointer;
+}
+
 .icon-angle{
     font-size: 24px;
     display: flex;
@@ -21,14 +32,13 @@ ul{
     transition: all 0.5s ease;
     max-height: 0;
     overflow: hidden;
-    margin-bottom: 10px;
 }
 .filter-box.active{
     max-height: max-content;
 }
 h2.title{
     text-transform: uppercase;
-    font-size: 22px;
+    font-size: 18px;
     margin: 0;
     padding: 0;
 }
