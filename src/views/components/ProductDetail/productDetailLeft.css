@@ -1,0 +1,5 @@
+.imageManify {
+  max-width: 500px;
+  max-height: 500px;
+  z-index: 1;
+}

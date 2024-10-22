@@ -6,6 +6,7 @@ import "./detail.css";
 import { FiHeart, FiMinus, FiPlus } from "react-icons/fi";
 import BreadCrumbContainer from "../../components/Breadcrumb/BreadCrumbContainer";
 import DetailInfo from "../../components/ProductDetail/product-detail";
+import ProductDetailLeft from "../../components/ProductDetail/ProductDetailLeft";
 
 export default function DetailScreen() {
   //contexts
@@ -29,10 +30,7 @@ export default function DetailScreen() {
         <Row>
           {/* image carousel */}
           <Col md={{ span: 6 }}>
-            <img
-              className="img-fluid"
-              src="https://pos.nvncdn.com/be3294-43017/ps/20230411_VmJ2SfyO69.jpeg"
-            />
+            <ProductDetailLeft/>
           </Col>
 
           {/* image size, brand, ... */}
