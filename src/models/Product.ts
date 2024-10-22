@@ -1,7 +1,5 @@
 import Variant from "./Variant";
 import File from "./File";
-import ProductDTO from "../dtos/ProductDTO";
-
 export default class Product {
 
     // properties
