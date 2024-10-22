@@ -7,6 +7,7 @@ import { FiHeart, FiMinus, FiPlus } from "react-icons/fi";
 import BreadCrumbContainer from "../../components/Breadcrumb/BreadCrumbContainer";
 import DetailInfo from "../../components/ProductDetail/product-detail";
 import Product from "../../../models/Product";
+import ProductDetailLeft from "../../components/ProductDetail/ProductDetailLeft";
 import "./tabMoreInfoDetail.css";
 import tabs from "./detail-tabs.json";
 import MarkdownPreview from "@uiw/react-markdown-preview";
@@ -44,10 +45,7 @@ export default function DetailScreen() {
         <Row style={{ minHeight: 500 }}>
           {/* image carousel */}
           <Col md={{ span: 6 }}>
-            <img
-              className="img-fluid"
-              src="https://pos.nvncdn.com/be3294-43017/ps/20230411_VmJ2SfyO69.jpeg"
-            />
+            <ProductDetailLeft/>
           </Col>
 
           {/* image size, brand, ... */}
