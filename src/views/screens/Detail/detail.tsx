@@ -6,6 +6,7 @@ import "./detail.css";
 import { FiHeart, FiMinus, FiPlus } from "react-icons/fi";
 import BreadCrumbContainer from "../../components/Breadcrumb/BreadCrumbContainer";
 import DetailInfo from "../../components/ProductDetail/product-detail";
+import RelatedProduct from "../../components/RelatedProduct/relatedProduct";
 import Product from "../../../models/Product";
 import ProductDetailLeft from "../../components/ProductDetail/ProductDetailLeft";
 import "./tabMoreInfoDetail.css";
@@ -50,12 +51,13 @@ export default function DetailScreen() {
 
           {/* image size, brand, ... */}
           <Col md={{ span: 6 }}>
-            <DetailInfo/>
+            <DetailInfo />
           </Col>
         </Row>
 
         {/* detail description */}
         <Row>
+          <RelatedProduct />
           {/* tab headers */}
           <div className="detail-tab-container">
             {tabs.map((t) => (
