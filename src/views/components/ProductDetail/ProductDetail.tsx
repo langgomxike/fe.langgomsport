@@ -3,8 +3,61 @@ import { Link, useLocation } from "react-router-dom";
 import RootLayout from "../../layouts/RootLayout";
 import { Col, Container, Row } from "react-bootstrap";
 import "./product-detail.css";
-import { FiHeart, FiMinus, FiPlus } from "react-icons/fi";
+import { FiMinus, FiPlus } from "react-icons/fi";
+import { FaHeart } from "react-icons/fa6";
+
+const sizes = [
+  {
+    id: 1,
+    name: "41",
+  },
+  {
+    id: 2,
+    name: "42",
+  },
+  {
+    id: 3,
+    name: "43",
+  },
+  {
+    id: 4,
+    name: "44",
+  },
+];
+
 export default function () {
+  // states
+  const [quantity, setQuantity] = useState(1);
+  const [selectedSize, setSelectedSize] = useState(-1);
+
+  // hendler
+
+  // Hàm xử lý khi nhấn nút tăng
+  const handleIncrease = () => {
+    setQuantity((prev) => prev + 1); // Tăng giá trị lên 1
+  };
+
+  // Hàm xử lý khi nhấn nút giảm
+  const handleDecrease = () => {
+    setQuantity((prev) => (prev > 1 ? prev - 1 : 1)); // Giảm giá trị, tối thiểu là 1
+  };
+
+  // Hàm xử lý khi nhập thủ công vào input
+  const handleChange = (e: any) => {
+    const value = e.target.value;
+
+    // Cho phép xóa toàn bộ giá trị (để nhập lại)
+    if (value === "" || /^[0-9]*$/.test(value)) {
+      setQuantity(parseInt(value, 10));
+    }
+  };
+
+  // Active selected size
+  const handleSelectSize = (size: number) => {
+    setSelectedSize((prevSize) => (prevSize === size ? -1 : size));
+  };
+
+  // render
   return (
     <div>
       <h1 className="detail-title">
@@ -38,11 +91,15 @@ export default function () {
       <div className="detail-product-size">
         <span className="size-title">Kích thước</span>
         <div className="size-container">
-          <div className="size-item active">41</div>
-          <div className="size-item">XXL</div>
-          <div className="size-item">43</div>
-          <div className="size-item">44</div>
-          <div className="size-item">45</div>
+          {sizes.map((size) => (
+            <div
+              key={size.id}
+              className={`size-item ${selectedSize === size.id ? "active" : ""}`}
+              onClick={() => handleSelectSize(size.id)}
+            >
+              {size.name}
+            </div>
+          ))}
         </div>
       </div>
 
@@ -50,24 +107,26 @@ export default function () {
       <div className="detail-product-action">
         <div className="add-to-cart-block">
           <div className="quantity">
-            <div className="btn-quantity btn-minus">
+            <div className="btn-quantity btn-minus" onClick={handleDecrease}>
               <FiMinus />
             </div>
             <input
               className="input-quantity"
               type="number"
+              value={quantity}
+              onChange={handleChange}
               step={1}
               min={1}
               inputMode="numeric"
               autoComplete="off"
             />
-            <div className="btn-quantity btn-plus">
+            <div className="btn-quantity btn-plus" onClick={handleIncrease}>
               <FiPlus />
             </div>
           </div>
           <div className="btn-detail btn-add-to-cart">Thêm vào giỏ hàng</div>
           <div className="btn-detail btn-heart">
-            <FiHeart className="wishlist-icon" />
+            <FaHeart className="wishlist-icon" />
           </div>
         </div>
         <div className="btn-detail btn-order">Đặt hàng</div>

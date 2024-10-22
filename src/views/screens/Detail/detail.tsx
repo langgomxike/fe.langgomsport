@@ -5,7 +5,8 @@ import { Col, Container, Row } from "react-bootstrap";
 import "./detail.css";
 import { FiHeart, FiMinus, FiPlus } from "react-icons/fi";
 import BreadCrumbContainer from "../../components/Breadcrumb/BreadCrumbContainer";
-import DetailInfo from "../../components/ProductDetail/product-detail";
+import DetailInfo from "../../components/ProductDetail/ProductDetail";
+import ProductDetailSkeleton from "../../components/ProductDetail/ProductDetailSkeleton";
 
 export default function DetailScreen() {
   //contexts
@@ -38,6 +39,7 @@ export default function DetailScreen() {
           {/* image size, brand, ... */}
           <Col md={{ span: 6 }}>
             <DetailInfo/>
+            {/* <ProductDetailSkeleton/> */}
           </Col>
         </Row>
 
