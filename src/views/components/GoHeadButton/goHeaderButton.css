@@ -5,8 +5,13 @@
     background-color: rgb(255, 157, 0);
     border-radius: 100px;
     color: azure;
+<<<<<<< HEAD
     top: 85vh;
     left: 95vw;
+=======
+    margin-top:50%;
+    margin-left: 50%;
+>>>>>>> 7dcd0f6 (temp code)
     z-index: 100;
     opacity: .3;
     border: none;
