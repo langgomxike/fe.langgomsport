@@ -1,6 +1,5 @@
 import Variant from "./Variant";
 import File from "./File";
-
 export default class Product {
 
     // properties
