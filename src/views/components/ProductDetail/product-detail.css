@@ -52,14 +52,14 @@
     margin-top: 30px;
 }
 
-.size-container {
+.detail .size-container {
     margin-top: 10px;
     display: flex;
     flex-direction: row;
     gap: 10px;
 }
 
-.size-container .size-item {
+.detail .size-container .size-item {
     padding: 5px 10px;
     width: 60px;
     text-align: center;
@@ -70,17 +70,17 @@
     user-select: none;
 }
 
-.size-container .size-item:hover {
+.detail .size-container .size-item:hover {
     background-color: var(--yellow);
     color: white;
 }
 
-.size-container .size-item.active {
+.detail .size-container .size-item.active {
     background-color: var(--yellow);
     color: white;
 }
 
-.size-container .size-item.disable {
+.detail .size-container .size-item.disable {
     background-color: #ccc;
     color: white;
     cursor: not-allowed;
@@ -210,7 +210,7 @@
     color: #fff;
 }
 
-.btn-add-to-cart.disabled {
+.btn-add-to-cart.disable {
     cursor: not-allowed;
     background: #e9e9e9;
 }

@@ -2,6 +2,7 @@ import ReactImageMagnify from "react-image-magnify";
 import "./productDetailLeft.css";
 import ImageSlider from "./ImageSlider";
 import { useState } from "react";
+import ProductDetailLeftSkeleton from "./ProductDetailLeftSkeleton";
 
 const images = [
   "https://pos.nvncdn.com/be3294-43017/ps/20230411_VmJ2SfyO69.jpeg",
@@ -20,6 +21,7 @@ export default function ProductDetailLeft() {
 
   return (
     <>
+      <ProductDetailLeftSkeleton/>
       <div className="imageManify">
         <ReactImageMagnify
           {...{

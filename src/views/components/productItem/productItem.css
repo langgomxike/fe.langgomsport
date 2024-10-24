@@ -105,3 +105,7 @@
 .product-item:hover .img-sub {
     opacity: 1;
 }
+
+.hidden-price {
+    visibility: hidden;
+}

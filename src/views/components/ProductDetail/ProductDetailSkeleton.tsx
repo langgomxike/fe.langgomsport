@@ -1,10 +1,4 @@
-import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import RootLayout from "../../layouts/RootLayout";
-import { Col, Container, Row } from "react-bootstrap";
-import "./product-detail.css";
-import { FiMinus, FiPlus } from "react-icons/fi";
-import { FaHeart } from "react-icons/fa6";
+
 import Skeleton from "react-loading-skeleton";
 
 const skeletonCount=  5;

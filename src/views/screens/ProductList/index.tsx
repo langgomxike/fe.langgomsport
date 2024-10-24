@@ -3,16 +3,15 @@ import RootLayout from "../../layouts/RootLayout";
 import { useEffect, useState } from "react";
 import "./index.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import ProductItem from "../../components/productItem/ProductItem";
+import ProductItem from "../../components/ProductItem/ProductItem";
 import Header from "./header";
-import SkeletonProductItem from "../../components/productItem/SkeletonProductItem";
+import SkeletonProductItem from "../../components/ProductItem/SkeletonProductItem";
 import PriceFilter from "../../components/PriceFilter/PriceFilter";
 import SizeFilter from "../../components/SizeFilter/SizeFilter";
 import CategoryFilter from "../../components/Category/CategoryFIlter";
 import PaginationComponent from "../../components/Pagination/Pagination";
-import ProductFiles from "../../../models/ProductFiles";
+import Product from "../../../models/Product";
 import GoHeaderButton from "../../components/GoHeadButton/goHeaderButton";
-import CategoryItem from "../../components/Category/CategoryItem";
 import BrandFilter from "../../components/Brand/BrandFilter";
 import AProduct from "../../../apis/AProduct";
 import Pagination from "../../../models/Pagination";
@@ -29,7 +28,7 @@ let FAKE_LOADING_PRODUCTS = 20;
 export default function ProductListScreen() {
   //refs, contexts
   //states
-  const [products, setProducts] = useState<ProductFiles[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState<Pagination>(new Pagination());
   const [categoryName, setCategoryName] = useState("");
@@ -51,11 +50,16 @@ export default function ProductListScreen() {
     }));
   };
 
-
   const updateFilter = (filterKey: string, value: any) => {
     setFilters((prev) => ({
       ...prev,
       [filterKey]: Array.isArray(value) ? value : [value], // Đảm bảo giá trị là một mảng
+    }));
+
+    // Reset lại trang hiện tại về 1 sau khi cập nhật bộ lọc
+    setPagination((prev) => ({
+      ...prev,
+      page: 1,
     }));
   };
 
@@ -91,7 +95,6 @@ export default function ProductListScreen() {
       clearTimeout(timeoutId);
     }
     setLoading(true);
-    FAKE_LOADING_PRODUCTS = 5;
     // Thiết lập một timeout mới để gọi API sau 100ms
 
     timeoutId = setTimeout(() => {
