@@ -91,7 +91,8 @@
     position: absolute;
     transition: all 0.5s;
     top: 50%;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .product-item:hover .img-main {
@@ -104,4 +105,8 @@
 
 .product-item:hover .img-sub {
     opacity: 1;
+}
+
+.hidden-price {
+    visibility: hidden;
 }

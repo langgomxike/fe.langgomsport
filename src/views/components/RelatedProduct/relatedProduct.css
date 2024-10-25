@@ -59,6 +59,10 @@
   font-size: 14px;
 }
 
+.slick-slide {
+  padding: 20px 5px;
+}
+
 .slick-dots li button:before {
   color: #ff5722;
 }

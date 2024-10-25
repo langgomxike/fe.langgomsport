@@ -3,19 +3,19 @@ import RootLayout from "../../layouts/RootLayout";
 import { useEffect, useState } from "react";
 import "./index.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import ProductItem from "../../components/productItem/ProductItem";
+import ProductItem from "../../components/Product/ProductItem";
 import Header from "./header";
-import SkeletonProductItem from "../../components/productItem/SkeletonProductItem";
+import SkeletonProductItem from "../../components/Product/SkeletonProductItem";
 import PriceFilter from "../../components/PriceFilter/PriceFilter";
 import SizeFilter from "../../components/SizeFilter/SizeFilter";
 import CategoryFilter from "../../components/Category/CategoryFIlter";
 import PaginationComponent from "../../components/Pagination/Pagination";
-import ProductFiles from "../../../models/ProductFiles";
+import Product from "../../../models/Product";
 import GoHeaderButton from "../../components/GoHeadButton/goHeaderButton";
-import CategoryItem from "../../components/Category/CategoryItem";
 import BrandFilter from "../../components/Brand/BrandFilter";
 import AProduct from "../../../apis/AProduct";
 import Pagination from "../../../models/Pagination";
+import { useLocation } from "react-router-dom";
 
 const MAX_AMOUNT_PRODUCTS_PER_PAGE = 20;
 const PRODUCTS_PER_ROW_IN_WEB = 4;
@@ -28,8 +28,13 @@ let FAKE_LOADING_PRODUCTS = 20;
 
 export default function ProductListScreen() {
   //refs, contexts
+
+  //location
+  const location = useLocation()
+  const {category_id} = location.state || {}
+
   //states
-  const [products, setProducts] = useState<ProductFiles[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState<Pagination>(new Pagination());
   const [categoryName, setCategoryName] = useState("");
@@ -51,11 +56,16 @@ export default function ProductListScreen() {
     }));
   };
 
-
   const updateFilter = (filterKey: string, value: any) => {
     setFilters((prev) => ({
       ...prev,
       [filterKey]: Array.isArray(value) ? value : [value], // Đảm bảo giá trị là một mảng
+    }));
+
+    // Reset lại trang hiện tại về 1 sau khi cập nhật bộ lọc
+    setPagination((prev) => ({
+      ...prev,
+      page: 1,
     }));
   };
 
@@ -91,16 +101,20 @@ export default function ProductListScreen() {
       clearTimeout(timeoutId);
     }
     setLoading(true);
-    FAKE_LOADING_PRODUCTS = 5;
     // Thiết lập một timeout mới để gọi API sau 100ms
 
     timeoutId = setTimeout(() => {
       fetchProducts(pagination.page);
-    }, 1000);
+    }, 500);
 
     // Cleanup để hủy timeout khi component bị unmount hoặc filter/pagination thay đổi nhanh
     return () => clearTimeout(timeoutId);
   }, [pagination.page, filters]); // Fetch lại khi pagination.page hoặc filters thay đổi
+
+  //lấy lại filter khi chuyển từ trang detail về 
+  useEffect(()=>{
+    updateFilter("categoryId", category_id)
+  }, [category_id])
 
   //ui
   return (
