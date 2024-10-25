@@ -3,3 +3,8 @@
   max-height: 500px;
   z-index: 1;
 }
+
+.slider-image .slick-prev:before, .slider-image .slick-next:before{
+  color: #ccc;
+  opacity: 1;
+}

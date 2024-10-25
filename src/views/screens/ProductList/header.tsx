@@ -3,7 +3,7 @@ import React from "react";
 type HeaderProductListProps =  {
     productQuantity: number,
     categoryName: string,
-    onFilterChange: (sort: boolean) => void
+    onFilterChange: (sort: string) => void
     setPageFirst: (page: number) => void
 }
 
@@ -12,11 +12,7 @@ export default function HeaderProductList ({productQuantity, categoryName, onFil
     const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const value = event.target.value;
         setPageFirst(1);
-        if (value === "asc_price") {
-            onFilterChange(true); // Sắp xếp tăng dần
-        } else if (value === "desc_price") {
-            onFilterChange(false); // Sắp xếp giảm dần
-        }
+        onFilterChange(value);
     };
 
     return (
@@ -32,8 +28,10 @@ export default function HeaderProductList ({productQuantity, categoryName, onFil
                 aria-label="-- Sắp xếp theo --"
             >
                 <option value="" disabled>-- Sắp xếp theo --</option>
-                <option value="asc_price">Giá tăng dần</option>
-                <option value="desc_price">Giá giảm dần</option>
+                <option value="PRICEASC">Giá tăng dần</option>
+                <option value="PRICEDESC">Giá giảm dần</option>
+                <option value="DISCOUNTASC">Giảm giá tăng dần</option>
+                <option value="DISCOUNTDESC">Giảm giá giảm dần</option>
             </select>
         </div>
     )

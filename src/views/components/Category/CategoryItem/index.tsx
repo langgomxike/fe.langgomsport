@@ -7,27 +7,30 @@ export type CategoryItemProps = {
   parentCategory: Category;
   categories: Array<Category>;
   onCategorySelect: (id: number | null, name: string) => void; // Hàm để gửi ID về component cha
+  activeCategory: number | null;
 };
 
 export default function CategoryItem({
   parentCategory,
   categories,
   onCategorySelect,
+  activeCategory
 }: CategoryItemProps) {
   //ref, context
 
   //state
-  const [activeCategory, setActiveCategory] = useState<number | null>(null); // Để lưu id của mục con được chọn
+  const [active, setActive] = useState<number | null>(activeCategory); // Để lưu id của mục con được chọn
 
   //handlers
   const handleIconCategory = () => {
-    setActiveCategory(activeCategory === null ? -1 : null); // Toggle trạng thái mở/đóng toàn bộ
+    setActive(active === null ? -1 : null); // Toggle trạng thái mở/đóng toàn bộ
   };
 
-  const handleOnClickCategory = (id: number, name: string) => {
-    setActiveCategory(id); // Cập nhật trạng thái active cho mục được chọn
+  const handleOnClickCategory = (id: number, name: string) => {    
+    setActive(id);
     onCategorySelect(id, name);
   };
+
 
   const icon =
     activeCategory !== null ? (
@@ -49,12 +52,12 @@ export default function CategoryItem({
           {parentCategory.name}
         </h5>
         <span onClick={handleIconCategory} className="icon-angle-item">
-          <FaAngleDown style={{ fontSize: 15 }} />
+          <FaAngleDown style={{ fontSize: 12 }} />
         </span>
       </div>
       <div
         className={`filter-box child ${
-          activeCategory !== null ? "active" : ""
+          active !== null ? "active" : ""
         }`}
       >
         <ul>

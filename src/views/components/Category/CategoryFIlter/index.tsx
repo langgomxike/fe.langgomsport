@@ -20,19 +20,21 @@ export default function CategoryFilter({onFilterChange}: CategoryFilterProps) {
     const [isActive, setActive] = useState(true)
     const [categories, setCategories] = useState<Array<CategoryInCategories>>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [activeCategory, setActiveCategory] = useState<number| null>(null);
 
     //handlers
     const handleIConCategory = () => {
         setActive(!isActive);
-        console.log(categories);
     }
 
     // Hàm nhận giá trị đã chọn từ CategoryItem
     const handleCategorySelect = (id: number | null, name:string) => {
         if (id !== null) {
             onFilterChange(id, name); // Gọi hàm để cập nhật filter
+            setActiveCategory(id);
         } else {
             onFilterChange(null, name); // Gọi với giá trị 0 nếu không có danh mục nào được chọn
+            setActiveCategory(null);
         }
     };
 
@@ -50,9 +52,9 @@ export default function CategoryFilter({onFilterChange}: CategoryFilterProps) {
     return (
         <div className="category-container">
             {/* Categories title */}
-            <div className="title-block">
+            <div className="title-block" onClick={handleIConCategory}>
                 <h2 className="title">Danh Mục</h2>
-                <span onClick={handleIConCategory} className="icon-angle">
+                <span className="icon-angle">
                     {icon}
                 </span>
             </div>
@@ -66,7 +68,7 @@ export default function CategoryFilter({onFilterChange}: CategoryFilterProps) {
                     <ul>
                         {categories.map((item, index) => (
                             <li key={item.categoryParent.id}>
-                                <CategoryItem onCategorySelect={handleCategorySelect} parentCategory={item.categoryParent} categories={item.categories}/>
+                                <CategoryItem onCategorySelect={handleCategorySelect} parentCategory={item.categoryParent} categories={item.categories} activeCategory={activeCategory}/>
                             </li>
                         ))}
                     </ul>
