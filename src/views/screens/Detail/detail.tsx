@@ -28,6 +28,7 @@ export default function DetailScreen() {
   const [tab, setTab] = useState<number>(1);
   const [loading, setLoading] = useState(false);
 
+
   //useEffect
   useEffect(() => {
     console.log(">>> id", productId);
@@ -46,7 +47,7 @@ export default function DetailScreen() {
     <RootLayout>
       <Container className="detail">
         {/* breadcrumb */}
-        <BreadCrumbContainer />
+        <BreadCrumbContainer onNext={()=>{}} category={product?.categories ? product.categories[0] : undefined} />
 
         {/* common information */}
         <Row style={{ minHeight: 500 }}>

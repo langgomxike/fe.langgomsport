@@ -3,18 +3,18 @@ export default class Category {
     //properties
     id: number;
     name: string;
-    parentId: number;
+    parent: Category;
 
     //constructor
     constructor(
         id = -1,
         name = '',
-        parentId = 0
+        parent = new Category()
     ) {
         this.id = id
         this.name = name
-        this.parentId = parentId
+        this.parent = parent
     }
     
-
+    
 }
