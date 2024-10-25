@@ -15,6 +15,7 @@ import GoHeaderButton from "../../components/GoHeadButton/goHeaderButton";
 import BrandFilter from "../../components/Brand/BrandFilter";
 import AProduct from "../../../apis/AProduct";
 import Pagination from "../../../models/Pagination";
+import { useLocation } from "react-router-dom";
 
 const MAX_AMOUNT_PRODUCTS_PER_PAGE = 20;
 const PRODUCTS_PER_ROW_IN_WEB = 4;
@@ -27,6 +28,11 @@ let FAKE_LOADING_PRODUCTS = 20;
 
 export default function ProductListScreen() {
   //refs, contexts
+
+  //location
+  const location = useLocation()
+  const {category_id} = location.state || {}
+
   //states
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -104,6 +110,11 @@ export default function ProductListScreen() {
     // Cleanup để hủy timeout khi component bị unmount hoặc filter/pagination thay đổi nhanh
     return () => clearTimeout(timeoutId);
   }, [pagination.page, filters]); // Fetch lại khi pagination.page hoặc filters thay đổi
+
+  //lấy lại filter khi chuyển từ trang detail về 
+  useEffect(()=>{
+    updateFilter("categoryId", category_id)
+  }, [category_id])
 
   //ui
   return (
