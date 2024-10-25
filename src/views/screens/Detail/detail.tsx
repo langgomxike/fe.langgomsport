@@ -14,7 +14,7 @@ import tabs from "./detail-tabs.json";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import AProduct from "../../../apis/AProduct";
 import Skeleton from "react-loading-skeleton";
-import SkeletonProductItem from "../../components/productItem/SkeletonProductItem";
+import SkeletonProductItem from "../../components/Product/SkeletonProductItem";
 
 export default function DetailScreen() {
   //contexts

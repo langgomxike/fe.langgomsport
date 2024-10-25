@@ -5,9 +5,9 @@ import "react-loading-skeleton/dist/skeleton.css";
 import "./relatedProduct.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import ProductItem from "../productItem/ProductItem";
+import ProductItem from "../Product/ProductItem";
 import Product from "../../../models/Product";
-import SkeletonProductItem from "../productItem/SkeletonProductItem";
+import SkeletonProductItem from "../Product/SkeletonProductItem";
 
 type RealatedProductsProps = {
   relatedProductsData: Product[];

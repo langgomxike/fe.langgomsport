@@ -34,7 +34,7 @@ export default function ProductIem({ data }: ProductIemProps) {
   //ui
   return (
     <div className="product-item">
-      <Link to={`/detail/${createSlug(data.name)}`}  state={{ id: data.id, name: data.name }} title={data.name}>
+      <Link to={`detail/${createSlug(data.name)}`}  state={{ id: data.id, name: data.name }} title={data.name}>
         <div className="product-image">
            <img
             className="img-fluid img-main"
@@ -54,7 +54,7 @@ export default function ProductIem({ data }: ProductIemProps) {
         </div>
       </Link>
       <h3 className="product-title">
-        <Link to={`/about`} title={data.name}>
+        <Link to={`detail/${createSlug(data.name)}`}  state={{ id: data.id, name: data.name }} title={data.name}>
           {data.name}
         </Link>
       </h3>
