@@ -113,8 +113,6 @@ export default function ProductInfo({
         addVariant(newVariant);
       });
     }
-
-    console.log(">>> variation", variantsSize);
   }, [detailData]);
 
 

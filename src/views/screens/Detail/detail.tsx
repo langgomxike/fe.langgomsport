@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import RootLayout from "../../layouts/RootLayout";
 import { Col, Container, Row } from "react-bootstrap";
 import "./detail.css";
@@ -14,7 +14,7 @@ import tabs from "./detail-tabs.json";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import AProduct from "../../../apis/AProduct";
 import Skeleton from "react-loading-skeleton";
-import SkeletonProductItem from "../../components/ProductItem/SkeletonProductItem";
+import SkeletonProductItem from "../../components/productItem/SkeletonProductItem";
 
 export default function DetailScreen() {
   //contexts
@@ -37,11 +37,10 @@ export default function DetailScreen() {
       AProduct.getProductById(productId, (product, realatedProducts) => {
         setProduct(product);
         document.title = `${product.name} - Chi tiết sản phẩm`;
-        console.log(">>> product detail", product);
         
         setRelatedProducts(realatedProducts);
       }, setLoading);
-  }, []);
+  }, [productId]);
 
   return (
     <RootLayout>
@@ -53,7 +52,7 @@ export default function DetailScreen() {
         <Row style={{ minHeight: 500 }}>
           {/* image carousel */}
           <Col md={{ span: 6 }}>
-            <ProductDetailLeft/>
+            <ProductDetailLeft imagesData={product?.files} loading={loading}/>
           </Col>
 
           {/* image size, brand, ... */}
@@ -98,7 +97,7 @@ export default function DetailScreen() {
                       width={100}
                       height={100}
                     />
-                    <p>Sản phẩm không có mô tả</p>
+                    <span>Sản phẩm không có mô tả</span>
                   </p>
                 ))}
 

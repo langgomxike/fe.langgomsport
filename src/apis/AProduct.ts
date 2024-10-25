@@ -94,7 +94,7 @@ export default class AProduct {
         onLoading(false);
         onNext({
           products: [],
-          pagination: { page: 1, perPage: 10, totalPages: 0, totalItems: 0 },
+          pagination: { page: 1, perPage: 20, totalPages: 0, totalItems: 0 },
         });
       });
   }
@@ -114,8 +114,8 @@ export default class AProduct {
       })
       .then((response) => {
         onNext(response.data.product, response.data.related_products);
-        console.log(">>> product: ", response.data.product);
-        console.log(">>> product realted: ", response.data.related_products);
+        // console.log(">>> product: ", response.data.product);
+        // console.log(">>> product realted: ", response.data.related_products);
         
         onLoading(false);
       })

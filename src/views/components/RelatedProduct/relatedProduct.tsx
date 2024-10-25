@@ -5,9 +5,9 @@ import "react-loading-skeleton/dist/skeleton.css";
 import "./relatedProduct.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import ProductItem from "../ProductItem/ProductItem";
+import ProductItem from "../productItem/ProductItem";
 import Product from "../../../models/Product";
-import SkeletonProductItem from "../ProductItem/SkeletonProductItem";
+import SkeletonProductItem from "../productItem/SkeletonProductItem";
 
 type RealatedProductsProps = {
   relatedProductsData: Product[];
@@ -19,7 +19,7 @@ const RelatedProduct = ({relatedProductsData, loading}:RealatedProductsProps) =>
   const settings = {
     // trên máy tính
     dots: true,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 2,
@@ -49,7 +49,9 @@ const RelatedProduct = ({relatedProductsData, loading}:RealatedProductsProps) =>
         ))
         }
      { !loading && relatedProductsData.map((product) => (
+            <div key={product.id}>
               <ProductItem data={product}/>
+            </div>
             ))
           }
       </Slider>

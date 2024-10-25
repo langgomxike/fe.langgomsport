@@ -1,37 +1,51 @@
 import ReactImageMagnify from "react-image-magnify";
 import "./productDetailLeft.css";
 import ImageSlider from "./ImageSlider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductDetailLeftSkeleton from "./ProductDetailLeftSkeleton";
+import File from "../../../models/File";
 
-const images = [
-  "https://pos.nvncdn.com/be3294-43017/ps/20230411_VmJ2SfyO69.jpeg",
-  "https://assets.adidas.com/images/w_383,h_383,f_auto,q_auto,fl_lossy,c_fill,g_auto/f9c222971b8f4d5fba78af23010708f9_9366/forum-exhibit-low-2.jpg",
-  "https://assets.adidas.com/images/w_383,h_383,f_auto,q_auto,fl_lossy,c_fill,g_auto/12b322920da24ef1af17aee800f5af6a_9366/hyperturf-adventure-w.jpg",
-  "https://assets.adidas.com/images/w_383,h_383,f_auto,q_auto,fl_lossy,c_fill,g_auto/d29e3f65af7a408e89bfaed7016b00b6_9366/gi%C3%A0y-sport-pro-adidas-x-lego.jpg",
-  "https://th.bing.com/th/id/OIP.w-wHVliMYG6C95atW2_07wAAAA?w=383&h=383&rs=1&pid=ImgDetMain",
-];
 
-export default function ProductDetailLeft() {
-  const [mainImage, setMainImage] = useState(images[0]);
+type ProductDetailLeftProps = {
+  imagesData: File[] | undefined;
+  loading: boolean;
+}
+
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
+export default function ProductDetailLeft({imagesData, loading}: ProductDetailLeftProps) {
+  
+  const [mainImage, setMainImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (imagesData && imagesData.length > 0) {
+      setMainImage(imagesData[0].filePath);
+    }
+  }, [imagesData]);
 
   const handleImageClick = (image: string) => {
     setMainImage(image); // Cập nhật ảnh lớn khi nhấn vào ảnh nhỏ
   };
 
+  
+
+  
+
   return (
     <>
-      <ProductDetailLeftSkeleton/>
+    {loading && <ProductDetailLeftSkeleton/>} 
+    {!loading && imagesData && mainImage &&
+    <div>
       <div className="imageManify">
         <ReactImageMagnify
           {...{
             smallImage: {
               alt: "Wristwatch by Ted Baker London",
               isFluidWidth: true,
-              src: mainImage,
+              src: `${BASE_URL}/${mainImage}`,
             },
             largeImage: {
-              src: mainImage,
+              src: `${BASE_URL}/${mainImage}`,
               width: 1200,
               height: 1800,
             },
@@ -43,7 +57,10 @@ export default function ProductDetailLeft() {
         />
       </div>
       <hr />
-      <ImageSlider images={images} onImageClick={handleImageClick}/>
+      <ImageSlider images={imagesData} onImageClick={handleImageClick}/>
+      
+    </div>
+      }
     </>
   );
 }

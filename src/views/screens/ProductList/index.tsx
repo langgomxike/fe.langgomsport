@@ -3,9 +3,9 @@ import RootLayout from "../../layouts/RootLayout";
 import { useEffect, useState } from "react";
 import "./index.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import ProductItem from "../../components/ProductItem/ProductItem";
+import ProductItem from "../../components/productItem/ProductItem";
 import Header from "./header";
-import SkeletonProductItem from "../../components/ProductItem/SkeletonProductItem";
+import SkeletonProductItem from "../../components/productItem/SkeletonProductItem";
 import PriceFilter from "../../components/PriceFilter/PriceFilter";
 import SizeFilter from "../../components/SizeFilter/SizeFilter";
 import CategoryFilter from "../../components/Category/CategoryFIlter";
@@ -99,7 +99,7 @@ export default function ProductListScreen() {
 
     timeoutId = setTimeout(() => {
       fetchProducts(pagination.page);
-    }, 1000);
+    }, 500);
 
     // Cleanup để hủy timeout khi component bị unmount hoặc filter/pagination thay đổi nhanh
     return () => clearTimeout(timeoutId);
