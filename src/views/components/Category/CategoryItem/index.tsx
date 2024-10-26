@@ -1,7 +1,10 @@
 import "./style.css";
 import Category from "../../../../models/Category";
 import { FaAngleDown, FaCaretDown, FaCaretRight } from "react-icons/fa6";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import ScreenNameConfig from "../../../../configs/ScreenNameConfig";
+import { log } from "console";
 
 export type CategoryItemProps = {
   parentCategory: Category;
@@ -14,26 +17,33 @@ export default function CategoryItem({
   parentCategory,
   categories,
   onCategorySelect,
-  activeCategory
+  activeCategory,
 }: CategoryItemProps) {
   //ref, context
 
   //state
   const [active, setActive] = useState<number | null>(activeCategory); // Để lưu id của mục con được chọn
-
+  const [activeParent, setActiveParent] = useState<number | null>(activeCategory); // Để lưu id của mục cha được chọn
   //handlers
-  const handleIconCategory = () => {
-    setActive(active === null ? -1 : null); // Toggle trạng thái mở/đóng toàn bộ
+  const handleIconCategory = (categoryId:number) => {
+    setActiveParent(activeParent === categoryId ? null : categoryId);
+    setActive(null);
   };
 
-  const handleOnClickCategory = (id: number, name: string) => {    
+  const handleOnClickCategory = (id: number, name: string) => {
     setActive(id);
     onCategorySelect(id, name);
   };
 
+  useEffect(() => {
+    
+      console.log("Active category", active);
+
+  }, [active])
+  
 
   const icon =
-    activeCategory !== null ? (
+    active !== null ? (
       <FaCaretDown style={{ fontSize: 15 }} />
     ) : (
       <FaCaretRight style={{ fontSize: 15 }} />
@@ -41,25 +51,28 @@ export default function CategoryItem({
 
   return (
     <div className="category-block">
-      <div className="title-block item">
-        <span className="list-icon">{icon}</span>
-        <h5
-          className="title-item"
-          onClick={() =>
-            handleOnClickCategory(parentCategory.id, parentCategory.name)
-          }
-        >
-          {parentCategory.name}
-        </h5>
-        <span onClick={handleIconCategory} className="icon-angle-item">
+      <div className="title-block" onClick={() => {handleIconCategory(parentCategory.id)
+      }}>
+        <span className={`list-icon list-icon-parent ${
+            activeParent === parentCategory.id ? "active" : ""
+          }`}> <FaCaretRight style={{ fontSize: 15 }} /></span>
+
+        <Link
+          className={`title-item ${
+            activeParent === parentCategory.id ? "active" : ""
+          }`}
+          to={{
+            pathname: ScreenNameConfig.PRODUCTS,
+            search: `?category_id=${parentCategory.id}`,
+          }}
+          state={{category_name: parentCategory.name }}
+        > {parentCategory.name} </Link>
+
+        <span className="icon-angle-item">
           <FaAngleDown style={{ fontSize: 12 }} />
         </span>
       </div>
-      <div
-        className={`filter-box child ${
-          active !== null ? "active" : ""
-        }`}
-      >
+      <div className={`filter-box child ${activeParent === parentCategory.id ? "active" : ""}`}>
         <ul>
           {categories.map((item, index) => (
             <li key={index}>
@@ -70,13 +83,16 @@ export default function CategoryItem({
                 <span className="list-icon item">
                   <FaCaretRight />
                 </span>
-                <div
+                <Link
                   className={`item-category ${
-                    activeCategory === item.id ? "active" : ""
+                    active === item.id ? "active" : ""
                   }`}
-                >
-                  {item.name}
-                </div>
+                  to={{
+                    pathname: ScreenNameConfig.PRODUCTS,
+                    search: `?category_id=${item.id}`,
+                  }}
+                  state={{category_name: item.name }}
+                > {item.name} </Link>
               </div>
             </li>
           ))}
