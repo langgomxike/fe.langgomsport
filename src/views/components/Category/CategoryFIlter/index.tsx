@@ -35,6 +35,9 @@ export default function CategoryFilter({categoryId}: CategoryFilterProps) {
             setActiveCategory(null);
         }
     };
+    
+    useEffect(() => {console.log("Categori id: ", categoryId);
+    }, [categoryId])
 
 
     //effects
