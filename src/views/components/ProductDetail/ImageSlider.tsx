@@ -28,12 +28,23 @@ const ImageSlider = ({ images, onImageClick }: ImageSliderProps) => {
 
   const settings = {
     className: "slider variable-width",
-    dots: true,
+    dots: false,
     infinite: false,
     centerMode: false,
-    slidesToShow: 4,
-    slidesToScroll: 1,
+    slidesToShow: 1,
+    slidesToScroll: 2,
     variableWidth: true,
+    responsive: [
+      {
+        breakpoint: 786,
+        settings: {
+          navigator: false,
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          initialSlide: 2,
+        }
+      }
+    ]
   };
 
   return (

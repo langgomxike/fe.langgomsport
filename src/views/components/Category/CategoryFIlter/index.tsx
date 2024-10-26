@@ -11,16 +11,16 @@ import CategorySkeleton from "./CategorySkeleton";
 import { log } from "console";
 
 type CategoryFilterProps = {
-    onFilterChange: (categoryId: number| null, categoryName:string) => void
+    categoryId: number | null
 }
 
-export default function CategoryFilter({onFilterChange}: CategoryFilterProps) {
+export default function CategoryFilter({categoryId}: CategoryFilterProps) {
     //ref, context
     //state
     const [isActive, setActive] = useState(true)
     const [categories, setCategories] = useState<Array<CategoryInCategories>>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [activeCategory, setActiveCategory] = useState<number| null>(null);
+    const [activeCategory, setActiveCategory] = useState<number| null>(categoryId);
 
     //handlers
     const handleIConCategory = () => {
@@ -30,10 +30,8 @@ export default function CategoryFilter({onFilterChange}: CategoryFilterProps) {
     // Hàm nhận giá trị đã chọn từ CategoryItem
     const handleCategorySelect = (id: number | null, name:string) => {
         if (id !== null) {
-            onFilterChange(id, name); // Gọi hàm để cập nhật filter
             setActiveCategory(id);
         } else {
-            onFilterChange(null, name); // Gọi với giá trị 0 nếu không có danh mục nào được chọn
             setActiveCategory(null);
         }
     };

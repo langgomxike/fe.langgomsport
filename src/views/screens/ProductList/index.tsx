@@ -27,17 +27,17 @@ export const DEFAULT_PRODUCT_ITEM_HEIGHT = 350;
 let FAKE_LOADING_PRODUCTS = 20;
 
 export default function ProductListScreen() {
-  //refs, contexts
-
-  //location
-  const location = useLocation()
-  const {category_id} = location.state || {}
-
   //states
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState<Pagination>(new Pagination());
   const [categoryName, setCategoryName] = useState("");
+
+     // Lấy giá trị của query parameter `category_id`
+     const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const categoryId = parseInt(queryParams.get('category_id') || 'null', 10) || null;
+
 
   const [filters, setFilters] = useState({
     categoryId: undefined,
@@ -89,8 +89,7 @@ export default function ProductListScreen() {
       filters.sort // sort
     );
   };
-  //
-  // console.log(pagination)
+
 
   // Effects
   useEffect(() => {
@@ -113,8 +112,11 @@ export default function ProductListScreen() {
 
   //lấy lại filter khi chuyển từ trang detail về 
   useEffect(()=>{
-    updateFilter("categoryId", category_id)
-  }, [category_id])
+    updateFilter("categoryId", categoryId)
+    if (location.state && location.state.category_name) {
+      setCategoryName(location.state.category_name);
+    }
+  }, [categoryId])
 
   //ui
   return (
@@ -125,10 +127,7 @@ export default function ProductListScreen() {
           {/* filter */}
           <Col md={{ span: 3 }}>
             <CategoryFilter
-              onFilterChange={(categoryId, categoryName: string) => {
-                updateFilter("categoryId", categoryId);
-                setCategoryName(categoryName);
-              }}
+              categoryId={categoryId}
             />
             <PriceFilter
               onFilterChange={(minPrice, maxPrice) => {
