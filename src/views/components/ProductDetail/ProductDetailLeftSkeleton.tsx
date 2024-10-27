@@ -23,7 +23,7 @@ export default function ProductDetailLeftSkeleton() {
 
     return (
         <div>
-            <Skeleton width={500} height={500}/>
+            <Skeleton width={"100%"} height={500}/>
              <Slider {...settings}>
                 <Skeleton width={100} height={100}/>
                 <Skeleton width={100} height={100}/>

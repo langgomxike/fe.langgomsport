@@ -31,7 +31,7 @@ const ImageSlider = ({ images, onImageClick }: ImageSliderProps) => {
     dots: false,
     infinite: false,
     centerMode: false,
-    slidesToShow: 1,
+    slidesToShow: 4,
     slidesToScroll: 2,
     variableWidth: true,
     responsive: [

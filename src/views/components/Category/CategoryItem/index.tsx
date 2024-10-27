@@ -4,7 +4,6 @@ import { FaAngleDown, FaCaretDown, FaCaretRight } from "react-icons/fa6";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ScreenNameConfig from "../../../../configs/ScreenNameConfig";
-import { log } from "console";
 
 export type CategoryItemProps = {
   parentCategory: Category;
@@ -27,19 +26,19 @@ export default function CategoryItem({
   //handlers
   const handleIconCategory = (categoryId:number) => {
     setActiveParent(activeParent === categoryId ? null : categoryId);
-    setActive(null);
+    setActive(active === activeCategory? activeCategory : null)
+
   };
+
+  useEffect(() => {
+    console.log("Active category: " + activeCategory);
+    
+  }, [activeCategory])
 
   const handleOnClickCategory = (id: number, name: string) => {
     setActive(id);
     onCategorySelect(id, name);
   };
-
-  useEffect(() => {
-    
-      console.log("Active category", active);
-
-  }, [active])
   
 
   const icon =
@@ -58,6 +57,7 @@ export default function CategoryItem({
           }`}> <FaCaretRight style={{ fontSize: 15 }} /></span>
 
         <Link
+         onClick={() => handleOnClickCategory(parentCategory.id, parentCategory.name)}
           className={`title-item ${
             activeParent === parentCategory.id ? "active" : ""
           }`}

@@ -31,7 +31,6 @@ export default function DetailScreen() {
 
   //useEffect
   useEffect(() => {
-    console.log(">>> id", productId);
     
      document.title = `${name} - Chi tiết sản phẩm`;
 
@@ -47,7 +46,7 @@ export default function DetailScreen() {
     <RootLayout>
       <Container className="detail">
         {/* breadcrumb */}
-        <BreadCrumbContainer onNext={()=>{}} category={product?.categories ? product.categories[0] : undefined} />
+        <BreadCrumbContainer onNext={()=>{}} category={product?.categories ? product.categories[product.categories.length -1] : undefined} />
 
         {/* common information */}
         <Row style={{ minHeight: 500 }}>
