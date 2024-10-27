@@ -95,7 +95,9 @@ export default function ProductDetailLeft({
           )}
           </div>
           <hr />
+          <div className="container">
           <ImageSlider images={imagesData} onImageClick={handleImageClick} />
+          </div>
         </div>
       )}
     </>
