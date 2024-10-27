@@ -27,12 +27,15 @@ export default function BreadCrumbContainer({ category, onNext }: breadcrumbProp
             <Link to={{
               pathname: ScreenNameConfig.PRODUCTS,
               search: `?category_id=${category?.parent.id}`,}}
+              state={{category_name: category?.parent.name}}
              >{category?.parent.name}</Link>
           </li>
           <li className="breadcrumb-item active" aria-current="page">
             <Link to={{ 
               pathname: ScreenNameConfig.PRODUCTS, 
-              search: `?category_id=${category?.id}`}}>{category?.name}</Link>
+              search: `?category_id=${category?.id}`}}
+              state={{category_name: category?.name}}
+              >{category?.name}</Link>
           </li>
         </ol>
       </nav>

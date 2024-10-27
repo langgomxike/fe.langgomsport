@@ -135,7 +135,7 @@ export default function ProductInfo({
             </div>
             <div>
               <span className="header-info-title">Mã SP: </span>
-              <span>Cyclone 2 - Blue/Aqua</span>
+              <span>{detailData.code}</span>
             </div>
           </div>
 
