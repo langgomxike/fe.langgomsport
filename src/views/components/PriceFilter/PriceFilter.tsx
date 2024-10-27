@@ -53,7 +53,7 @@ function PriceFilter({onFilterChange}:PriceFilterProps) {
         const value = e.target.value.replace(/^0+/, "");
         const newMin = Number(value);
         if (newMin > priceRange[1]) {
-            setError("Nhập số quá quy định cho phép !!!");
+            setError("Min phải nhỏ hơn max !!!");
             setIsError(true);
         } else {
             setError("");
@@ -66,7 +66,7 @@ function PriceFilter({onFilterChange}:PriceFilterProps) {
         const value = e.target.value.replace(/^0+/, "");
         const newMax = Number(value);
         if (priceRange[0] > newMax) {
-            setError("Nhập số quá quy định cho phép !!!");
+            setError("Max phải lớn hơn min !!!");
             setIsError(true);
         } else {
             setError("");
