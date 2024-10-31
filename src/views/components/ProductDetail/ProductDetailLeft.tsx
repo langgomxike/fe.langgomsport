@@ -30,31 +30,34 @@ export default function ProductDetailLeft({imagesData, loading}: ProductDetailLe
   
 
   
-
   return (
     <>
     {loading && <ProductDetailLeftSkeleton/>} 
     {!loading && imagesData && mainImage &&
     <div>
       <div className="imageManify">
-        <ReactImageMagnify
-          {...{
-            smallImage: {
-              alt: "Wristwatch by Ted Baker London",
-              isFluidWidth: true,
-              src: `${BASE_URL}/${mainImage}`,
-            },
-            largeImage: {
-              src: `${BASE_URL}/${mainImage}`,
-              width: 1200,
-              height: 1800,
-            },
-            enlargedImageContainerStyle: {
-              zIndex: 1,
-              borderWidth: 4,
-            },
-          }}
-        />
+      <ReactImageMagnify
+              {...{
+                smallImage: {
+                  alt: "Wristwatch by Ted Baker London",
+                  isFluidWidth: true,
+                  src: `${BASE_URL}/${mainImage}`
+                },
+                largeImage: {
+                  src: `${BASE_URL}/${mainImage}`,
+                  width: 1200,
+                  height: 1200,
+                },
+                enlargedImageContainerDimensions: {
+                  width: "100%",
+                  height: "100%",
+                },
+                enlargedImageContainerStyle: {
+                  marginLeft: 25,
+                  zIndex: 4,
+                },
+              }}
+            />
       </div>
       <hr />
       <ImageSlider images={imagesData} onImageClick={handleImageClick}/>
