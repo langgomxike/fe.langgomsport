@@ -2,6 +2,10 @@ import axios from "axios";
 import SLog, { LogType } from "../services/SLog";
 import Pagination from "../models/Pagination";
 import Product from "../models/Product";
+import ConfigValue from "../configs/ConfigValue";
+
+const RELATED_PRODUCT_LIMIT = ConfigValue.RELATED_PRODUCT_LIMIT;
+const PERPAGE_PRODUCT_LIMIT = ConfigValue.PERPAGE_PRODUCT_LIMIT;
 
 export default class AProduct {
   // public static getAllProducts(
@@ -25,7 +29,6 @@ export default class AProduct {
 
   public static getProductsFilter(
     page: number,
-    perPage: number,
     onNext: (data: {
       products: Product[];
       pagination: Pagination;
@@ -62,7 +65,7 @@ export default class AProduct {
 
     // Thêm các tham số phân trang
     queryParams.push(`page=${page}`);
-    queryParams.push(`perPage=${perPage}`);
+    queryParams.push(`perPage=${PERPAGE_PRODUCT_LIMIT}`);
 
     // Tạo URL với các tham số
     const url = `${
@@ -94,7 +97,7 @@ export default class AProduct {
         onLoading(false);
         onNext({
           products: [],
-          pagination: { page: 1, perPage: 20, totalPages: 0, totalItems: 0 },
+          pagination: { page: 1, perPage: PERPAGE_PRODUCT_LIMIT, totalPages: 0, totalItems: 0 },
         });
       });
   }
@@ -105,7 +108,7 @@ export default class AProduct {
     onLoading: (loading: boolean) => void
   ) {
     // Tạo URL với các tham số
-    const url = `${process.env.REACT_APP_API_BASE_URL}/products/detail?slug=${slug}`;
+    const url = `${process.env.REACT_APP_API_BASE_URL}/products/detail?slug=${slug}&limit=${RELATED_PRODUCT_LIMIT}`;
 
     onLoading(true);
     axios

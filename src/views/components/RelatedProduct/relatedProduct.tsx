@@ -9,13 +9,14 @@ import ProductItem from "../Product/ProductItem";
 import Product from "../../../models/Product";
 import SkeletonProductItem from "../Product/SkeletonProductItem";
 import { Col, Row } from "react-bootstrap";
+import ConfigValue from "../../../configs/ConfigValue";
 
 type RealatedProductsProps = {
   relatedProductsData: Product[];
   loading: boolean
 }
 
-const LIMIT = 6
+const LIMIT = ConfigValue.RELATED_PRODUCT_LIMIT;
 
 const RelatedProduct = ({relatedProductsData, loading}:RealatedProductsProps) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);

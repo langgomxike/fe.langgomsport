@@ -16,6 +16,7 @@ import BrandFilter from "../../components/Brand/BrandFilter";
 import AProduct from "../../../apis/AProduct";
 import Pagination from "../../../models/Pagination";
 import { useLocation, useNavigate } from "react-router-dom";
+import ConfigValue from "../../../configs/ConfigValue";
 
 const MAX_AMOUNT_PRODUCTS_PER_PAGE = 20;
 const PRODUCTS_PER_ROW_IN_WEB = 4;
@@ -24,7 +25,7 @@ const PRODUCTS_PER_ROW_IN_MOBILE = 2;
 
 export const DEFAULT_PRODUCT_ITEM_HEIGHT = 350;
 
-let FAKE_LOADING_PRODUCTS = 20;
+let FAKE_LOADING_PRODUCTS = ConfigValue.PERPAGE_PRODUCT_LIMIT;
 
 export default function ProductListScreen() {
   //states
@@ -78,7 +79,6 @@ export default function ProductListScreen() {
   const fetchProducts = (page: number) => {
     AProduct.getProductsFilter(
       page,
-      pagination.perPage,
       (data) => {
         setProducts(data.products);
         setPagination((prev) => {
