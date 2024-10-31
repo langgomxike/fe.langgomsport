@@ -135,7 +135,7 @@ export default function ProductInfo({
             </div>
             <div>
               <span className="header-info-title">Mã SP: </span>
-              <span>Cyclone 2 - Blue/Aqua</span>
+              <span>{detailData.code}</span>
             </div>
           </div>
 
@@ -143,9 +143,24 @@ export default function ProductInfo({
           {/* Product price */}
           <div className="detail-product-price">
             <span className="price-title">Giá:</span>
-            <del className="product-price-compare">{formatPrice(detailData.price)}</del>
-            <span className="product-price-main">{calculateDiscountedPrice(detailData.price, detailData.discount)}</span>
-            <span className="price-precent">(-{detailData.discount}%)</span>
+            {
+              detailData.discount > 0 && (
+                <>
+                <del className="product-price-compare">{formatPrice(detailData.price)}</del>
+                <span className="product-price-main">{calculateDiscountedPrice(detailData.price, detailData.discount)}</span>
+                <span className="price-precent">(-{detailData.discount}%)</span>
+                </>
+              )
+
+            }
+            {
+              detailData.discount <=  0 && (
+                <>
+                <span className="product-price-main">{formatPrice(detailData.price)}</span>
+                </>
+              )
+
+            }
           </div>
 
           {/* Product sizes */}

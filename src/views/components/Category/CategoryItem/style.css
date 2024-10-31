@@ -1,15 +1,29 @@
+.category-block a {
+    text-decoration: none;
+    color: #000;
+}
+
+.category-block {
+    transition: all .5s linear;
+}
+
 .icon-angle-item{
     font-size: 20px;
-    display: flex;
     justify-content: center;
+    user-select: none !important;
 }
 .list-icon{
     display: flex;
     justify-content: center;
     font-size: 18px;
     margin: 0 4px;
-    transform: translateY(3px);
+    transition: all .3s linear;
 }
+
+.list-icon-parent.active {
+    transform: rotate(90deg);
+}
+
 .title-item{
     margin: 0;
     padding: 0;
@@ -17,8 +31,10 @@
     font-size: 18px;
     font-weight: normal;
 }
-.title-block.item{
-    margin: 5px 0;
+.title-block{
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 .item{
     display: flex;
@@ -37,6 +53,7 @@
     cursor: pointer;
 }
 
-.item-category.active{
-   font-weight: bold;
-}
+.title-item.active, .item-category.active{
+    font-weight: bold;
+    color: #007bff;
+ }

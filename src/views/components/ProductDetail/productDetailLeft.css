@@ -4,7 +4,11 @@
   z-index: 1;
 }
 
-.slider-image .slick-prev:before, .slider-image .slick-next:before{
-  color: #ccc;
-  opacity: 1;
-}
+  .slick-next, .slick-prev{
+    display: block;
+  }
+  .slider-image .slick-prev:before, .slider-image .slick-next:before{
+    display: block;
+    color: #ccc;
+    opacity: 1;
+  }

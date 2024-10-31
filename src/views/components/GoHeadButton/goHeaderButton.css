@@ -6,11 +6,12 @@
     border-radius: 100px;
     color: azure;
     top: 85vh;
-    left: 95vw;
+    left: 85vw;
     z-index: 100;
     opacity: .3;
     border: none;
 }
+
 .icon {
   font-weight: bold;
   font-size: 20px;
@@ -33,5 +34,11 @@
   }
   75% {
     transform: scale(1.2);
+  }
+}
+
+@media (min-width: 768px) {
+  .button {
+    left: 95vw;
   }
 }

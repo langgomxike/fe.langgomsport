@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import RootLayout from "../../layouts/RootLayout";
 import { Col, Container, Row } from "react-bootstrap";
@@ -15,6 +15,7 @@ import MarkdownPreview from "@uiw/react-markdown-preview";
 import AProduct from "../../../apis/AProduct";
 import Skeleton from "react-loading-skeleton";
 import SkeletonProductItem from "../../components/Product/SkeletonProductItem";
+import GoHeaderButton from "../../components/GoHeadButton/goHeaderButton";
 
 export default function DetailScreen() {
   //contexts
@@ -31,7 +32,6 @@ export default function DetailScreen() {
 
   //useEffect
   useEffect(() => {
-    console.log(">>> id", productId);
     
      document.title = `${name} - Chi tiết sản phẩm`;
 
@@ -43,11 +43,16 @@ export default function DetailScreen() {
       }, setLoading);
   }, [productId]);
 
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  })
+
   return (
     <RootLayout>
+      <GoHeaderButton />
       <Container className="detail">
         {/* breadcrumb */}
-        <BreadCrumbContainer onNext={()=>{}} category={product?.categories ? product.categories[0] : undefined} />
+        <BreadCrumbContainer onNext={()=>{}} category={product?.categories ? product.categories[product.categories.length -1] : undefined} />
 
         {/* common information */}
         <Row style={{ minHeight: 500 }}>

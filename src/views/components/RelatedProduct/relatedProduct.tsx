@@ -8,6 +8,7 @@ import "slick-carousel/slick/slick-theme.css";
 import ProductItem from "../Product/ProductItem";
 import Product from "../../../models/Product";
 import SkeletonProductItem from "../Product/SkeletonProductItem";
+import { Col, Row } from "react-bootstrap";
 
 type RealatedProductsProps = {
   relatedProductsData: Product[];
@@ -15,7 +16,7 @@ type RealatedProductsProps = {
 }
 
 const RelatedProduct = ({relatedProductsData, loading}:RealatedProductsProps) => {
-
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const settings = {
     // trên máy tính
     dots: true,
@@ -35,9 +36,25 @@ const RelatedProduct = ({relatedProductsData, loading}:RealatedProductsProps) =>
     ],
   };
 
+  useEffect(() => {
+    // Kiểm tra kích thước ban đầu
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Lắng nghe sự thay đổi kích thước màn hình
+    window.addEventListener("resize", handleResize);
+
+    // Dọn dẹp event listener khi component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []); 
+
   return (
     <div className="related-products">
       <h2>SẢN PHẨM LIÊN QUAN</h2>
+      {!isMobile &&
       <Slider {...settings}>
       {loading && 
         Array(4)
@@ -55,6 +72,27 @@ const RelatedProduct = ({relatedProductsData, loading}:RealatedProductsProps) =>
             ))
           }
       </Slider>
+      }
+
+      {isMobile &&
+      <Row>
+      {loading && 
+      Array(4)
+      .fill(0)
+      .map((_, index) => (
+        <Col key={index} xs={6} className="mb-3">
+            <SkeletonProductItem/>
+            </Col>
+      ))
+      }
+      { !loading && relatedProductsData.map((product) => (
+            <Col key={product.id} xs={6} className="mb-3">
+              <ProductItem data={product}/>
+              </Col>
+            ))
+          }
+      </Row>
+      }
     </div>
   );
 };
