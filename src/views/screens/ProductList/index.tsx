@@ -15,7 +15,7 @@ import GoHeaderButton from "../../components/GoHeadButton/goHeaderButton";
 import BrandFilter from "../../components/Brand/BrandFilter";
 import AProduct from "../../../apis/AProduct";
 import Pagination from "../../../models/Pagination";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const MAX_AMOUNT_PRODUCTS_PER_PAGE = 20;
 const PRODUCTS_PER_ROW_IN_WEB = 4;
@@ -33,12 +33,18 @@ export default function ProductListScreen() {
   const [pagination, setPagination] = useState<Pagination>(new Pagination());
   const [categoryName, setCategoryName] = useState("");
 
-     // Lấy giá trị của query parameter `category_id`
-     const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const categoryId = parseInt(queryParams.get('category_id') || 'null', 10) || null;
+  // Lấy giá trị của query parameter `category_id`
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const categoryId =
+    parseInt(queryParams.get("category_id") || "null", 10) || null;
+  // Get the price parameter
+  const priceParam = queryParams.get("price");
+  const sizesParam = queryParams.get("sizes");
+  const brandsParam = queryParams.get("brands");
 
-
+  const [selectedBrandIds, setSelectedBrandIds] = useState<number[]>([]);
+  const [selectedSizeIds, setSelectedSizeIds] = useState<number[]>([]);
   const [filters, setFilters] = useState({
     categoryId: undefined,
     sizeId: undefined,
@@ -90,7 +96,6 @@ export default function ProductListScreen() {
     );
   };
 
-
   // Effects
   useEffect(() => {
     let timeoutId: NodeJS.Timeout | undefined = undefined;
@@ -110,13 +115,36 @@ export default function ProductListScreen() {
     return () => clearTimeout(timeoutId);
   }, [pagination.page, filters]); // Fetch lại khi pagination.page hoặc filters thay đổi
 
-  //lấy lại filter khi chuyển từ trang detail về 
-  useEffect(()=>{
-    updateFilter("categoryId", categoryId)
+  //lấy lại filter khi chuyển từ trang detail về
+  useEffect(() => {
+    updateFilter("categoryId", categoryId);
+
     if (location.state && location.state.category_name) {
       setCategoryName(location.state.category_name);
     }
-  }, [categoryId])
+
+    if (priceParam) {
+      let priceRange: number[] = [];
+      priceRange = priceParam.split("-").map(Number); // Converts to an array of numbers
+      updateFilter("minPrice", priceRange[0]);
+      updateFilter("maxPrice", priceRange[1]);
+    }
+
+    if (sizesParam) {
+      const sizeIds = sizesParam.split("-").map(Number);
+      setSelectedSizeIds(sizeIds);      
+      updateFilter("sizeId", sizeIds)
+    }
+
+    if (brandsParam) {
+      const brandIds = brandsParam.split("-").map(Number);
+     setSelectedBrandIds(brandIds);
+      updateFilter("brandId", brandIds)
+    }
+
+
+  }, [categoryId, priceParam, sizesParam, brandsParam]);
+
 
   //ui
   return (
@@ -126,21 +154,14 @@ export default function ProductListScreen() {
         <Row>
           {/* filter */}
           <Col md={{ span: 3 }}>
-            <CategoryFilter
-              categoryId={categoryId}
-            />
-            <PriceFilter
-              onFilterChange={(minPrice, maxPrice) => {
-                updateFilter("minPrice", minPrice);
-                updateFilter("maxPrice", maxPrice);
-              }}
-            />
+            <CategoryFilter categoryId={categoryId} />
+            <PriceFilter  />
             <SizeFilter
               categoryId={filters.categoryId}
-              onFilterChange={(sizeIds) => updateFilter("sizeId", sizeIds)}
+              selectedSizeIds={selectedSizeIds}
             />
             <BrandFilter
-              onFilterChange={(brandIds) => updateFilter("brandId", brandIds)}
+            selectedBrandIds={selectedBrandIds}
             />
           </Col>
 

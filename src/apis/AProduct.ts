@@ -100,12 +100,12 @@ export default class AProduct {
   }
 
   public static getProductById(
-    product_id: number,
+    slug: string,
     onNext: (product: Product, relatedProducts: Product[]) => void,
     onLoading: (loading: boolean) => void
   ) {
     // Tạo URL với các tham số
-    const url = `${process.env.REACT_APP_API_BASE_URL}/products/detail?id=${product_id}`;
+    const url = `${process.env.REACT_APP_API_BASE_URL}/products/detail?slug=${slug}`;
 
     onLoading(true);
     axios
