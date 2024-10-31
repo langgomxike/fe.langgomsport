@@ -74,7 +74,7 @@ export default function ProductDetailLeft({
                 style={{ width: "100%", cursor: "pointer" }}
               />
             ) : (
-            <ReactImageMagnify
+              <ReactImageMagnify
               {...{
                 smallImage: {
                   alt: "Wristwatch by Ted Baker London",
@@ -84,11 +84,16 @@ export default function ProductDetailLeft({
                 largeImage: {
                   src: `${BASE_URL}/${mainImage}`,
                   width: 1200,
-                  height: 1800,
+                  height: 1200,
+                },
+                enlargedImageContainerDimensions: {
+                  width: "100%",
+                  height: "100%",
                 },
                 enlargedImageContainerStyle: {
-                  zIndex: 1,
-                  borderWidth: 4,
+                  marginLeft: 25,
+                  zIndex: 4,
+                  borderRadius: 5,
                 },
               }}
             />
