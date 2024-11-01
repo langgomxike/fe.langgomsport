@@ -9,11 +9,14 @@ import ProductItem from "../Product/ProductItem";
 import Product from "../../../models/Product";
 import SkeletonProductItem from "../Product/SkeletonProductItem";
 import { Col, Row } from "react-bootstrap";
+import ConfigValue from "../../../configs/ConfigValue";
 
 type RealatedProductsProps = {
   relatedProductsData: Product[];
   loading: boolean
 }
+
+const LIMIT = ConfigValue.RELATED_PRODUCT_LIMIT;
 
 const RelatedProduct = ({relatedProductsData, loading}:RealatedProductsProps) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -57,7 +60,7 @@ const RelatedProduct = ({relatedProductsData, loading}:RealatedProductsProps) =>
       {!isMobile &&
       <Slider {...settings}>
       {loading && 
-        Array(4)
+        Array(LIMIT)
         .fill(0)
         .map((_, index) => (
           <div key={index} className="product-item">
@@ -65,7 +68,7 @@ const RelatedProduct = ({relatedProductsData, loading}:RealatedProductsProps) =>
           </div>
         ))
         }
-     { !loading && relatedProductsData.map((product) => (
+     {!loading && relatedProductsData.map((product) => (
             <div key={product.id}>
               <ProductItem data={product}/>
             </div>
@@ -77,7 +80,7 @@ const RelatedProduct = ({relatedProductsData, loading}:RealatedProductsProps) =>
       {isMobile &&
       <Row>
       {loading && 
-      Array(4)
+      Array(LIMIT)
       .fill(0)
       .map((_, index) => (
         <Col key={index} xs={6} className="mb-3">
@@ -85,7 +88,7 @@ const RelatedProduct = ({relatedProductsData, loading}:RealatedProductsProps) =>
             </Col>
       ))
       }
-      { !loading && relatedProductsData.map((product) => (
+      {!loading && relatedProductsData.map((product) => (
             <Col key={product.id} xs={6} className="mb-3">
               <ProductItem data={product}/>
               </Col>

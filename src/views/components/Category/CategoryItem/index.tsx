@@ -8,8 +8,9 @@ import ScreenNameConfig from "../../../../configs/ScreenNameConfig";
 export type CategoryItemProps = {
   parentCategory: Category;
   categories: Array<Category>;
-  onCategorySelect: (id: number | null, name: string) => void; // Hàm để gửi ID về component cha
+  onCategorySelect: (id: number | null, parentId: number | null) => void;
   activeCategory: number | null;
+  activeParentCategory: number | null;
 };
 
 export default function CategoryItem({
@@ -17,37 +18,31 @@ export default function CategoryItem({
   categories,
   onCategorySelect,
   activeCategory,
+  activeParentCategory,
 }: CategoryItemProps) {
   //ref, context
 
   //state
   const [active, setActive] = useState<number | null>(activeCategory); // Để lưu id của mục con được chọn
-  const [activeParent, setActiveParent] = useState<number | null>(activeCategory); // Để lưu id của mục cha được chọn
+  const [activeParent, setActiveParent] = useState<number | null>(activeParentCategory); // Để lưu id của mục cha được chọn
+
   //handlers
   const handleIconCategory = (categoryId:number) => {
     setActiveParent(activeParent === categoryId ? null : categoryId);
     setActive(active === activeCategory? activeCategory : null)
-
   };
-
-  useEffect(() => {
-    console.log("Active category: " + activeCategory);
-    
-  }, [activeCategory])
 
   const handleOnClickCategory = (id: number, name: string) => {
     setActive(id);
-    onCategorySelect(id, name);
+    onCategorySelect(id, parentCategory.id);
   };
+
+
+  useEffect(() => {
+    setActive(activeCategory);
+    setActiveParent(activeParentCategory);
+  }, [activeCategory, activeParentCategory])
   
-
-  const icon =
-    active !== null ? (
-      <FaCaretDown style={{ fontSize: 15 }} />
-    ) : (
-      <FaCaretRight style={{ fontSize: 15 }} />
-    );
-
   return (
     <div className="category-block">
       <div className="title-block" onClick={() => {handleIconCategory(parentCategory.id)

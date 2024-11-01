@@ -2,12 +2,18 @@ import React, { useState, useEffect } from "react";
 import Range from "rc-slider";
 import "rc-slider/assets/index.css";
 import "./PriceFilter.css";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type PriceFilterProps = {
     onFilterChange: (minValue: number, maxValue:number) => void
 }
 
-function PriceFilter({onFilterChange}:PriceFilterProps) {
+function PriceFilter() {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const priceParam = queryParams.get("price");
+
     const [priceRange, setPriceRange] = useState<number[]>([0, 2000000]);
     // biến để lưu thông báo lỗi
     const [error, setError] = useState<string>("");
@@ -34,20 +40,23 @@ function PriceFilter({onFilterChange}:PriceFilterProps) {
             setError("Nhập số quá quy định cho phép !!!");
             setIsError(true);
         } else {
-            onFilterChange(priceRange[0], priceRange[1]);
+          // Parse existing query parameters
+          const searchParams = new URLSearchParams(location.search);
+
+          // Add or update the price range parameter
+          const priceParam = `${priceRange[0]}-${priceRange[1]}`;
+          searchParams.set("price", priceParam);
+
+          // Convert searchParams back to a string and update the URL
+          navigate(`/products?${searchParams.toString()}`);
         }
     };
 
     useEffect(() => {
-        if (error) {
-            const timer = setTimeout(() => {
-                setError("");
-                setIsError(false);
-            }, 2000);
-
-            return () => clearTimeout(timer);
+        if(priceParam){
+            setPriceRange(priceParam.split("-").map(Number))
         }
-    }, [error]);
+      }, [priceParam]);
 
     const handleMinInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value.replace(/^0+/, "");
