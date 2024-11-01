@@ -21,7 +21,7 @@
 .detail-tab.active {
     background-color: var(--bs-primary);
     color: var(--bs-white);
-    scale: 1.15;
+    /*scale: 1.15;*/
     box-shadow: 0px -2px 20px 1px var(--bs-primary-bg-subtle);
 }
 
