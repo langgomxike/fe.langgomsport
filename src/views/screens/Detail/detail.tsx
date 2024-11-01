@@ -5,7 +5,6 @@ import { Col, Container, Row } from "react-bootstrap";
 import "./detail.css";
 import BreadCrumbContainer from "../../components/Breadcrumb/BreadCrumbContainer";
 import DetailInfo from "../../components/ProductDetail/ProductDetail";
-import ProductDetailSkeleton from "../../components/ProductDetail/ProductDetailSkeleton";
 import RelatedProduct from "../../components/RelatedProduct/relatedProduct";
 import Product from "../../../models/Product";
 import ProductDetailLeft from "../../components/ProductDetail/ProductDetailLeft";
@@ -14,12 +13,12 @@ import tabs from "./detail-tabs.json";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import AProduct from "../../../apis/AProduct";
 import Skeleton from "react-loading-skeleton";
-import SkeletonProductItem from "../../components/Product/SkeletonProductItem";
-import GoHeaderButton from "../../components/GoHeadButton/goHeaderButton";
 
 export default function DetailScreen() {
   //contexts
   const location = useLocation();
+  const { slug } = useParams();
+  
 
   //states
   const { id, name } = location.state || {};
@@ -34,14 +33,15 @@ export default function DetailScreen() {
   useEffect(() => {
     
      document.title = `${name} - Chi tiết sản phẩm`;
-
-      AProduct.getProductById(productId, (product, realatedProducts) => {
-        setProduct(product);
-        document.title = `${product.name} - Chi tiết sản phẩm`;
-        
-        setRelatedProducts(realatedProducts);
-      }, setLoading);
-  }, [productId]);
+      if(slug) {
+        AProduct.getProductById(slug, (product, realatedProducts) => {
+          setProduct(product);
+          document.title = `${product.name} - Chi tiết sản phẩm`;
+          
+          setRelatedProducts(realatedProducts);
+        }, setLoading);
+      }
+  }, [slug]);
 
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
@@ -49,7 +49,7 @@ export default function DetailScreen() {
 
   return (
     <RootLayout>
-      <GoHeaderButton />
+      {/* <GoHeaderButton /> */}
       <Container className="detail">
         {/* breadcrumb */}
         <BreadCrumbContainer onNext={()=>{}} category={product?.categories ? product.categories[product.categories.length -1] : undefined} />
