@@ -93,7 +93,6 @@ export default function ProductDetailLeft({
                 enlargedImageContainerStyle: {
                   marginLeft: 25,
                   zIndex: 4,
-                  borderRadius: 5,
                 },
               }}
             />

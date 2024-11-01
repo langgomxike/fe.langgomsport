@@ -1,7 +1,20 @@
 .imageManify {
-  max-width: 500px;
-  max-height: 500px;
+  width: 100%;
+  max-width: 500px; /* Đảm bảo độ rộng tối đa */
+  aspect-ratio: 1 / 1; /* Giữ tỷ lệ vuông */
   z-index: 1;
+}
+
+.imageManify img {
+  width: 100%;
+  height: 500px;
+  object-fit: cover; /* Đảm bảo ảnh luôn phủ kín khung */
+}
+
+@media (max-width: 768px) {
+  .imageManify img {
+    height: 300px;
+  }
 }
 
   .slick-next, .slick-prev{
