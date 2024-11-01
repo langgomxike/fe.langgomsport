@@ -13,6 +13,7 @@ import tabs from "./detail-tabs.json";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import AProduct from "../../../apis/AProduct";
 import Skeleton from "react-loading-skeleton";
+import "./detail.css";
 
 export default function DetailScreen() {
   //contexts
@@ -45,7 +46,7 @@ export default function DetailScreen() {
 
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
-  })
+  }, [productId]);
 
   return (
     <RootLayout>
@@ -98,7 +99,7 @@ export default function DetailScreen() {
                 )) || (
                   <p className="detail-container fst-italic text-center">
                     <img
-                      src="./images/not-found.png"
+                      src="/images/not-found.png"
                       alt=""
                       width={100}
                       height={100}
