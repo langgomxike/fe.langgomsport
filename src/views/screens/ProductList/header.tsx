@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import ACategory from "../../../apis/ACategory";
+import Category from "../../../models/Category";
+import Skeleton from "react-loading-skeleton";
 
 type HeaderProductListProps =  {
     productQuantity: number,
@@ -14,6 +17,9 @@ export default function HeaderProductList ({productQuantity, categoryName, onFil
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const [sort, setSort] = useState<string>(searchParams.get("sort") || "");
+    const [categoryId, setCategoryId] = useState<number | null>(null);
+    const [category, setCategory] = useState<Category>();
+    const [loading, setLoading] = useState(true);
 
     const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const sortValue = event.target.value;
@@ -27,16 +33,37 @@ export default function HeaderProductList ({productQuantity, categoryName, onFil
     useEffect(() => {
         // Cập nhật state khi URL thay đổi
         const currentSort = searchParams.get("sort");
+        const idFromUrl = searchParams.get("category_id");
         if (currentSort) {
             setSort(currentSort);
         }
+        if (idFromUrl) setCategoryId(parseInt(idFromUrl, 10));
     }, [location.search]);
 
+    useEffect(() => {
+        
+        if(categoryId) {
+            console.log("id", categoryId);
+            ACategory.getCategoryById(
+                categoryId ?? 1,
+                (data) => {
+                  setCategory(data);
+                  
+                },
+                setLoading
+              );
+        }
+  }, [categoryId]);
+  
     return (
         <div className="product-list-container-title">
             <div className="titleProducts">
-                <h1>{categoryName}</h1>
+            {!loading && 
+            <>
+                <h1>{category?.name}</h1>
                 <span>({productQuantity} sản phẩm)</span>
+            </>
+            }
             </div>
             <select
                 className="form-select select-container"

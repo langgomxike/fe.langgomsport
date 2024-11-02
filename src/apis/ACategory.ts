@@ -30,4 +30,24 @@ export default class ACategory {
             onNext([]);
         })
     }
+
+    public static getCategoryById(
+        categoryId: number, // Tham số cho category
+        onNext: (category: Category) => void,
+        onLoading: (loading: boolean) => void
+    ) {
+        onLoading(true);
+        // Thêm categoryId vào URL để lọc theo danh mục
+        axios.get(`${this.BASE_URL}/?id=${categoryId}`, {
+            headers: { "Content-Type": "application/json" }
+        })
+            .then(response => {
+                onLoading(false);
+                onNext(response.data);
+                console.log(">>> category a", response.data);
+            })
+            .catch(err => {
+                onLoading(false);
+            });
+    }
 }
