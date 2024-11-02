@@ -8,13 +8,13 @@ export default function () {
   // render
   return (
     <div>
-      <Skeleton height={"70px"}/>
+      <Skeleton height={"45px"}/>
 
-      <Skeleton height={"30px"}/>
+      <Skeleton height={"15px"}/>
 
       <hr />
       {/* Product price */}
-      <Skeleton height={"50px"}/>
+      <Skeleton height={"40px"}/>
 
       {/* Product sizes */}
       <div className="detail-product-size">
