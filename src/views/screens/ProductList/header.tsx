@@ -59,19 +59,10 @@ export default function HeaderProductList({
 
   return (
     <>
-     {loading && (
-      <div>
-        <Skeleton height={30 + "px"} />
-      </div>
-     )}
       <div className="product-list-container-title">
         <div className="titleProducts">
-          {!loading && (
-            <>
               <h1>{category?.name}</h1>
               <span>({productQuantity} sản phẩm)</span>
-            </>
-          )}
         </div>
         <select
           className="form-select select-container"
