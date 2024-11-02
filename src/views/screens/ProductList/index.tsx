@@ -36,6 +36,7 @@ export default function ProductListScreen() {
 
   // Lấy giá trị của query parameter `category_id`
   const location = useLocation();
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const categoryId =
     parseInt(queryParams.get("category_id") || "null", 10) || null;
@@ -43,6 +44,7 @@ export default function ProductListScreen() {
   const priceParam = queryParams.get("price");
   const sizesParam = queryParams.get("sizes");
   const brandsParam = queryParams.get("brands");
+  const pageParam = queryParams.get("page");
 
   const [selectedBrandIds, setSelectedBrandIds] = useState<number[]>([]);
   const [selectedSizeIds, setSelectedSizeIds] = useState<number[]>([]);
@@ -74,6 +76,9 @@ export default function ProductListScreen() {
       ...prev,
       page: 1,
     }));
+
+    // queryParams.set("page", "1");
+    // navigate(`${location.pathname}?${queryParams.toString()}`);
   };
 
   const fetchProducts = (page: number) => {
@@ -142,8 +147,15 @@ export default function ProductListScreen() {
       updateFilter("brandId", brandIds)
     }
 
+    if (pageParam) {
+      const parsedPage = parseInt(pageParam, 10);
+      if (!isNaN(parsedPage)) {
+          handlePageChange(parsedPage);
+      }
+  }
 
-  }, [categoryId, priceParam, sizesParam, brandsParam]);
+
+  }, [categoryId, priceParam, sizesParam, brandsParam, pageParam]);
 
 
   //ui
