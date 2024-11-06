@@ -6,14 +6,12 @@ import Skeleton from "react-loading-skeleton";
 
 type HeaderProductListProps = {
   productQuantity: number;
-  categoryName: string;
   onFilterChange: (sort: string) => void;
   setPageFirst: (page: number) => void;
 };
 
 export default function HeaderProductList({
   productQuantity,
-  categoryName,
   onFilterChange,
   setPageFirst,
 }: HeaderProductListProps) {
