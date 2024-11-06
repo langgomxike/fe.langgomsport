@@ -2,7 +2,7 @@ import "./style.css";
 import Category from "../../../../models/Category";
 import { FaAngleDown, FaCaretDown, FaCaretRight } from "react-icons/fa6";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ScreenNameConfig from "../../../../configs/ScreenNameConfig";
 
 export type CategoryItemProps = {
@@ -21,6 +21,9 @@ export default function CategoryItem({
   activeParentCategory,
 }: CategoryItemProps) {
   //ref, context
+    const navigate = useNavigate();
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
 
   //state
   const [active, setActive] = useState<number | null>(activeCategory); // Để lưu id của mục con được chọn
@@ -35,6 +38,9 @@ export default function CategoryItem({
   const handleOnClickCategory = (id: number, name: string) => {
     setActive(id);
     onCategorySelect(id, parentCategory.id);
+    // Cập nhật `page` vào URL
+    searchParams.set("category_id", id.toString());
+    navigate(`${location.pathname}?${searchParams.toString()}`);
   };
 
 
@@ -51,17 +57,12 @@ export default function CategoryItem({
             activeParent === parentCategory.id ? "active" : ""
           }`}> <FaCaretRight style={{ fontSize: 15 }} /></span>
 
-        <Link
+        <div
          onClick={() => handleOnClickCategory(parentCategory.id, parentCategory.name)}
           className={`title-item ${
             activeParent === parentCategory.id ? "active" : ""
           }`}
-          to={{
-            pathname: ScreenNameConfig.PRODUCTS,
-            search: `?category_id=${parentCategory.id}`,
-          }}
-          state={{category_name: parentCategory.name }}
-        > {parentCategory.name} </Link>
+        > {parentCategory.name} </div>
 
         <span className="icon-angle-item">
           <FaAngleDown style={{ fontSize: 12 }} />
@@ -78,16 +79,13 @@ export default function CategoryItem({
                 <span className="list-icon item">
                   <FaCaretRight />
                 </span>
-                <Link
+
+                <div
                   className={`item-category ${
                     active === item.id ? "active" : ""
                   }`}
-                  to={{
-                    pathname: ScreenNameConfig.PRODUCTS,
-                    search: `?category_id=${item.id}`,
-                  }}
-                  state={{category_name: item.name }}
-                > {item.name} </Link>
+
+                > {item.name} </div>
               </div>
             </li>
           ))}

@@ -62,7 +62,7 @@ export default function ProductDetailLeft({
   };
 
   return (
-    <>
+    <div className="imageContainer">
       {loading && <ProductDetailLeftSkeleton />}
       {!loading && imagesData && mainImage && (
         <div>
@@ -71,6 +71,7 @@ export default function ProductDetailLeft({
               <img
                 src={`${BASE_URL}/${mainImage}`}
                 alt="Main Image"
+                
                 style={{ width: "100%", cursor: "pointer" }}
               />
             ) : (
@@ -104,6 +105,6 @@ export default function ProductDetailLeft({
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

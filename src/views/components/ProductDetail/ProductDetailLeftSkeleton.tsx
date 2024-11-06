@@ -3,7 +3,7 @@ import Slider from "react-slick";
 
 export default function ProductDetailLeftSkeleton() {
   const isMobile = window.innerWidth < 768;
-  const skeletonHeight = isMobile ? "400px" : "500px"; //
+  const skeletonHeight = isMobile ? "350px" : "500px"; //
     return (
         <div>
             <Skeleton height={skeletonHeight}/>

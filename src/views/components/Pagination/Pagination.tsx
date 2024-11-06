@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {IoChevronBack, IoChevronForward} from "react-icons/io5";
 import './pagination.css'
+import { useLocation, useNavigate } from "react-router-dom";
 
 type PaginationProps = {
     currentPage: number,
@@ -12,9 +13,13 @@ const maxPagesToShow = 4; // Số lượng trang tối đa hiển thị
 
 
 export default function ({currentPage, totalPages, onPageChange}: PaginationProps) {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
     //state
     const [currentPage1, setCurrentPage1] = useState<number>(currentPage);
     const [pages, setPages] = useState<(string|number)[]>()
+    
 
 
     //handle
@@ -35,6 +40,9 @@ export default function ({currentPage, totalPages, onPageChange}: PaginationProp
     const goToPage = (page: number) => {
         onPageChange(page);
         setCurrentPage1(page);
+         // Cập nhật `page` vào URL
+         searchParams.set("page", page.toString());
+         navigate(`${location.pathname}?${searchParams.toString()}`);
     };
 
     const goToFirstPage = () => {
@@ -112,7 +120,7 @@ export default function ({currentPage, totalPages, onPageChange}: PaginationProp
                     <li key={page}
                         className={`page-item ${page === currentPage1 ? "active" : ""}`}>
                         {page === '...' ? (
-                            <span className="page-link">...</span> // Dấu `...`
+                            <span className="page-link page-more">...</span> // Dấu `...`
                         ) : (
                             <a className="page-link" onClick={() => goToPage(Number(page))}>
                                 {page}
