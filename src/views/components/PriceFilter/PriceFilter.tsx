@@ -15,39 +15,34 @@ function PriceFilter() {
   const priceParam = queryParams.get("price");
 
   const [priceRange, setPriceRange] = useState<number[]>([0, 2000000]);
-  // biến để lưu thông báo lỗi
   const [error, setError] = useState<string>("");
-  // biến để tô đỏ chữ
-  const [isError, setIsError] = useState<boolean>(false);
+  const [isMinError, setIsMinError] = useState<boolean>(false);
+  const [isMaxError, setIsMaxError] = useState<boolean>(false);
 
-  // Hàm xử lý khi thay đổi giá trị của thanh trượt
   const handleSliderChange = (value: number | number[]) => {
     if (Array.isArray(value)) {
       if (value[0] > value[1]) {
-        setError("Nhập số quá quy định cho phép !!!");
-        setIsError(true);
+        setError("Giá min phải nhỏ hơn giá max!");
+        setIsMinError(true);
+        setIsMaxError(true);
       } else {
         setError("");
-        setIsError(false);
+        setIsMinError(false);
+        setIsMaxError(false);
         setPriceRange(value);
       }
     }
   };
 
-  // Hàm xử lý khi nhấn nút "Search"
   const handleSubmit = () => {
     if (priceRange[0] > priceRange[1]) {
-      setError("Nhập số quá quy định cho phép !!!");
-      setIsError(true);
+      setError("Giá min phải nhỏ hơn giá max!");
+      setIsMinError(true);
+      setIsMaxError(true);
     } else {
-      // Parse existing query parameters
       const searchParams = new URLSearchParams(location.search);
-
-      // Add or update the price range parameter
       const priceParam = `${priceRange[0]}-${priceRange[1]}`;
       searchParams.set("price", priceParam);
-
-      // Convert searchParams back to a string and update the URL
       navigate(`/products?${searchParams.toString()}`);
     }
   };
@@ -61,26 +56,28 @@ function PriceFilter() {
   const handleMinInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/^0+/, "");
     const newMin = Number(value);
+    setPriceRange([newMin, priceRange[1]]);
+
     if (newMin > priceRange[1]) {
-      setError("Min phải nhỏ hơn max !!!");
-      setIsError(true);
+      setError("Giá min phải nhỏ hơn giá max!");
+      setIsMinError(true);
     } else {
       setError("");
-      setIsError(false);
-      setPriceRange([newMin, priceRange[1]]);
+      setIsMinError(false);
     }
   };
 
   const handleMaxInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/^0+/, "");
     const newMax = Number(value);
+    setPriceRange([priceRange[0], newMax]);
+
     if (priceRange[0] > newMax) {
-      setError("Max phải lớn hơn min !!!");
-      setIsError(true);
+      setError("Giá max phải lớn hơn giá min!");
+      setIsMaxError(true);
     } else {
       setError("");
-      setIsError(false);
-      setPriceRange([priceRange[0], newMax]);
+      setIsMaxError(false);
     }
   };
 
@@ -90,7 +87,6 @@ function PriceFilter() {
       <Range
         range
         min={0}
-        // Giá trị tối đa của thanh trượt
         max={20000000}
         step={1000}
         value={priceRange}
@@ -105,11 +101,11 @@ function PriceFilter() {
       <div className="inputRangeContainer">
         <input
           type="number"
-          value={priceRange[0] === 0 ? "" : priceRange[0]} // Nếu giá trị là 0 thì hiển thị rỗng
+          value={priceRange[0] === 0 ? "0" : priceRange[0]}
           onInput={handleMinInputChange}
           min="0"
           max={priceRange[1]}
-          className={isError ? "error-input" : ""}
+          className={isMinError ? "error-input" : ""}
         />
         <input
           type="number"
@@ -117,7 +113,7 @@ function PriceFilter() {
           onInput={handleMaxInputChange}
           min={priceRange[0]}
           max="20000000"
-          className={isError ? "error-input" : ""}
+          className={isMaxError ? "error-input" : ""}
         />
       </div>
       {error && <p style={{ color: "red" }}>{error}</p>}
