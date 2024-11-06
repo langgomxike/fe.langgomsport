@@ -32,14 +32,12 @@ export default function ProductListScreen() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState<Pagination>(new Pagination());
-  const [categoryName, setCategoryName] = useState("");
 
   // Lấy giá trị của query parameter `category_id`
   const location = useLocation();
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
-  const categoryId =
-    parseInt(queryParams.get("category_id") || "null", 10) || null;
+  const categoryParam = queryParams.get("category_id");
   // Get the price parameter
   const priceParam = queryParams.get("price");
   const sizesParam = queryParams.get("sizes");
@@ -48,6 +46,7 @@ export default function ProductListScreen() {
 
   const [selectedBrandIds, setSelectedBrandIds] = useState<number[]>([]);
   const [selectedSizeIds, setSelectedSizeIds] = useState<number[]>([]);
+  const [categoryId, setCategoryId] = useState<number | null>(null);
   const [filters, setFilters] = useState({
     categoryId: undefined,
     sizeId: undefined,
@@ -122,10 +121,10 @@ export default function ProductListScreen() {
 
   //lấy lại filter khi chuyển từ trang detail về
   useEffect(() => {
-    updateFilter("categoryId", categoryId);
-
-    if (location.state && location.state.category_name) {
-      setCategoryName(location.state.category_name);
+    if (categoryParam) {
+      let categoryId = parseInt(categoryParam || "null", 10) || null;
+      setCategoryId(categoryId);
+      updateFilter("categoryId", categoryId);
     }
 
     if (priceParam) {
@@ -137,26 +136,30 @@ export default function ProductListScreen() {
 
     if (sizesParam) {
       const sizeIds = sizesParam.split("-").map(Number);
-      setSelectedSizeIds(sizeIds);      
-      updateFilter("sizeId", sizeIds)
+      setSelectedSizeIds(sizeIds);
+      updateFilter("sizeId", sizeIds);
+    }
+    else{
+      updateFilter("sizeId", []);
     }
 
     if (brandsParam) {
       const brandIds = brandsParam.split("-").map(Number);
-     setSelectedBrandIds(brandIds);
-      updateFilter("brandId", brandIds)
+      setSelectedBrandIds(brandIds);
+      updateFilter("brandId", brandIds);
+    }
+    else {
+      updateFilter("brandId", []);
     }
 
     if (pageParam) {
       const parsedPage = parseInt(pageParam, 10);
       if (!isNaN(parsedPage)) {
-          handlePageChange(parsedPage);
+        handlePageChange(parsedPage);
       }
-  }
-
-
-  }, [categoryId, priceParam, sizesParam, brandsParam, pageParam]);
-
+    }
+    console.log(">>> queryParams: " + queryParams);
+  }, [categoryParam, priceParam, sizesParam, brandsParam, pageParam]);
 
   //ui
   return (
@@ -167,14 +170,12 @@ export default function ProductListScreen() {
           {/* filter */}
           <Col md={{ span: 3 }}>
             <CategoryFilter categoryId={categoryId} />
-            <PriceFilter  />
+            <PriceFilter />
             <SizeFilter
               categoryId={filters.categoryId}
               selectedSizeIds={selectedSizeIds}
             />
-            <BrandFilter
-            selectedBrandIds={selectedBrandIds}
-            />
+            <BrandFilter selectedBrandIds={selectedBrandIds} />
           </Col>
 
           {/* product list */}
@@ -182,7 +183,6 @@ export default function ProductListScreen() {
             {/* Title of product list */}
             <Header
               productQuantity={pagination.totalItems}
-              categoryName={categoryName}
               onFilterChange={(sort) => updateFilter("sort", sort)}
               setPageFirst={(page) => handlePageChange(page)}
             />

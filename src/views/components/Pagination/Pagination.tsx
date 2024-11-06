@@ -120,7 +120,7 @@ export default function ({currentPage, totalPages, onPageChange}: PaginationProp
                     <li key={page}
                         className={`page-item ${page === currentPage1 ? "active" : ""}`}>
                         {page === '...' ? (
-                            <span className="page-link">...</span> // Dấu `...`
+                            <span className="page-link page-more">...</span> // Dấu `...`
                         ) : (
                             <a className="page-link" onClick={() => goToPage(Number(page))}>
                                 {page}

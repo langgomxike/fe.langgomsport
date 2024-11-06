@@ -1,5 +1,6 @@
 import { PropsWithChildren } from "react";
 import HeaderComponent from "../components/Header/Header";
+import "./root.css"
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (

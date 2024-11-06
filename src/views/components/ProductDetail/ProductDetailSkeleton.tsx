@@ -8,9 +8,9 @@ export default function () {
   // render
   return (
     <div>
-      <Skeleton height={"45px"}/>
+      <Skeleton height={"30px"} style={{marginBottom: 10}}/>
 
-      <Skeleton height={"15px"}/>
+      <Skeleton height={"25px"}/>
 
       <hr />
       {/* Product price */}

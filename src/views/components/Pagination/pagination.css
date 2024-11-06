@@ -5,3 +5,15 @@
 .page-item {
     cursor: pointer;
 }
+
+.page-item.disabled {
+    cursor: default;
+}
+
+.page-more {
+    cursor: default;
+}
+
+.page-more:hover {
+    background-color: #fff !important;
+}

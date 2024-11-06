@@ -12,8 +12,15 @@
 }
 
 @media (max-width: 768px) {
+  .imageManify {
+    height: 350px;
+  }
   .imageManify img {
-    height: 300px;
+    height: 350px;
+  }
+
+  .imageContainer{
+    height: 550px;
   }
 }
 
