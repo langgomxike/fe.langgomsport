@@ -7,14 +7,17 @@ type ProductIemProps = {
   data: Product;
 };
 
-const BASE_URL = process.env.REACT_APP_BASE_URL
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export default function ProductIem({ data }: ProductIemProps) {
   // handlers
   function formatPrice(price: number) {
-    return price
-      .toLocaleString("vi-VN", { style: "currency", currency: "VND" })
-      .replace("₫", "đ");
+    if(price) {
+      return price
+        .toLocaleString("vi-VN", { style: "currency", currency: "VND" })
+        .replace("₫", "đ");
+    }
+    return 0
   }
 
   function calculateDiscountedPrice(price: number, discount: number) {
@@ -23,29 +26,37 @@ export default function ProductIem({ data }: ProductIemProps) {
     return formatPrice(discountedPrice);
   }
 
-  const createSlug = (name:string) => {
+  const createSlug = (name: string) => {
     return name
       .toLowerCase() // Chuyển về chữ thường
-      .replace(/[^a-z0-9\s-]/g, '') // Loại bỏ các ký tự đặc biệt
-      .replace(/\s+/g, '-') // Thay khoảng trắng bằng dấu gạch ngang
+      .replace(/[^a-z0-9\s-]/g, "") // Loại bỏ các ký tự đặc biệt
+      .replace(/\s+/g, "-") // Thay khoảng trắng bằng dấu gạch ngang
       .trim();
   };
 
   //ui
   return (
     <div className="product-item">
-      <Link to={`/products/detail/${data.slug}`}  state={{ id: data.id, name: data.name }} title={data.name}>
+      <Link
+        to={`/products/detail/${data.slug}`}
+        state={{ id: data.id, name: data.name }}
+        title={data.name}
+      >
         <div className="product-image">
-           <img
-            className="img-fluid img-main"
-            src={`${BASE_URL}/${data.files[0].filePath}`}
-            alt=""
-          />
-          <img
-            className="img-fluid img-sub"
-            src={`${BASE_URL}/${data.files[1].filePath}`}
-            alt=""
-          /> 
+          {data.images && data.images[0] && (
+            <img
+              className="img-fluid img-main"
+              src={`${BASE_URL}/${data.images[0].path}`}
+              alt="Main Image"
+            />
+          )}
+          {data.images && data.images[1] && (
+            <img
+              className="img-fluid img-sub"
+              src={`${BASE_URL}/${data.images[1].path}`}
+              alt="Sub Image"
+            />
+          )}
           {data.discount > 0 && data.discount !== null && (
             <div className="product-sale">
               <span>{data.discount}%</span>
@@ -54,21 +65,24 @@ export default function ProductIem({ data }: ProductIemProps) {
         </div>
       </Link>
       <h3 className="product-title">
-        <Link to={`/products/detail/${data.slug}`}  state={{ id: data.id, name: data.name }} title={data.name}>
+        <Link
+          to={`/products/detail/${data.slug}`}
+          state={{ id: data.id, name: data.name }}
+          title={data.name}
+        >
           {data.name}
         </Link>
       </h3>
       <div className="product-price">
         <span>
-          {(data.discount > 0 && data)
-            ? calculateDiscountedPrice(
-                  data.price,
-                  data.discount
-                )
+          {data.discount > 0 && data
+            ? calculateDiscountedPrice(data.price, data.discount)
             : formatPrice(data.price)}
         </span>
 
-        <del className={`${data.discount > 0? "" : "hidden-price"}`}>{formatPrice(data.price)}</del>
+        <del className={`${data.discount > 0 ? "" : "hidden-price"}`}>
+          {formatPrice(data.price)}
+        </del>
       </div>
       <div className="product-bottom"></div>
     </div>

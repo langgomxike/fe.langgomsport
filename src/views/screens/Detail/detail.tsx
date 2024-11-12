@@ -23,6 +23,7 @@ export default function DetailScreen() {
 
   //states
   const { id, name } = location.state || {};
+  
   const productId: number =  id;
   const [product, setProduct] = useState<Product>();
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
@@ -59,7 +60,7 @@ export default function DetailScreen() {
         <Row style={{ minHeight: 500 }}>
           {/* image carousel */}
           <Col md={{ span: 6 }}>
-            <ProductDetailLeft imagesData={product?.files} loading={loading}/>
+            <ProductDetailLeft imagesData={product?.images} loading={loading}/>
           </Col>
 
           {/* image size, brand, ... */}

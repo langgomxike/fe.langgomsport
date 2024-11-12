@@ -3,12 +3,12 @@ import "./productDetailLeft.css";
 import ImageSlider from "./ImageSlider";
 import { useEffect, useState } from "react";
 import ProductDetailLeftSkeleton from "./ProductDetailLeftSkeleton";
-import File from "../../../models/File";
 import { Fancybox as NativeFancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
+import ImageVariant from "../../../models/ImageVariant";
 
 type ProductDetailLeftProps = {
-  imagesData: File[] | undefined;
+  imagesData: ImageVariant[] | undefined;
   loading: boolean;
 };
 
@@ -23,13 +23,13 @@ export default function ProductDetailLeft({
 
   useEffect(() => {
     if (imagesData && imagesData.length > 0) {
-      setMainImage(imagesData[0].filePath);
+      setMainImage(imagesData[0].path);
     }
   }, [imagesData]);
 
   useEffect(() => {
     if (imagesData && imagesData.length > 0) {
-      setMainImage(imagesData[0].filePath);
+      setMainImage(imagesData[0].path);
     }
 
     // Kiểm tra thiết bị di động

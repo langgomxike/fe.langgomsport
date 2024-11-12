@@ -72,7 +72,7 @@ export default class AProduct {
       process.env.REACT_APP_API_BASE_URL
     }/products?${queryParams.join("&")}`;
 
-    console.log(">> url", url);
+    console.log(">> url product", url);
     
     
     axios
@@ -80,10 +80,18 @@ export default class AProduct {
         headers: { "Content-Type": "application/json" },
       })
       .then((response) => {
+        const productsWithImages = response.data.products.map((item:any) => ({
+          // Sao chép toàn bộ thuộc tính của product
+          ...item.product,   
+          // Gán mảng images từ item      
+          images: item.images || [] 
+        }));
+
         onNext({
-          products: response.data.products, // Array of ProductDTOs
-          pagination: response.data.pagination, // Pagination object
+          products: productsWithImages,
+          pagination: response.data.pagination,
         });
+        
 
         onLoading(false);
       })
@@ -107,28 +115,35 @@ export default class AProduct {
     onNext: (product: Product, relatedProducts: Product[]) => void,
     onLoading: (loading: boolean) => void
   ) {
+    
     // Tạo URL với các tham số
     const url = `${process.env.REACT_APP_API_BASE_URL}/products/detail?slug=${slug}&limit=${RELATED_PRODUCT_LIMIT}`;
-
+    // console.log(">>> detail url: " + url);
+    
     onLoading(true);
     axios
       .get(url, {
         headers: { "Content-Type": "application/json" },
       })
       .then((response) => {
-        onNext(response.data.product, response.data.related_products);
-        // console.log(">>> product: ", response.data.product);
+        const detailProduct = response.data.detail.product;
+        detailProduct.images = response.data.detail.images;
+
+        const relatedProducts = response.data.related_products.map((item:any) => ({
+          ...item.product,    
+          images: item.images || [] 
+        }));
+
+        onNext( detailProduct, relatedProducts);
+
+        // console.log(">>> product detail: ", detailProduct);
         // console.log(">>> product realted: ", response.data.related_products);
         
         onLoading(false);
       })
       .catch((err) => {
-        SLog.log(
-          LogType.Error,
-          "getProductsFilter",
-          "Cannot get products",
-          err
-        );
+       console.log("Error: ", err);
+       
         onLoading(false);
       });
   }

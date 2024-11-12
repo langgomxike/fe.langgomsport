@@ -95,7 +95,7 @@
     font-size: 20px;    
 }
 
-.btn-order {
+.cart .btn-order {
     height: 46px;
     width: 50%;
     display: flex;
@@ -107,7 +107,7 @@
     cursor: pointer;
 }
 
-.btn-order:hover {
+.cart .btn-order:hover {
     background-color: #fbcd43;
 }
 

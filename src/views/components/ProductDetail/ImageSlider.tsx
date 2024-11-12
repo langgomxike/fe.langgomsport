@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Slider from "react-slick";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import File from "../../../models/File";
+import ImageVariant from "../../../models/ImageVariant";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 type ImageSliderProps = {
-  images: File[];
+  images: ImageVariant[];
   onImageClick: (image: string) => void;
 };
 
@@ -63,10 +63,10 @@ const ImageSlider = ({ images, onImageClick }: ImageSliderProps) => {
           <div key={index}>
             <img
               key={index}
-              src={`${BASE_URL}/${image.filePath}`}
+              src={`${BASE_URL}/${image.path}`}
               alt={`image-${index}`}
               style={{ width: "100px", height: "100px", margin: "0 5px", border: "1px solid #ccc"}}
-              onClick={() => onImageClick(image.filePath)}
+              onClick={() => onImageClick(image.path)}
             />
           </div>
         ))}
