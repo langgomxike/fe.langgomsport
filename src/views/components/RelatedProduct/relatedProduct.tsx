@@ -68,8 +68,8 @@ const RelatedProduct = ({relatedProductsData, loading}:RealatedProductsProps) =>
           </div>
         ))
         }
-     {!loading && relatedProductsData.map((product) => (
-            <div key={product.id}>
+     {!loading && relatedProductsData.map((product, index) => (
+            <div key={`${product.id}-${index}`}>
               <ProductItem data={product}/>
             </div>
             ))
@@ -88,8 +88,8 @@ const RelatedProduct = ({relatedProductsData, loading}:RealatedProductsProps) =>
             </Col>
       ))
       }
-      {!loading && relatedProductsData.map((product) => (
-            <Col key={product.id} xs={6} className="mb-3">
+      {!loading && relatedProductsData.map((product, index) => (
+            <Col key={`${product.id}-${index}`} xs={6} className="mb-3">
               <ProductItem data={product}/>
               </Col>
             ))
