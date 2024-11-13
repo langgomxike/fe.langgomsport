@@ -224,7 +224,7 @@ export default function ProductListScreen() {
               {/* when empty */}
               {!loading && products.length < 1 && (
                 <div className="product-list-empty">
-                  <Image src={"empty-product-list.png"} />
+                  <Image src={"/images/empty-product-list.png"} />
                   <p className="text">{"Không tìm thấy sản phẩm"}</p>
                 </div>
               )}
