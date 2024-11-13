@@ -1,9 +1,22 @@
 import { Link } from "react-router-dom";
 import { FiTrash2 } from "react-icons/fi";
 import { useMediaQuery } from "react-responsive";
+import Variant from "../../../models/Variant";
 
-export default function CartItem() {
+type CartItemProps = {
+  cartVariant: Variant;
+  onDeleteCartItem: (variantId: number) => void;
+}
+
+export default function CartItem({cartVariant, onDeleteCartItem}: CartItemProps) {
   const isMobile = useMediaQuery({ maxWidth: 992 }); // Kiểm tra màn hình nhỏ hơn 768px (di động)
+
+  // handler
+
+  // Gọi hàm xóa khi nhấn vào nút xóa
+  const handleDelete = () => {
+    onDeleteCartItem(cartVariant.id);  
+  };
 
   return (
     <>
@@ -79,7 +92,7 @@ export default function CartItem() {
 
             {/* Button delete on desktop */}
             <td>
-              <div className="btn-delete">
+              <div className="btn-delete"  onClick={handleDelete}>
                 <FiTrash2 className="btn-delete-icon" />
               </div>
             </td>
@@ -97,7 +110,7 @@ export default function CartItem() {
               />
             </div>
             {/* Button delete on moblie */}
-            <div className="btn-delete mt-2">
+            <div className="btn-delete mt-2" onClick={handleDelete}>
               <FiTrash2 className="btn-delete-icon" />
             </div>
           </td>
