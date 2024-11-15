@@ -116,6 +116,11 @@ export default function Cart() {
           }).then(() => {
             Cookies.remove("cart"); // Xóa giỏ hàng
             // setCartItems([]); // Cập nhật lại giao diện
+            setCartItems([]); // Cập nhật lại giao diện
+
+             // Lưu thông tin fullname và phoneNumber vào localStorage
+              localStorage.setItem('fullname', fullname);
+              localStorage.setItem('phoneNumber', phoneNumber);
           });
         },
         (error) => {
@@ -191,6 +196,20 @@ export default function Cart() {
 
     calculateTotal();
   }, [cartItems, cartVariants]);
+
+  useEffect(() => {
+    // Đọc giá trị từ localStorage khi component được render
+    const savedFullname = localStorage.getItem('fullname');
+    const savedPhoneNumber = localStorage.getItem('phoneNumber');
+
+    // Nếu có giá trị, set vào state
+    if (savedFullname) {
+      setFullname(savedFullname);
+    }
+    if (savedPhoneNumber) {
+      setPhoneNumber(savedPhoneNumber);
+    }
+  }, []);
 
   //render
   return (
