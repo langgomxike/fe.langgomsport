@@ -141,6 +141,7 @@ export default function DetailScreen() {
         <RelatedProduct relatedProductsData={relatedProducts} loading={loading}/>
         </Row>
       </Container>
+      <FooterComponent/>
     </RootLayout>
   );
 }

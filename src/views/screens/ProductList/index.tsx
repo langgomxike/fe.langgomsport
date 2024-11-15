@@ -278,6 +278,7 @@ export default function ProductListScreen() {
           </Col>
         </Row>
       </div>
+      <FooterComponent/>
     </RootLayout>
   );
 }
