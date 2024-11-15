@@ -24,11 +24,15 @@ export default function Cart() {
 
   const [fullname, setFullname] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [isFullNameValid, setIsFullNameValid] = useState(false);
-  const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(false);
+  const [isFullNameValid, setIsFullNameValid] = useState<null | boolean>(null);
+  const [isPhoneNumberValid, setIsPhoneNumberValid] = useState<null | boolean>(
+    null
+  );
+  const [hasFullNameInput, setHasFullNameInput] = useState(false);
+  const [hasPhoneNumberInput, setHasPhoneNumberInput] = useState(false);
 
   // Regex patterns
-  const regexFullName = /^[A-Za-z\s]{3,}$/;
+  const regexFullName = /^[a-zA-ZÀ-ỹ\s]{3,}$/i;
   const regexPhoneNumber = /^[0-9]{10,11}$/;
 
   // handlers
@@ -125,11 +129,18 @@ export default function Cart() {
   }, [cartUpdated]);
 
   useEffect(() => {
-    if (fullname) {
+    // Kiểm tra fullname
+    if (fullname.trim() !== "") {
       setIsFullNameValid(regexFullName.test(fullname));
+    } else {
+      setIsFullNameValid(null); // Trạng thái mặc định, không hiển thị gì
     }
-    if (phoneNumber) {
+
+    // Kiểm tra phoneNumber
+    if (phoneNumber.trim() !== "") {
       setIsPhoneNumberValid(regexPhoneNumber.test(phoneNumber));
+    } else {
+      setIsPhoneNumberValid(null); // Trạng thái mặc định, không hiển thị gì
     }
   }, [fullname, phoneNumber]);
 
@@ -201,16 +212,19 @@ export default function Cart() {
                   type="text"
                   name="fullname"
                   value={fullname}
-                  onChange={(e) => setFullname(e.target.value)}
+                  onChange={(e) => {
+                    setFullname(e.target.value);
+                    if (!hasFullNameInput) setHasFullNameInput(true); // Đánh dấu đã nhập
+                  }}
                   className={`form-control ${
-                    isFullNameValid === false
+                    isFullNameValid === false && hasFullNameInput
                       ? "is-invalid"
                       : isFullNameValid === true
                       ? "is-valid"
                       : ""
                   }`}
                 />
-                {!isFullNameValid && (
+                {hasFullNameInput && isFullNameValid === false && (
                   <div className="text-danger">
                     Vui lòng nhập họ tên hợp lệ.
                   </div>
@@ -225,16 +239,19 @@ export default function Cart() {
                   type="text"
                   name="numberphone"
                   value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  onChange={(e) => {
+                    setPhoneNumber(e.target.value);
+                    if (!hasPhoneNumberInput) setHasPhoneNumberInput(true); // Đánh dấu đã nhập
+                  }}
                   className={`form-control ${
-                    isPhoneNumberValid === false
+                    isPhoneNumberValid === false && hasPhoneNumberInput
                       ? "is-invalid"
                       : isPhoneNumberValid === true
                       ? "is-valid"
                       : ""
                   }`}
                 />
-                {!isPhoneNumberValid && (
+                {hasPhoneNumberInput && isPhoneNumberValid === false && (
                   <div className="text-danger">
                     Vui lòng nhập số điện thoại hợp lệ.
                   </div>
@@ -264,7 +281,7 @@ export default function Cart() {
           <span>Chưa có sản phẩm nào trong giỏ hàng</span>
         </div>
       </div>
-      <FooterComponent/>
+      <FooterComponent />
     </RootLayout>
   );
 }
