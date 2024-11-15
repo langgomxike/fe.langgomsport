@@ -26,7 +26,7 @@ export default function CartItem({cartVariant, quantity ,onDeleteCartItem, onCha
     }
     return 0
   }
-  
+
 
   // Gọi hàm xóa khi nhấn vào nút xóa
   const handleDelete = () => {
@@ -97,9 +97,9 @@ export default function CartItem({cartVariant, quantity ,onDeleteCartItem, onCha
                   autoComplete="off"
                   onChange={(e) => {
                     // Đảm bảo giá trị >= 1
-                    const newQuantity = Math.max(Number(e.target.value), 1); 
+                    const newQuantity = Math.max(Number(e.target.value), 1);
                     // Cập nhật cookie và state giỏ hàng
-                    onChangeQuantity(cartVariant.id, newQuantity); 
+                    onChangeQuantity(cartVariant.id, newQuantity);
                   }}
                 />
               </div>
@@ -131,9 +131,9 @@ export default function CartItem({cartVariant, quantity ,onDeleteCartItem, onCha
                 autoComplete="off"
                 onChange={(e) => {
                   // Đảm bảo giá trị >= 1
-                  const newQuantity = Math.max(Number(e.target.value), 1); 
+                  const newQuantity = Math.max(Number(e.target.value), 1);
                   // Cập nhật cookie và state giỏ hàng
-                  onChangeQuantity(cartVariant.id, newQuantity); 
+                  onChangeQuantity(cartVariant.id, newQuantity);
                 }}
               />
             </div>
