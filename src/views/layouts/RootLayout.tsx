@@ -1,6 +1,7 @@
 import { PropsWithChildren } from "react";
 import HeaderComponent from "../components/Header/Header";
 import "./root.css"
+import FooterComponent from "../components/Footer/Footer";
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
@@ -16,6 +17,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
       {/* <footer style={{ height: "15vh", backgroundColor: "red" }}>
         <h1>HERE IS FOOTER</h1>
       </footer> */}
+      <FooterComponent/>
     </div>
   );
 }

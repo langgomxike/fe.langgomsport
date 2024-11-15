@@ -45,6 +45,7 @@ export default function ProductInfo({
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [variantsSize, setVariantsSize] = useState<VariantSize[]>([]);
   const [order, setOrder] = useState<Order>();
+  const [showWarning, setShowWarning] = useState(false);
 
   // hendler
 
@@ -116,25 +117,30 @@ export default function ProductInfo({
             variant.size.id === selectedSize &&
             variant.color.color === selectedColor
         );
+        setShowWarning(false);
       } else if (selectedSize) {
         // Nếu không có màu, chỉ tìm theo size
         selectedVariant = detailData.variants?.find(
           (variant) => variant.size.id === selectedSize
         );
+        setShowWarning(false);
       } else if (selectedColor) {
         // Nếu không có size, chỉ tìm theo màu
         selectedVariant = detailData.variants?.find(
           (variant) => variant.color.color === selectedColor
         );
+        setShowWarning(false);
       } else {
         // Nếu không có gì chọn, chọn variant đầu tiên (hoặc thông báo lỗi nếu cần)
         console.log("Chưa chọn gì cả!");
+        setShowWarning(true);
       }
     }
     
 
     if (!selectedVariant) {
       console.warn("No valid variant found");
+      setShowWarning(true);
       return;
     }
 
@@ -190,6 +196,9 @@ export default function ProductInfo({
     console.log(detailData);
   }, [detailData]);
 
+  console.log("Show", showWarning);
+  
+
   // render
   return (
     <div>
@@ -230,13 +239,6 @@ export default function ProductInfo({
                 <span className="price-precent">(-{detailData.discount}%)</span>
               </>
             )}
-            {detailData.discount <= 0 && (
-              <>
-                <span className="product-price-main">
-                  {formatPrice(detailData.price)}
-                </span>
-              </>
-            )}
           </div>
 
           {/* Product sizes */}
@@ -258,7 +260,10 @@ export default function ProductInfo({
                   </div>
                 ))}
             </div>
-            {/* <span className="titleWarming">Vui lòng chọn kích thước</span> */}
+            {showWarning && selectedSize === -1 && (
+              <span className="titleWarming">Vui lòng chọn kích thước</span>
+            )}
+
           </div>
         </div>
       )}

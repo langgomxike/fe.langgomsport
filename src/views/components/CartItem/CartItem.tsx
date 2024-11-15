@@ -10,11 +10,12 @@ type CartItemProps = {
   cartVariant: Variant;
   quantity: number;
   onDeleteCartItem: (variantId: number) => void;
+  onChangeQuantity: (variantId: number, newQuantity: number) => void;
 }
 
 const URL = process.env.REACT_APP_BASE_URL
 
-export default function CartItem({cartVariant, quantity ,onDeleteCartItem}: CartItemProps) {
+export default function CartItem({cartVariant, quantity ,onDeleteCartItem, onChangeQuantity}: CartItemProps) {
   const isMobile = useMediaQuery({ maxWidth: 992 }); // Kiểm tra màn hình nhỏ hơn 768px (di động)
   // handler
   function formatPrice(price: number) {
@@ -40,7 +41,7 @@ export default function CartItem({cartVariant, quantity ,onDeleteCartItem}: Cart
             { cartVariant.images?.length &&
               <img
                 src={`${URL}/${cartVariant.images[0]?.path}`}
-                alt="Product"
+                alt="Product" loading="lazy"
               />
 
             }
@@ -94,6 +95,12 @@ export default function CartItem({cartVariant, quantity ,onDeleteCartItem}: Cart
                   min={1}
                   inputMode="numeric"
                   autoComplete="off"
+                  onChange={(e) => {
+                    // Đảm bảo giá trị >= 1
+                    const newQuantity = Math.max(Number(e.target.value), 1); 
+                    // Cập nhật cookie và state giỏ hàng
+                    onChangeQuantity(cartVariant.id, newQuantity); 
+                  }}
                 />
               </div>
             </td>
@@ -122,6 +129,12 @@ export default function CartItem({cartVariant, quantity ,onDeleteCartItem}: Cart
                 min={1}
                 inputMode="numeric"
                 autoComplete="off"
+                onChange={(e) => {
+                  // Đảm bảo giá trị >= 1
+                  const newQuantity = Math.max(Number(e.target.value), 1); 
+                  // Cập nhật cookie và state giỏ hàng
+                  onChangeQuantity(cartVariant.id, newQuantity); 
+                }}
               />
             </div>
             {/* Button delete on moblie */}
