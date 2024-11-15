@@ -1,5 +1,5 @@
 import {useCallback, useContext, useEffect, useState} from "react";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import SweetAlert2 from "sweetalert2";
 import ScreenNameConfig from "../../../configs/ScreenNameConfig";
 import RootLayout from "../../layouts/RootLayout";
@@ -364,7 +364,7 @@ export default function Cart() {
         </div>
       </div>
 
-      <FooterComponent />
+      <FooterComponent/>
     </RootLayout>
   );
 }
