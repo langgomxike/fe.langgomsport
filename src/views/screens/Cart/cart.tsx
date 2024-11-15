@@ -360,6 +360,7 @@ export default function Cart() {
           }
         </div>
       </div>
+      <FooterComponent/>
     </RootLayout>
   );
 }
