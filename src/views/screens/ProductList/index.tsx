@@ -17,6 +17,7 @@ import AProduct from "../../../apis/AProduct";
 import Pagination from "../../../models/Pagination";
 import { useLocation, useNavigate } from "react-router-dom";
 import ConfigValue from "../../../configs/ConfigValue";
+import FooterComponent from "../../components/Footer/Footer";
 
 const MAX_AMOUNT_PRODUCTS_PER_PAGE = 20;
 const PRODUCTS_PER_ROW_IN_WEB = 4;
@@ -243,6 +244,7 @@ export default function ProductListScreen() {
           </Col>
         </Row>
       </div>
+      <FooterComponent/>
     </RootLayout>
   );
 }

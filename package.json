@@ -4,10 +4,13 @@
   "private": true,
   "dependencies": {
     "@datobs/react-image-magnifiers": "^1.4.8",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
     "@fancyapps/ui": "^5.0.36",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@mui/material": "^6.1.7",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -40,6 +43,7 @@
     "react-slick": "^0.30.2",
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.13",
+    "sweetalert2": "^11.14.5",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },

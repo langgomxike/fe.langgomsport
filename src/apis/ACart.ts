@@ -61,4 +61,34 @@ export default class ACart {
             
         })
     }
+
+    // ĐẶT HÀNG
+    public static placeOrder(
+        fullName: string,
+        phoneNumber: string,
+        orderVariants: CartCookie[],
+        onSuccess: (message: string) => void,
+        onError: (error: string) => void
+    ) {
+        const payload = {
+            fullName,
+            phoneNumber,
+            orderVariants: orderVariants.map(item => ({
+                variantId: item.variantId,
+                quantity: item.quantity
+            }))
+        };
+        console.log("payload: " + JSON.stringify(payload));
+        
+    
+        axios.post(`${this.BASE_API_URL}/multi-order`, payload)
+        .then((response) => {
+            onSuccess(response.data.message || "Đặt hàng thành công!");
+        })
+        .catch((err) => {
+            console.error("placeOrder", err);
+            onError("Đã xảy ra lỗi khi đặt hàng. Vui lòng thử lại!");
+        });
+    }
+    
 }
