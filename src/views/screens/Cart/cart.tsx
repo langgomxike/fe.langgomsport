@@ -16,7 +16,7 @@ import FooterComponent from "../../components/Footer/Footer";
 const expires = ConfigValue.CART_COOKIE_EXPRIRATION_LIMIT;
 
 export default function Cart() {
-  // states
+  // States
   const [cartItems, setCartItems] = useState<CartCookie[]>([]);
   const [cartVariants, setCartVariants] = useState<Variant[]>([]);
   const [cartUpdated, setCartUpdated] = useState(false);
@@ -35,7 +35,7 @@ export default function Cart() {
   const regexFullName = /^[a-zA-ZÀ-ỹ\s]{3,}$/i;
   const regexPhoneNumber = /^[0-9]{10,11}$/;
 
-  // handlers
+  // Handlers
   const getCartFromCookie = (): CartCookie[] => {
     const existingCart = Cookies.get("cart");
     return existingCart ? JSON.parse(existingCart) : [];
@@ -45,18 +45,12 @@ export default function Cart() {
     (cartVariantId: number) => {
       console.log("Xóa cart trong cookie");
 
-      // Lấy dữ liệu giỏ hàng từ cookie
       const cart = getCartFromCookie();
-
-      // Loại bỏ item có variantId trùng với cartVariantId
       const updatedCart = cart.filter(
         (cartItem) => cartItem.variantId !== cartVariantId
       );
 
-      // Cập nhật lại giỏ hàng vào cookie
       Cookies.set("cart", JSON.stringify(updatedCart), { expires: expires });
-
-      // Cập nhật lại giỏ hàng trong state
       setCartUpdated((prev) => !prev);
       setCartItems(updatedCart);
     },
@@ -68,6 +62,7 @@ export default function Cart() {
 
     if (!fullname || !regexFullName.test(fullname)) {
       setIsFullNameValid(false);
+      setHasFullNameInput(true);
       valid = false;
     } else {
       setIsFullNameValid(true);
@@ -75,6 +70,7 @@ export default function Cart() {
 
     if (!phoneNumber || !regexPhoneNumber.test(phoneNumber)) {
       setIsPhoneNumberValid(false);
+      setHasPhoneNumberInput(true);
       valid = false;
     } else {
       setIsPhoneNumberValid(true);
@@ -92,8 +88,8 @@ export default function Cart() {
             icon: "success",
             confirmButtonText: "Đóng",
           }).then(() => {
-            Cookies.remove("cart"); // Xóa giỏ hàng
-            setCartItems([]); // Cập nhật lại giao diện
+            Cookies.remove("cart");
+            setCartItems([]);
           });
         },
         (error) => {
@@ -108,9 +104,8 @@ export default function Cart() {
     }
   };
 
-  // effects
+  // Effects
   useEffect(() => {
-    // Lấy giỏ hàng từ cookie
     const cart = getCartFromCookie();
     setCartItems(cart);
     console.log("existingCart", cart);
@@ -129,22 +124,20 @@ export default function Cart() {
   }, [cartUpdated]);
 
   useEffect(() => {
-    // Kiểm tra fullname
     if (fullname.trim() !== "") {
       setIsFullNameValid(regexFullName.test(fullname));
     } else {
-      setIsFullNameValid(null); // Trạng thái mặc định, không hiển thị gì
+      setIsFullNameValid(null);
     }
 
-    // Kiểm tra phoneNumber
     if (phoneNumber.trim() !== "") {
       setIsPhoneNumberValid(regexPhoneNumber.test(phoneNumber));
     } else {
-      setIsPhoneNumberValid(null); // Trạng thái mặc định, không hiển thị gì
+      setIsPhoneNumberValid(null);
     }
   }, [fullname, phoneNumber]);
 
-  //render
+  // Render
   return (
     <RootLayout>
       <div className="cart container">
@@ -162,10 +155,10 @@ export default function Cart() {
                 </li>
               </ol>
             </nav>
-            <hr></hr>
+            <hr />
           </div>
 
-          {/* Title of layout */}
+          {/* Title */}
           <h1 className="cart-header-title">Giỏ hàng</h1>
         </div>
 
@@ -187,14 +180,13 @@ export default function Cart() {
                 <CartItemSkeleton limit={1} />
               ) : (
                 <>
-                  {cartVariants &&
-                    cartVariants.map((variant, index) => (
-                      <CartItem
-                        key={index}
-                        cartVariant={variant}
-                        onDeleteCartItem={deleteCartItem}
-                      />
-                    ))}
+                  {cartVariants.map((variant, index) => (
+                    <CartItem
+                      key={index}
+                      cartVariant={variant}
+                      onDeleteCartItem={deleteCartItem}
+                    />
+                  ))}
                 </>
               )}
             </tbody>
@@ -214,7 +206,7 @@ export default function Cart() {
                   value={fullname}
                   onChange={(e) => {
                     setFullname(e.target.value);
-                    if (!hasFullNameInput) setHasFullNameInput(true); // Đánh dấu đã nhập
+                    if (!hasFullNameInput) setHasFullNameInput(true);
                   }}
                   className={`form-control ${
                     isFullNameValid === false && hasFullNameInput
@@ -241,7 +233,7 @@ export default function Cart() {
                   value={phoneNumber}
                   onChange={(e) => {
                     setPhoneNumber(e.target.value);
-                    if (!hasPhoneNumberInput) setHasPhoneNumberInput(true); // Đánh dấu đã nhập
+                    if (!hasPhoneNumberInput) setHasPhoneNumberInput(true);
                   }}
                   className={`form-control ${
                     isPhoneNumberValid === false && hasPhoneNumberInput
@@ -261,7 +253,7 @@ export default function Cart() {
             <div className="col-12 col-md-6">
               <div className="order-container">
                 <div className="order-total">
-                  <h3>Tổnng tiền:</h3>
+                  <h3>Tổng tiền:</h3>
                   <span>1,000,000đ</span>
                 </div>
                 <div className="btn-order" onClick={handleOrderClick}>
@@ -271,15 +263,19 @@ export default function Cart() {
             </div>
           </div>
         </div>
-        <div className="empty-cart">
-          <img
-            src="/images/empty-product-list.png"
-            alt=""
-            width={100}
-            height={100}
-          />
-          <span>Chưa có sản phẩm nào trong giỏ hàng</span>
-        </div>
+
+        {/* Empty Cart */}
+        {cartItems.length === 0 && (
+          <div className="empty-cart">
+            <img
+              src="/images/empty-product-list.png"
+              alt=""
+              width={100}
+              height={100}
+            />
+            <span>Chưa có sản phẩm nào trong giỏ hàng</span>
+          </div>
+        )}
       </div>
       <FooterComponent />
     </RootLayout>
