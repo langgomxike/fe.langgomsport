@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import SweetAlert2 from "sweetalert2";
 import ScreenNameConfig from "../../../configs/ScreenNameConfig";
@@ -12,12 +12,15 @@ import Variant from "../../../models/Variant";
 import ConfigValue from "../../../configs/ConfigValue";
 import CartItemSkeleton from "../../components/CartItem/CartItemSkeleton";
 import FooterComponent from "../../components/Footer/Footer";
+import CartContext from "../../../configs/CartConfig";
 
 const expires = ConfigValue.CART_COOKIE_EXPRIRATION_LIMIT;
 
 export default function Cart() {
+  //contexts
+  const cartContext = useContext(CartContext);
+
   // states
-  const [cartItems, setCartItems] = useState<CartCookie[]>([]);
   const [cartVariants, setCartVariants] = useState<Variant[]>([]);
   const [cartUpdated, setCartUpdated] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -41,27 +44,27 @@ export default function Cart() {
     return existingCart ? JSON.parse(existingCart) : [];
   };
 
-  const deleteCartItem = useCallback(
-    (cartVariantId: number) => {
-      console.log("Xóa cart trong cookie");
-
-      // Lấy dữ liệu giỏ hàng từ cookie
-      const cart = getCartFromCookie();
-
-      // Loại bỏ item có variantId trùng với cartVariantId
-      const updatedCart = cart.filter(
-        (cartItem) => cartItem.variantId !== cartVariantId
-      );
-
-      // Cập nhật lại giỏ hàng vào cookie
-      Cookies.set("cart", JSON.stringify(updatedCart), { expires: expires });
-
-      // Cập nhật lại giỏ hàng trong state
-      setCartUpdated((prev) => !prev);
-      setCartItems(updatedCart);
-    },
-    [cartUpdated]
-  );
+  // const deleteCartItem = useCallback(
+  //   (cartVariantId: number) => {
+  //     console.log("Xóa cart trong cookie");
+  //
+  //     // Lấy dữ liệu giỏ hàng từ cookie
+  //     const cart = getCartFromCookie();
+  //
+  //     // Loại bỏ item có variantId trùng với cartVariantId
+  //     const updatedCart = cart.filter(
+  //       (cartItem) => cartItem.variantId !== cartVariantId
+  //     );
+  //
+  //     // Cập nhật lại giỏ hàng vào cookie
+  //     Cookies.set("cart", JSON.stringify(updatedCart), { expires: expires });
+  //
+  //     // Cập nhật lại giỏ hàng trong state
+  //     setCartUpdated((prev) => !prev);
+  //     setCartItems(updatedCart);
+  //   },
+  //   [cartUpdated]
+  // );
 
   const handleOrderClick = () => {
     let valid = true;
@@ -84,7 +87,7 @@ export default function Cart() {
       ACart.placeOrder(
         fullname,
         phoneNumber,
-        cartItems,
+        cartContext.items,
         (message) => {
           SweetAlert2.fire({
             title: "Đơn hàng đã được ghi nhận",
@@ -93,7 +96,7 @@ export default function Cart() {
             confirmButtonText: "Đóng",
           }).then(() => {
             Cookies.remove("cart"); // Xóa giỏ hàng
-            setCartItems([]); // Cập nhật lại giao diện
+            // setCartItems([]); // Cập nhật lại giao diện
           });
         },
         (error) => {
@@ -111,22 +114,23 @@ export default function Cart() {
   // effects
   useEffect(() => {
     // Lấy giỏ hàng từ cookie
-    const cart = getCartFromCookie();
-    setCartItems(cart);
-    console.log("existingCart", cart);
+    // const cart = getCartFromCookie();
+    // setCartItems(cart);
+
+    console.log("existingCart", cartContext.items);
 
     ACart.getCartByVariantIds(
-      cart,
+      cartContext.items,
       (data) => {
         setCartVariants(data);
       },
       setLoading
     );
 
-    if (!cart.length) {
+    if (!cartContext.items.length) {
       console.warn("Không có sản phẩm nào trong giỏ hàng");
     }
-  }, [cartUpdated]);
+  }, [cartContext.items]);
 
   useEffect(() => {
     // Kiểm tra fullname
@@ -192,7 +196,7 @@ export default function Cart() {
                       <CartItem
                         key={index}
                         cartVariant={variant}
-                        onDeleteCartItem={deleteCartItem}
+                        onDeleteCartItem={() => cartContext.removeFromCart([variant.id])}
                       />
                     ))}
                 </>

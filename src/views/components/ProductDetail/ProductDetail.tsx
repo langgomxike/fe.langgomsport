@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
 import "./product-detail.css";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa6";
@@ -10,13 +10,14 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import CryptoJS from "crypto-js";
 import ConfigValue from "../../../configs/ConfigValue";
+import CartContext from "../../../configs/CartConfig";
 
 type ProductDetailProps = {
   detailData: Product | undefined;
   loading: boolean;
 };
 
-type CartItem = {
+export type CartItem = {
   quantity: number;
   variantId: number;
 };
@@ -34,7 +35,10 @@ export default function ProductInfo({
   detailData,
   loading,
 }: ProductDetailProps) {
+  //contexts
   const navigate = useNavigate();
+  const cartContext = useContext(CartContext);
+
   // states
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState(-1);
@@ -139,34 +143,36 @@ export default function ProductInfo({
       variantId: selectedVariant.id,
     };
 
+    cartContext.addToCart(item);
+
     // Lấy dữ liệu từ giỏ hàng nếu có từ cookie
-    const existingCart = Cookies.get("cart");
-
-    let cart: CartItem[] = existingCart ? JSON.parse(existingCart) : [];
-    // let cart: CartItem[] = existingCart
-    // ? JSON.parse(CryptoJS.AES.decrypt(existingCart, SECRET_KEY).toString(CryptoJS.enc.Utf8))
-    // : [];
-
-    // Kiểm tra sản phẩm đã tồn tại trong giỏ hàng chưa
-    const index = cart.findIndex((cartItem) => {
-      return cartItem.variantId === item.variantId;
-    });
-
-    // Nếu sản phẩm đã tồn tại, tăng số lượng
-    if (index > -1) {
-      cart[index].quantity += item.quantity;
-    } else {
-      cart.push(item);
-    }
-
-    // Cập nhật lại giỏ hàng trong cookie
-    // Mã hóa giỏ hàng trước khi lưu vào cookie
-    // const encryptedCart = CryptoJS.AES.encrypt(JSON.stringify(cart), SECRET_KEY).toString();
-    Cookies.set("cart", JSON.stringify(cart), { expires: expires });
+    // const existingCart = Cookies.get("cart");
+    //
+    // let cart: CartItem[] = existingCart ? JSON.parse(existingCart) : [];
+    // // let cart: CartItem[] = existingCart
+    // // ? JSON.parse(CryptoJS.AES.decrypt(existingCart, SECRET_KEY).toString(CryptoJS.enc.Utf8))
+    // // : [];
+    //
+    // // Kiểm tra sản phẩm đã tồn tại trong giỏ hàng chưa
+    // const index = cart.findIndex((cartItem) => {
+    //   return cartItem.variantId === item.variantId;
+    // });
+    //
+    // // Nếu sản phẩm đã tồn tại, tăng số lượng
+    // if (index > -1) {
+    //   cart[index].quantity += item.quantity;
+    // } else {
+    //   cart.push(item);
+    // }
+    //
+    // // Cập nhật lại giỏ hàng trong cookie
+    // // Mã hóa giỏ hàng trước khi lưu vào cookie
+    // // const encryptedCart = CryptoJS.AES.encrypt(JSON.stringify(cart), SECRET_KEY).toString();
+    // Cookies.set("cart", JSON.stringify(cart), { expires: expires });
 
     // Chuyển hướng đến màn hình giỏ hàng
     navigate("/cart");
-  }, [selectedSize, selectedColor, quantity, detailData]);
+  }, [selectedSize, selectedColor, quantity, detailData, cartContext]);
 
   // effects
   useEffect(() => {
