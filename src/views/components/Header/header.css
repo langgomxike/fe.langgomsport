@@ -1,0 +1,16 @@
+.cart-badge {
+    position: relative;
+    bottom: 20%;
+    left: -20%;
+    font-size: .6em;
+    cursor: default;
+}
+
+@media only screen and (max-width: 720px) {
+    .cart-badge {
+        position: relative;
+        bottom: 20%;
+        left: -10%;
+        font-size: .5em;
+    }
+}
