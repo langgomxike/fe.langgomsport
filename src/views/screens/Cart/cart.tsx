@@ -113,13 +113,17 @@ export default function Cart() {
               ) : (
                 <>
                 {cartVariants &&
-                  cartVariants.map((variant, index) => (
-                    <CartItem
-                      key={index}
+                  cartVariants.map((variant, index) => {
+                    const cartItem = cartItems.find(
+                      (item) => item.variantId === variant.id
+                    );
+                    return (
+                    <CartItem  key={index} 
                       cartVariant={variant}
-                      onDeleteCartItem={deleteCartItem}
-                    />
-                  ))}
+                     quantity={cartItem?.quantity || 1} 
+                     onDeleteCartItem={deleteCartItem}/>
+                    )
+                  })}
                 </>
               )}
               
