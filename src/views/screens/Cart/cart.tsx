@@ -122,6 +122,11 @@ export default function Cart() {
               localStorage.setItem('fullname', fullname);
               localStorage.setItem('phoneNumber', phoneNumber);
             // setCartItems([]); // Cập nhật lại giao diện
+            setCartItems([]); // Cập nhật lại giao diện
+
+             // Lưu thông tin fullname và phoneNumber vào localStorage
+              localStorage.setItem('fullname', fullname);
+              localStorage.setItem('phoneNumber', phoneNumber);
           });
         },
         (error) => {
