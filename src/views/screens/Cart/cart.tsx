@@ -21,6 +21,7 @@ export default function Cart() {
   const [cartVariants, setCartVariants] = useState<Variant[]>([]);
   const [cartUpdated, setCartUpdated] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const [fullname, setFullname] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -63,8 +64,27 @@ export default function Cart() {
     [cartUpdated]
   );
 
+  const updateCartQuantity = (variantId: number, newQuantity: number) => {
+    // Lấy giỏ hàng từ cookie
+    const cart = getCartFromCookie(); 
+  
+    // Cập nhật quantity nếu đúng variantId
+    const updatedCart = cart.map((item) =>
+      item.variantId === variantId
+        ? { ...item, quantity: newQuantity } 
+        : item
+    );
+  
+    // Lưu giỏ hàng cập nhật vào cookie
+    Cookies.set("cart", JSON.stringify(updatedCart), { expires: expires });
+  
+    // Cập nhật lại state giỏ hàng
+    setCartItems(updatedCart);
+  };
+
   const handleOrderClick = () => {
     let valid = true;
+    const cart = getCartFromCookie(); 
 
     if (!fullname || !regexFullName.test(fullname)) {
       setIsFullNameValid(false);
@@ -84,7 +104,7 @@ export default function Cart() {
       ACart.placeOrder(
         fullname,
         phoneNumber,
-        cartItems,
+        cart,
         (message) => {
           SweetAlert2.fire({
             title: "Đơn hàng đã được ghi nhận",
@@ -94,6 +114,10 @@ export default function Cart() {
           }).then(() => {
             Cookies.remove("cart"); // Xóa giỏ hàng
             setCartItems([]); // Cập nhật lại giao diện
+
+             // Lưu thông tin fullname và phoneNumber vào localStorage
+              localStorage.setItem('fullname', fullname);
+              localStorage.setItem('phoneNumber', phoneNumber);
           });
         },
         (error) => {
@@ -144,6 +168,45 @@ export default function Cart() {
     }
   }, [fullname, phoneNumber]);
 
+  function formatPrice(price: number) {
+    if(price) {
+      return price
+        .toLocaleString("vi-VN", { style: "currency", currency: "VND" })
+        .replace("₫", "đ");
+    }
+    return 0
+  }
+
+  useEffect(() => {
+    const calculateTotal = () => {
+      const total = cartVariants.reduce((sum, variant) => {
+        const cartItem = cartItems.find((item) => item.variantId === variant.id);
+        if (cartItem) {
+          const price = variant.price > 0 ? variant.price : variant.product?.descPrice || 0;
+          return sum + price * cartItem.quantity;
+        }
+        return sum;
+      }, 0);
+      setTotalPrice(total);
+    };
+  
+    calculateTotal();
+  }, [cartItems, cartVariants]);
+
+  useEffect(() => {
+    // Đọc giá trị từ localStorage khi component được render
+    const savedFullname = localStorage.getItem('fullname');
+    const savedPhoneNumber = localStorage.getItem('phoneNumber');
+
+    // Nếu có giá trị, set vào state
+    if (savedFullname) {
+      setFullname(savedFullname);
+    }
+    if (savedPhoneNumber) {
+      setPhoneNumber(savedPhoneNumber);
+    }
+  }, []); 
+
   //render
   return (
     <RootLayout>
@@ -171,6 +234,7 @@ export default function Cart() {
 
         {/* Body */}
         <div className="body-container">
+        {cartItems.length ? ( 
           <table className="table align-middle">
             <thead className="table-header">
               <tr className="text-center text-nowrap">
@@ -187,20 +251,39 @@ export default function Cart() {
                 <CartItemSkeleton limit={1} />
               ) : (
                 <>
-                  {cartVariants &&
-                    cartVariants.map((variant, index) => (
-                      <CartItem
-                        key={index}
-                        cartVariant={variant}
-                        onDeleteCartItem={deleteCartItem}
-                      />
-                    ))}
+                {cartVariants &&
+                  cartVariants.map((variant, index) => {
+                    const cartItem = cartItems.find(
+                      (item) => item.variantId === variant.id
+                    );
+                    return (
+                    <CartItem  key={index} 
+                      cartVariant={variant}
+                     quantity={cartItem?.quantity || 1} 
+                     onDeleteCartItem={deleteCartItem}
+                     onChangeQuantity={updateCartQuantity}/>
+                    )
+                  })}
                 </>
               )}
             </tbody>
           </table>
+        ): (
+          <div className="empty-cart">
+          <img
+            src="/images/empty-product-list.png"
+            alt=""
+            width={100}
+            height={100}
+          />
+          <span>Chưa có sản phẩm nào trong giỏ hàng</span>
+        </div>
+        )
+        }
+
 
           {/* Order */}
+          {!loading && 
           <div className="row orderContainer">
             <div className="col-12 col-md-6">
               <h3 className="titleInfomation">Thông tin đặt hàng</h3>
@@ -262,26 +345,21 @@ export default function Cart() {
               <div className="order-container">
                 <div className="order-total">
                   <h3>Tổnng tiền:</h3>
-                  <span>1,000,000đ</span>
+                  <span>{formatPrice(totalPrice)}</span>
                 </div>
-                <div className="btn-order" onClick={handleOrderClick}>
+                <button
+                disabled={cartItems.length === 0}
+                className={cartItems.length === 0 ? "btn-order-disabled" : "btn-order"}
+                onClick={handleOrderClick}
+                >
                   Đặt hàng
-                </div>
+                </button>
               </div>
             </div>
           </div>
-        </div>
-        <div className="empty-cart">
-          <img
-            src="/images/empty-product-list.png"
-            alt=""
-            width={100}
-            height={100}
-          />
-          <span>Chưa có sản phẩm nào trong giỏ hàng</span>
+          }
         </div>
       </div>
-      <FooterComponent />
     </RootLayout>
   );
 }
