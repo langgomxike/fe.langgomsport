@@ -74,15 +74,15 @@ export default function Cart() {
     // Cập nhật quantity nếu đúng variantId
     const updatedCart = cart.map((item) =>
       item.variantId === variantId
-        ? { ...item, quantity: newQuantity }
+        ? {...item, quantity: newQuantity}
         : item
     );
 
     // Lưu giỏ hàng cập nhật vào cookie
-    Cookies.set("cart", JSON.stringify(updatedCart), { expires: expires });
+    // Cookies.set("cart", JSON.stringify(updatedCart), {expires: expires});
 
     // Cập nhật lại state giỏ hàng
-    setCartItems(updatedCart);
+    // setCartItems(updatedCart);
   };
 
   const handleOrderClick = () => {
@@ -122,11 +122,10 @@ export default function Cart() {
               localStorage.setItem('fullname', fullname);
               localStorage.setItem('phoneNumber', phoneNumber);
             // setCartItems([]); // Cập nhật lại giao diện
-            setCartItems([]); // Cập nhật lại giao diện
 
-             // Lưu thông tin fullname và phoneNumber vào localStorage
-              localStorage.setItem('fullname', fullname);
-              localStorage.setItem('phoneNumber', phoneNumber);
+            // Lưu thông tin fullname và phoneNumber vào localStorage
+            localStorage.setItem('fullname', fullname);
+            localStorage.setItem('phoneNumber', phoneNumber);
           });
         },
         (error) => {
@@ -179,9 +178,9 @@ export default function Cart() {
   }, [fullname, phoneNumber]);
 
   function formatPrice(price: number) {
-    if(price) {
+    if (price) {
       return price
-        .toLocaleString("vi-VN", { style: "currency", currency: "VND" })
+        .toLocaleString("vi-VN", {style: "currency", currency: "VND"})
         .replace("₫", "đ");
     }
     return 0
@@ -190,7 +189,7 @@ export default function Cart() {
   useEffect(() => {
     const calculateTotal = () => {
       const total = cartVariants.reduce((sum, variant) => {
-        const cartItem = cartItems.find((item) => item.variantId === variant.id);
+        const cartItem = cartContext.items.find((item) => item.variantId === variant.id);
         if (cartItem) {
           const price = variant.price > 0 ? variant.price : variant.product?.descPrice || 0;
           return sum + price * cartItem.quantity;
@@ -201,7 +200,7 @@ export default function Cart() {
     };
 
     calculateTotal();
-  }, [cartItems, cartVariants]);
+  }, [cartContext.items, cartVariants]);
 
   useEffect(() => {
     // Đọc giá trị từ localStorage khi component được render
@@ -244,9 +243,9 @@ export default function Cart() {
 
         {/* Body */}
         <div className="body-container">
-        {cartItems.length ? (
-          <table className="table align-middle">
-            <thead className="table-header">
+          {cartContext.items.length ? (
+            <table className="table align-middle">
+              <thead className="table-header">
               <tr className="text-center text-nowrap">
                 <th scope="col">Hình ảnh</th>
                 <th scope="col">Tên sản phẩm</th>
@@ -255,126 +254,118 @@ export default function Cart() {
                 <th scope="col">Thành tiền</th>
                 <th scope="col">Xóa</th>
               </tr>
-            </thead>
-            <tbody>
+              </thead>
+              <tbody>
               {loading ? (
-                <CartItemSkeleton limit={1} />
+                <CartItemSkeleton limit={1}/>
               ) : (
                 <>
                   {cartVariants &&
-                    cartVariants.map((variant, index) => (
-                      <CartItem
-                        key={index}
-                        cartVariant={variant}
-                        onDeleteCartItem={() => cartContext.removeFromCart([variant.id])}
-                      />
-                    ))}
-                {cartVariants &&
-                  cartVariants.map((variant, index) => {
-                    const cartItem = cartItems.find(
-                      (item) => item.variantId === variant.id
-                    );
-                    return (
-                    <CartItem  key={index}
-                      cartVariant={variant}
-                     quantity={cartItem?.quantity || 1}
-                     onDeleteCartItem={deleteCartItem}
-                     onChangeQuantity={updateCartQuantity}/>
-                    )
-                  })}
+                    cartVariants.map((variant, index) => {
+                      const cartItem = cartContext.items.find(
+                        (item) => item.variantId === variant.id
+                      );
+                      return (
+                        <CartItem key={index}
+                                  cartVariant={variant}
+                                  quantity={cartItem?.quantity || 1}
+                                  onDeleteCartItem={() => cartContext.removeFromCart([variant.id])}
+                                  onChangeQuantity={updateCartQuantity}/>
+                      )
+                    })}
                 </>
               )}
-            </tbody>
-          </table>
-        ): (
-          <div className="empty-cart">
-          <img
-            src="/images/empty-product-list.png"
-            alt=""
-            width={100}
-            height={100}
-          />
-          <span>Chưa có sản phẩm nào trong giỏ hàng</span>
-        </div>
-        )
-        }
+              </tbody>
+            </table>
+          ) : (
+            <div className="empty-cart">
+              <img
+                src="/images/empty-product-list.png"
+                alt=""
+                width={100}
+                height={100}
+              />
+              <span>Chưa có sản phẩm nào trong giỏ hàng</span>
+            </div>
+          )
+          }
 
 
           {/* Order */}
           {!loading &&
-          <div className="row orderContainer">
-            <div className="col-12 col-md-6">
-              <h3 className="titleInfomation">Thông tin đặt hàng</h3>
-              <div className="inputInfo">
-                <label>
-                  Họ và tên <span className="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="fullname"
-                  value={fullname}
-                  onChange={(e) => {
-                    setFullname(e.target.value);
-                    if (!hasFullNameInput) setHasFullNameInput(true); // Đánh dấu đã nhập
-                  }}
-                  className={`form-control ${
-                    isFullNameValid === false && hasFullNameInput
-                      ? "is-invalid"
-                      : isFullNameValid === true
-                      ? "is-valid"
-                      : ""
-                  }`}
-                />
-                {hasFullNameInput && isFullNameValid === false && (
-                  <div className="text-danger">
-                    Vui lòng nhập họ tên hợp lệ.
-                  </div>
-                )}
-              </div>
-
-              <div className="inputInfo">
-                <label>
-                  Số điện thoại <span className="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="numberphone"
-                  value={phoneNumber}
-                  onChange={(e) => {
-                    setPhoneNumber(e.target.value);
-                    if (!hasPhoneNumberInput) setHasPhoneNumberInput(true); // Đánh dấu đã nhập
-                  }}
-                  className={`form-control ${
-                    isPhoneNumberValid === false && hasPhoneNumberInput
-                      ? "is-invalid"
-                      : isPhoneNumberValid === true
-                      ? "is-valid"
-                      : ""
-                  }`}
-                />
-                {hasPhoneNumberInput && isPhoneNumberValid === false && (
-                  <div className="text-danger">
-                    Vui lòng nhập số điện thoại hợp lệ.
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="col-12 col-md-6">
-              <div className="order-container">
-                <div className="order-total">
-                  <h3>Tổnng tiền:</h3>
-                  <span>{formatPrice(totalPrice)}</span>
+            <div className="row orderContainer">
+              <div className="col-12 col-md-6">
+                <h3 className="titleInfomation">Thông tin đặt hàng</h3>
+                <div className="inputInfo">
+                  <label>
+                    Họ và tên <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="fullname"
+                    value={fullname}
+                    onChange={(e) => {
+                      setFullname(e.target.value);
+                      if (!hasFullNameInput) setHasFullNameInput(true); // Đánh dấu đã nhập
+                    }}
+                    className={`form-control ${
+                      isFullNameValid === false && hasFullNameInput
+                        ? "is-invalid"
+                        : isFullNameValid === true
+                          ? "is-valid"
+                          : ""
+                    }`}
+                  />
+                  {hasFullNameInput && isFullNameValid === false && (
+                    <div className="text-danger">
+                      Vui lòng nhập họ tên hợp lệ.
+                    </div>
+                  )}
                 </div>
-                <button
-                disabled={cartItems.length === 0}
-                className={cartItems.length === 0 ? "btn-order-disabled" : "btn-order"}
-                onClick={handleOrderClick}
-                >
-                  Đặt hàng
-                </button>
+
+                <div className="inputInfo">
+                  <label>
+                    Số điện thoại <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="numberphone"
+                    value={phoneNumber}
+                    onChange={(e) => {
+                      setPhoneNumber(e.target.value);
+                      if (!hasPhoneNumberInput) setHasPhoneNumberInput(true); // Đánh dấu đã nhập
+                    }}
+                    className={`form-control ${
+                      isPhoneNumberValid === false && hasPhoneNumberInput
+                        ? "is-invalid"
+                        : isPhoneNumberValid === true
+                          ? "is-valid"
+                          : ""
+                    }`}
+                  />
+                  {hasPhoneNumberInput && isPhoneNumberValid === false && (
+                    <div className="text-danger">
+                      Vui lòng nhập số điện thoại hợp lệ.
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="col-12 col-md-6">
+                <div className="order-container">
+                  <div className="order-total">
+                    <h3>Tổnng tiền:</h3>
+                    <span>{formatPrice(totalPrice)}</span>
+                  </div>
+                  <button
+                    disabled={cartContext.items.length === 0}
+                    className={cartContext.items.length === 0 ? "btn-order-disabled" : "btn-order"}
+                    onClick={handleOrderClick}
+                  >
+                    Đặt hàng
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
           }
         </div>
         <div className="empty-cart">
