@@ -11,6 +11,7 @@ import CartCookie from "../../../models/CartCookies";
 import Variant from "../../../models/Variant";
 import ConfigValue from "../../../configs/ConfigValue";
 import CartItemSkeleton from "../../components/CartItem/CartItemSkeleton";
+import FooterComponent from "../../components/Footer/Footer";
 
 const expires = ConfigValue.CART_COOKIE_EXPRIRATION_LIMIT;
 
@@ -263,6 +264,7 @@ export default function Cart() {
           <span>Chưa có sản phẩm nào trong giỏ hàng</span>
         </div>
       </div>
+      <FooterComponent/>
     </RootLayout>
   );
 }
