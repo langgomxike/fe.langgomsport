@@ -14,6 +14,7 @@ import MarkdownPreview from "@uiw/react-markdown-preview";
 import AProduct from "../../../apis/AProduct";
 import Skeleton from "react-loading-skeleton";
 import "./detail.css";
+import FooterComponent from "../../components/Footer/Footer";
 
 export default function DetailScreen() {
   //contexts
@@ -141,6 +142,7 @@ export default function DetailScreen() {
         <RelatedProduct relatedProductsData={relatedProducts} loading={loading}/>
         </Row>
       </Container>
+      <FooterComponent/>
     </RootLayout>
   );
 }
