@@ -14,12 +14,13 @@ import {
 import ScreenNameConfig from "../../../configs/ScreenNameConfig";
 import {BiSearch, BiShoppingBag} from "react-icons/bi";
 import "./header.css";
-import {useCallback, useContext, useState} from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
 import LanguageContext from "../../../configs/LanguageConfig";
 import vn from "../../../data/vn.json";
 import en from "../../../data/en.json";
 import {Globe2} from "react-bootstrap-icons";
 import {useNavigate} from "react-router-dom";
+import CartContext from "../../../configs/CartConfig";
 
 const MOBILE_MAX_WIDTH = 960;
 
@@ -27,12 +28,13 @@ export default function HeaderComponent() {
   //contexts, refs
   const languageContext = useContext(LanguageContext);
   const navigate = useNavigate();
+  const cartContext = useContext(CartContext);
 
   //states
   const [showingCart, setShowingCart] = useState(false);
-  const [inCartProducts, setInCartProducts] = useState<any[]>([1, 2, 3]);
   const [showingSearchBar, setShowingSearchBar] = useState(false);
   const [showingDropdownLanguages, setShowingDropdownLanguages] = useState(false);
+  const [quantityInCart, setQuantityInCart] = useState(0);
 
   //handlers
   const handleSetLanguage = useCallback((language: typeof vn) => {
@@ -43,6 +45,16 @@ export default function HeaderComponent() {
   const goToCart = useCallback(() => {
     navigate(ScreenNameConfig.CART);
   }, []);
+
+  //effects
+  useEffect(() => {
+    let quantity = 0;
+    cartContext.items.forEach(item => {
+      quantity += item.quantity;
+    });
+
+    setQuantityInCart(quantity);
+  }, [cartContext]);
 
   // @ts-ignore
   return (
@@ -81,11 +93,11 @@ export default function HeaderComponent() {
                                  onClick={goToCart}
                                  color={"white"}/>
 
-                  {inCartProducts.length > 0 && <Badge
+                  {quantityInCart > 0 && <Badge
                     className={"cart-badge"} pill
                     bg={"danger"}
                     onClick={goToCart}
-                  >{inCartProducts.length}</Badge>}
+                  >{quantityInCart}</Badge>}
 
                   <Globe2 size={25} className={"mt-1"} onClick={() => setShowingDropdownLanguages(prev => !prev)}/>
 
@@ -117,10 +129,10 @@ export default function HeaderComponent() {
                       <BiShoppingBag size={30}
                                      onClick={goToCart}
                                      color={"white"}/>
-                      {inCartProducts.length > 0 && <Badge onClick={goToCart}
-                                                           className={"cart-badge"} pill
-                                                           bg={"danger"}
-                      >{inCartProducts.length}</Badge>}
+                      {quantityInCart > 0 && <Badge onClick={goToCart}
+                                                    className={"cart-badge"} pill
+                                                    bg={"danger"}
+                      >{quantityInCart}</Badge>}
                     </Col>
 
                     <Col xs={"auto"}>

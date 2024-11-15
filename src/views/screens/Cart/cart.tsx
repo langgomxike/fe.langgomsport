@@ -12,12 +12,15 @@ import Variant from "../../../models/Variant";
 import ConfigValue from "../../../configs/ConfigValue";
 import CartItemSkeleton from "../../components/CartItem/CartItemSkeleton";
 import FooterComponent from "../../components/Footer/Footer";
+import CartContext from "../../../configs/CartConfig";
 
 const expires = ConfigValue.CART_COOKIE_EXPRIRATION_LIMIT;
 
 export default function Cart() {
+  //contexts
+  const cartContext = useContext(CartContext);
+
   // states
-  const [cartItems, setCartItems] = useState<CartCookie[]>([]);
   const [cartVariants, setCartVariants] = useState<Variant[]>([]);
   const [cartUpdated, setCartUpdated] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -42,49 +45,49 @@ export default function Cart() {
     return existingCart ? JSON.parse(existingCart) : [];
   };
 
-  const deleteCartItem = useCallback(
-    (cartVariantId: number) => {
-      console.log("Xóa cart trong cookie");
-
-      // Lấy dữ liệu giỏ hàng từ cookie
-      const cart = getCartFromCookie();
-
-      // Loại bỏ item có variantId trùng với cartVariantId
-      const updatedCart = cart.filter(
-        (cartItem) => cartItem.variantId !== cartVariantId
-      );
-
-      // Cập nhật lại giỏ hàng vào cookie
-      Cookies.set("cart", JSON.stringify(updatedCart), { expires: expires });
-
-      // Cập nhật lại giỏ hàng trong state
-      setCartUpdated((prev) => !prev);
-      setCartItems(updatedCart);
-    },
-    [cartUpdated]
-  );
+  // const deleteCartItem = useCallback(
+  //   (cartVariantId: number) => {
+  //     console.log("Xóa cart trong cookie");
+  //
+  //     // Lấy dữ liệu giỏ hàng từ cookie
+  //     const cart = getCartFromCookie();
+  //
+  //     // Loại bỏ item có variantId trùng với cartVariantId
+  //     const updatedCart = cart.filter(
+  //       (cartItem) => cartItem.variantId !== cartVariantId
+  //     );
+  //
+  //     // Cập nhật lại giỏ hàng vào cookie
+  //     Cookies.set("cart", JSON.stringify(updatedCart), { expires: expires });
+  //
+  //     // Cập nhật lại giỏ hàng trong state
+  //     setCartUpdated((prev) => !prev);
+  //     setCartItems(updatedCart);
+  //   },
+  //   [cartUpdated]
+  // );
 
   const updateCartQuantity = (variantId: number, newQuantity: number) => {
     // Lấy giỏ hàng từ cookie
-    const cart = getCartFromCookie(); 
-  
+    const cart = getCartFromCookie();
+
     // Cập nhật quantity nếu đúng variantId
     const updatedCart = cart.map((item) =>
       item.variantId === variantId
-        ? { ...item, quantity: newQuantity } 
+        ? { ...item, quantity: newQuantity }
         : item
     );
-  
+
     // Lưu giỏ hàng cập nhật vào cookie
     Cookies.set("cart", JSON.stringify(updatedCart), { expires: expires });
-  
+
     // Cập nhật lại state giỏ hàng
     setCartItems(updatedCart);
   };
 
   const handleOrderClick = () => {
     let valid = true;
-    const cart = getCartFromCookie(); 
+    const cart = getCartFromCookie();
 
     if (!fullname || !regexFullName.test(fullname)) {
       setIsFullNameValid(false);
@@ -104,7 +107,7 @@ export default function Cart() {
       ACart.placeOrder(
         fullname,
         phoneNumber,
-        cart,
+        cartContext.items,
         (message) => {
           SweetAlert2.fire({
             title: "Đơn hàng đã được ghi nhận",
@@ -118,6 +121,7 @@ export default function Cart() {
              // Lưu thông tin fullname và phoneNumber vào localStorage
               localStorage.setItem('fullname', fullname);
               localStorage.setItem('phoneNumber', phoneNumber);
+            // setCartItems([]); // Cập nhật lại giao diện
           });
         },
         (error) => {
@@ -135,22 +139,23 @@ export default function Cart() {
   // effects
   useEffect(() => {
     // Lấy giỏ hàng từ cookie
-    const cart = getCartFromCookie();
-    setCartItems(cart);
-    console.log("existingCart", cart);
+    // const cart = getCartFromCookie();
+    // setCartItems(cart);
+
+    console.log("existingCart", cartContext.items);
 
     ACart.getCartByVariantIds(
-      cart,
+      cartContext.items,
       (data) => {
         setCartVariants(data);
       },
       setLoading
     );
 
-    if (!cart.length) {
+    if (!cartContext.items.length) {
       console.warn("Không có sản phẩm nào trong giỏ hàng");
     }
-  }, [cartUpdated]);
+  }, [cartContext.items]);
 
   useEffect(() => {
     // Kiểm tra fullname
@@ -189,7 +194,7 @@ export default function Cart() {
       }, 0);
       setTotalPrice(total);
     };
-  
+
     calculateTotal();
   }, [cartItems, cartVariants]);
 
@@ -205,7 +210,7 @@ export default function Cart() {
     if (savedPhoneNumber) {
       setPhoneNumber(savedPhoneNumber);
     }
-  }, []); 
+  }, []);
 
   //render
   return (
@@ -234,7 +239,7 @@ export default function Cart() {
 
         {/* Body */}
         <div className="body-container">
-        {cartItems.length ? ( 
+        {cartItems.length ? (
           <table className="table align-middle">
             <thead className="table-header">
               <tr className="text-center text-nowrap">
@@ -257,9 +262,9 @@ export default function Cart() {
                       (item) => item.variantId === variant.id
                     );
                     return (
-                    <CartItem  key={index} 
+                    <CartItem  key={index}
                       cartVariant={variant}
-                     quantity={cartItem?.quantity || 1} 
+                     quantity={cartItem?.quantity || 1}
                      onDeleteCartItem={deleteCartItem}
                      onChangeQuantity={updateCartQuantity}/>
                     )
@@ -283,7 +288,7 @@ export default function Cart() {
 
 
           {/* Order */}
-          {!loading && 
+          {!loading &&
           <div className="row orderContainer">
             <div className="col-12 col-md-6">
               <h3 className="titleInfomation">Thông tin đặt hàng</h3>
