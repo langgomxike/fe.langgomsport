@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import SweetAlert2 from "sweetalert2";
 import ScreenNameConfig from "../../../configs/ScreenNameConfig";
 import RootLayout from "../../layouts/RootLayout";
 import "./cart.css";
 import CartItem from "../../components/CartItem/CartItem";
 import Cookies from "js-cookie";
-import axios from "axios";
 import ACart from "../../../apis/ACart";
 import CartCookie from "../../../models/CartCookies";
 import Variant from "../../../models/Variant";
@@ -20,6 +20,15 @@ export default function Cart() {
   const [cartVariants, setCartVariants] = useState<Variant[]>([]);
   const [cartUpdated, setCartUpdated] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [fullname, setFullname] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [isFullNameValid, setIsFullNameValid] = useState(false);
+  const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(false);
+
+  // Regex patterns
+  const regexFullName = /^[A-Za-z\s]{3,}$/;
+  const regexPhoneNumber = /^[0-9]{10,11}$/;
 
   // handlers
   const getCartFromCookie = (): CartCookie[] => {
@@ -49,6 +58,51 @@ export default function Cart() {
     [cartUpdated]
   );
 
+  const handleOrderClick = () => {
+    let valid = true;
+
+    if (!fullname || !regexFullName.test(fullname)) {
+      setIsFullNameValid(false);
+      valid = false;
+    } else {
+      setIsFullNameValid(true);
+    }
+
+    if (!phoneNumber || !regexPhoneNumber.test(phoneNumber)) {
+      setIsPhoneNumberValid(false);
+      valid = false;
+    } else {
+      setIsPhoneNumberValid(true);
+    }
+
+    if (valid) {
+      ACart.placeOrder(
+        fullname,
+        phoneNumber,
+        cartItems,
+        (message) => {
+          SweetAlert2.fire({
+            title: "Đơn hàng đã được ghi nhận",
+            text: "Nhân viên chúng tôi sẽ liên hệ quý khách sớm nhất có thể để xác nhận đơn.",
+            icon: "success",
+            confirmButtonText: "Đóng",
+          }).then(() => {
+            Cookies.remove("cart"); // Xóa giỏ hàng
+            setCartItems([]); // Cập nhật lại giao diện
+          });
+        },
+        (error) => {
+          SweetAlert2.fire({
+            title: "Có lỗi trong quá trình ghi nhận đơn đặt hàng",
+            text: "Xin thử lại hoặc liên hệ số 0371234567 để được hỗ trợ.",
+            icon: "error",
+            confirmButtonText: "Đóng",
+          });
+        }
+      );
+    }
+  };
+
   // effects
   useEffect(() => {
     // Lấy giỏ hàng từ cookie
@@ -68,6 +122,15 @@ export default function Cart() {
       console.warn("Không có sản phẩm nào trong giỏ hàng");
     }
   }, [cartUpdated]);
+
+  useEffect(() => {
+    if (fullname) {
+      setIsFullNameValid(regexFullName.test(fullname));
+    }
+    if (phoneNumber) {
+      setIsPhoneNumberValid(regexPhoneNumber.test(phoneNumber));
+    }
+  }, [fullname, phoneNumber]);
 
   //render
   return (
@@ -95,7 +158,7 @@ export default function Cart() {
         </div>
 
         {/* Body */}
-          <div className="body-container">
+        <div className="body-container">
           <table className="table align-middle">
             <thead className="table-header">
               <tr className="text-center text-nowrap">
@@ -109,20 +172,19 @@ export default function Cart() {
             </thead>
             <tbody>
               {loading ? (
-                   <CartItemSkeleton limit={1}/>
+                <CartItemSkeleton limit={1} />
               ) : (
                 <>
-                {cartVariants &&
-                  cartVariants.map((variant, index) => (
-                    <CartItem
-                      key={index}
-                      cartVariant={variant}
-                      onDeleteCartItem={deleteCartItem}
-                    />
-                  ))}
+                  {cartVariants &&
+                    cartVariants.map((variant, index) => (
+                      <CartItem
+                        key={index}
+                        cartVariant={variant}
+                        onDeleteCartItem={deleteCartItem}
+                      />
+                    ))}
                 </>
               )}
-              
             </tbody>
           </table>
 
@@ -134,14 +196,48 @@ export default function Cart() {
                 <label>
                   Họ và tên <span className="text-danger">*</span>
                 </label>
-                <input type="text" />
+                <input
+                  type="text"
+                  name="fullname"
+                  value={fullname}
+                  onChange={(e) => setFullname(e.target.value)}
+                  className={`form-control ${
+                    isFullNameValid === false
+                      ? "is-invalid"
+                      : isFullNameValid === true
+                      ? "is-valid"
+                      : ""
+                  }`}
+                />
+                {!isFullNameValid && (
+                  <div className="text-danger">
+                    Vui lòng nhập họ tên hợp lệ.
+                  </div>
+                )}
               </div>
 
               <div className="inputInfo">
                 <label>
                   Số điện thoại <span className="text-danger">*</span>
                 </label>
-                <input type="text" />
+                <input
+                  type="text"
+                  name="numberphone"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  className={`form-control ${
+                    isPhoneNumberValid === false
+                      ? "is-invalid"
+                      : isPhoneNumberValid === true
+                      ? "is-valid"
+                      : ""
+                  }`}
+                />
+                {!isPhoneNumberValid && (
+                  <div className="text-danger">
+                    Vui lòng nhập số điện thoại hợp lệ.
+                  </div>
+                )}
               </div>
             </div>
             <div className="col-12 col-md-6">
@@ -150,23 +246,22 @@ export default function Cart() {
                   <h3>Tổnng tiền:</h3>
                   <span>1,000,000đ</span>
                 </div>
-                <div className="btn-order">Đặt hàng</div>
+                <div className="btn-order" onClick={handleOrderClick}>
+                  Đặt hàng
+                </div>
               </div>
             </div>
           </div>
         </div>
-          <div className="empty-cart">
-            <img
-              src="/images/empty-product-list.png"
-              alt=""
-              width={100}
-              height={100}
-            />
-            <span>Chưa có sản phẩm nào trong giỏ hàng</span>
-          </div>
-
-
-        
+        <div className="empty-cart">
+          <img
+            src="/images/empty-product-list.png"
+            alt=""
+            width={100}
+            height={100}
+          />
+          <span>Chưa có sản phẩm nào trong giỏ hàng</span>
+        </div>
       </div>
     </RootLayout>
   );
