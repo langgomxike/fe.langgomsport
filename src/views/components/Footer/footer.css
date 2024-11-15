@@ -1,0 +1,19 @@
+.ctn {
+    background-color: #00258b;
+    color: #fff
+}
+.textAling{
+    text-align: center;
+}
+.appName
+{
+    margin-top: 30%;
+}
+.padingbot{
+    padding-bottom: 80px;
+}
+
+.ctn h3 {
+    font-size: 24px;
+    text-transform: uppercase;
+}
