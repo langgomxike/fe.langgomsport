@@ -255,15 +255,23 @@ export default function Cart() {
                 <CartItemSkeleton limit={1} />
               ) : (
                 <>
+                  {cartVariants &&
+                    cartVariants.map((variant, index) => (
+                      <CartItem
+                        key={index}
+                        cartVariant={variant}
+                        onDeleteCartItem={() => cartContext.removeFromCart([variant.id])}
+                      />
+                    ))}
                 {cartVariants &&
                   cartVariants.map((variant, index) => {
                     const cartItem = cartItems.find(
                       (item) => item.variantId === variant.id
                     );
                     return (
-                    <CartItem  key={index} 
+                    <CartItem  key={index}
                       cartVariant={variant}
-                     quantity={cartItem?.quantity || 1} 
+                     quantity={cartItem?.quantity || 1}
                      onDeleteCartItem={deleteCartItem}
                      onChangeQuantity={updateCartQuantity}/>
                     )
