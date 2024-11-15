@@ -2,32 +2,48 @@ import { Link } from "react-router-dom";
 import { FiTrash2 } from "react-icons/fi";
 import { useMediaQuery } from "react-responsive";
 import Variant from "../../../models/Variant";
+import CartCookie from "../../../models/CartCookies";
+import Cookies from "js-cookie";
+import { useCallback, useEffect, useState } from "react";
 
 type CartItemProps = {
   cartVariant: Variant;
+  quantity: number;
   onDeleteCartItem: (variantId: number) => void;
 }
 
-export default function CartItem({cartVariant, onDeleteCartItem}: CartItemProps) {
-  const isMobile = useMediaQuery({ maxWidth: 992 }); // Kiểm tra màn hình nhỏ hơn 768px (di động)
+const URL = process.env.REACT_APP_BASE_URL
 
+export default function CartItem({cartVariant, quantity ,onDeleteCartItem}: CartItemProps) {
+  const isMobile = useMediaQuery({ maxWidth: 992 }); // Kiểm tra màn hình nhỏ hơn 768px (di động)
   // handler
+  function formatPrice(price: number) {
+    if(price) {
+      return price
+        .toLocaleString("vi-VN", { style: "currency", currency: "VND" })
+        .replace("₫", "đ");
+    }
+    return 0
+  }
+  
 
   // Gọi hàm xóa khi nhấn vào nút xóa
   const handleDelete = () => {
     onDeleteCartItem(cartVariant.id);  
   };
-
   return (
     <>
       <tr className="item-cart">
         {/* Product image */}
         <td>
           <div className="cart-item-image">
-            <img
-              src="https://pos.nvncdn.com/be3294-43017/ps/20231208_7LnI3iZkJX.jpeg"
-              alt="Product"
-            />
+            { cartVariant.images?.length &&
+              <img
+                src={`${URL}/${cartVariant.images[0]?.path}`}
+                alt="Product"
+              />
+
+            }
           </div>
         </td>
 
@@ -38,14 +54,14 @@ export default function CartItem({cartVariant, onDeleteCartItem}: CartItemProps)
             <td width={"33%"}>
             <h3>
               <Link to="#" className="cart-item-name">
-                Clifton 9 Wide | Giày Chạy Bộ Nam Hoka Clifton 9 Wide - DLL - 44
-                2/3
+                {cartVariant.product?.name}
               </Link>
               </h3>
             </td>
             <td>
               <div className="text-center">
-                <span className="cart-item-price">2,239,300 VNĐ</span>
+                <span className="cart-item-price">{formatPrice(cartVariant.price > 0  ? cartVariant.price : cartVariant.product?.descPrice ?? 0)}
+                </span>
               </div>
             </td>
           </>
@@ -55,13 +71,12 @@ export default function CartItem({cartVariant, onDeleteCartItem}: CartItemProps)
             <td>
               <h3>
                 <Link to="#" className="cart-item-name">
-                  Clifton 9 Wide | Giày Chạy Bộ Nam Hoka Clifton 9 Wide - DLL -
-                  44 2/3
+                  {cartVariant.product?.name}
                 </Link>
               </h3>
               <div>
                 <span className="cart-item-price-total-title">Giá: </span>
-                <span className="cart-item-price-total">2,239,300 VNĐ</span>
+                <span className="cart-item-price-total">{formatPrice(cartVariant.price > 0  ? cartVariant.price : cartVariant.product?.descPrice ?? 0)}</span>
               </div>
             </td>
           </>
@@ -75,7 +90,7 @@ export default function CartItem({cartVariant, onDeleteCartItem}: CartItemProps)
               <div className="item-cart-input-quantity">
                 <input
                   type="number"
-                  value={1}
+                  value={quantity}
                   min={1}
                   inputMode="numeric"
                   autoComplete="off"
@@ -86,7 +101,7 @@ export default function CartItem({cartVariant, onDeleteCartItem}: CartItemProps)
             {/* Total price on desktop */}
             <td>
               <div className="text-center">
-                <span className="cart-item-price">2,239</span>
+                <span className="cart-item-price">{formatPrice((cartVariant.price > 0 ? cartVariant.price : cartVariant.product?.descPrice ?? 0) * quantity)}</span>
               </div>
             </td>
 
@@ -103,7 +118,7 @@ export default function CartItem({cartVariant, onDeleteCartItem}: CartItemProps)
             <div className="item-cart-input-quantity">
               <input
                 type="number"
-                value={1}
+                value={quantity}
                 min={1}
                 inputMode="numeric"
                 autoComplete="off"
