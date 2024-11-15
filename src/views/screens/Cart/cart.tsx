@@ -84,6 +84,7 @@ export default function Cart() {
 
   const handleOrderClick = () => {
     let valid = true;
+    const cart = getCartFromCookie(); 
 
     if (!fullname || !regexFullName.test(fullname)) {
       setIsFullNameValid(false);
@@ -103,7 +104,7 @@ export default function Cart() {
       ACart.placeOrder(
         fullname,
         phoneNumber,
-        cartItems,
+        cart,
         (message) => {
           SweetAlert2.fire({
             title: "Đơn hàng đã được ghi nhận",
