@@ -364,8 +364,17 @@ export default function Cart() {
           </div>
           }
         </div>
+        <div className="empty-cart">
+          <img
+            src="/images/empty-product-list.png"
+            alt=""
+            width={100}
+            height={100}
+          />
+          <span>Chưa có sản phẩm nào trong giỏ hàng</span>
+        </div>
       </div>
-      <FooterComponent/>
+      <FooterComponent />
     </RootLayout>
   );
 }
