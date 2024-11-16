@@ -1,5 +1,5 @@
 import {useCallback, useContext, useEffect, useState} from "react";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import SweetAlert2 from "sweetalert2";
 import ScreenNameConfig from "../../../configs/ScreenNameConfig";
 import RootLayout from "../../layouts/RootLayout";
@@ -87,12 +87,13 @@ export default function Cart() {
             icon: "success",
             confirmButtonText: "Đóng",
           }).then(() => {
-            Cookies.remove("cart"); // Xóa giỏ hàng
+            // Cookies.remove("cart"); // Xóa giỏ hàng
             // setCartItems([]); // Cập nhật lại giao diện
+            cartContext.removeFromCart(cartContext.items.map(item => item.variantId));
 
-             // Lưu thông tin fullname và phoneNumber vào localStorage
-              localStorage.setItem('fullname', fullname);
-              localStorage.setItem('phoneNumber', phoneNumber);
+            // Lưu thông tin fullname và phoneNumber vào localStorage
+            localStorage.setItem('fullname', fullname);
+            localStorage.setItem('phoneNumber', phoneNumber);
             // setCartItems([]); // Cập nhật lại giao diện
 
             // Lưu thông tin fullname và phoneNumber vào localStorage
@@ -131,7 +132,7 @@ export default function Cart() {
     if (!cartContext.items.length) {
       console.warn("Không có sản phẩm nào trong giỏ hàng");
     }
-  }, [cartContext.items]);
+  }, [cartContext.items.length]);
 
   useEffect(() => {
     // Kiểm tra fullname
@@ -242,7 +243,7 @@ export default function Cart() {
                                   cartVariant={variant}
                                   quantity={cartItem?.quantity || 1}
                                   onDeleteCartItem={() => cartContext.removeFromCart([variant.id])}
-                                  onChangeQuantity={updateCartQuantity}/>
+                                  onChangeQuantity={cartContext.updateQuantity}/>
                       )
                     })}
                 </>
@@ -261,7 +262,6 @@ export default function Cart() {
             </div>
           )
           }
-
 
           {/* Order */}
           {!loading &&
@@ -340,17 +340,8 @@ export default function Cart() {
             </div>
           }
         </div>
-        <div className="empty-cart">
-          <img
-            src="/images/empty-product-list.png"
-            alt=""
-            width={100}
-            height={100}
-          />
-          <span>Chưa có sản phẩm nào trong giỏ hàng</span>
-        </div>
+
       </div>
-      <FooterComponent />
     </RootLayout>
   );
 }

@@ -7,6 +7,7 @@ import CartContext from "./CartConfig";
 import {it} from "node:test";
 import Cookies from "js-cookie";
 import ConfigValue from "./ConfigValue";
+import cartConfig from "./CartConfig";
 
 const expires = ConfigValue.CART_COOKIE_EXPRIRATION_LIMIT
 const CART_KEY_NAME = "cart";
@@ -43,6 +44,22 @@ export default function AppContext({children}: ChildProps) {
     saveCart(remainItems);
   }, [cartItems]);
 
+  const updateQuantity = useCallback((variantId: number, newQuantity: number) => {
+    const remainingItems: CartItem[] = [];
+
+    cartItems.forEach(item => {
+      if (item.variantId === variantId) {
+        item.quantity = newQuantity;
+      }
+
+      remainingItems.push(item);
+    });
+
+    setCartItems(remainingItems);
+
+    saveCart(remainingItems);
+  }, [cartItems])
+
   //effects
   useEffect(() => {
     const existingCartItems: CartItem[] = JSON.parse(Cookies.get(CART_KEY_NAME) ?? "[]");
@@ -53,13 +70,18 @@ export default function AppContext({children}: ChildProps) {
   }, []);
 
   const saveCart = useCallback((cartItems: CartItem[]) => {
-    Cookies.set(CART_KEY_NAME, JSON.stringify(cartItems), { expires: expires });
+    Cookies.set(CART_KEY_NAME, JSON.stringify(cartItems), {expires: expires});
     console.log("set cart successfully");
   }, []);
 
   return (
     <LanguageContext.Provider value={{language: language, changeLanguage: setLanguage}}>
-      <CartContext.Provider value={{items: cartItems, addToCart: addToCart, removeFromCart: removeFromCart}}>
+      <CartContext.Provider value={{
+        items: cartItems,
+        addToCart: addToCart,
+        removeFromCart: removeFromCart,
+        updateQuantity: updateQuantity
+      }}>
         {children}
       </CartContext.Provider>
     </LanguageContext.Provider>
