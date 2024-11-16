@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import SweetAlert2 from "sweetalert2";
 import ScreenNameConfig from "../../../configs/ScreenNameConfig";
@@ -45,28 +45,6 @@ export default function Cart() {
     return existingCart ? JSON.parse(existingCart) : [];
   };
 
-  // const deleteCartItem = useCallback(
-  //   (cartVariantId: number) => {
-  //     console.log("Xóa cart trong cookie");
-  //
-  //     // Lấy dữ liệu giỏ hàng từ cookie
-  //     const cart = getCartFromCookie();
-  //
-  //     // Loại bỏ item có variantId trùng với cartVariantId
-  //     const updatedCart = cart.filter(
-  //       (cartItem) => cartItem.variantId !== cartVariantId
-  //     );
-  //
-  //     // Cập nhật lại giỏ hàng vào cookie
-  //     Cookies.set("cart", JSON.stringify(updatedCart), { expires: expires });
-  //
-  //     // Cập nhật lại giỏ hàng trong state
-  //     setCartUpdated((prev) => !prev);
-  //     setCartItems(updatedCart);
-  //   },
-  //   [cartUpdated]
-  // );
-
   const updateCartQuantity = (variantId: number, newQuantity: number) => {
     // Lấy giỏ hàng từ cookie
     const cart = getCartFromCookie();
@@ -77,12 +55,6 @@ export default function Cart() {
         ? {...item, quantity: newQuantity}
         : item
     );
-
-    // Lưu giỏ hàng cập nhật vào cookie
-    // Cookies.set("cart", JSON.stringify(updatedCart), {expires: expires});
-
-    // Cập nhật lại state giỏ hàng
-    // setCartItems(updatedCart);
   };
 
   const handleOrderClick = () => {
@@ -116,7 +88,7 @@ export default function Cart() {
             confirmButtonText: "Đóng",
           }).then(() => {
             Cookies.remove("cart"); // Xóa giỏ hàng
-            setCartItems([]); // Cập nhật lại giao diện
+            // setCartItems([]); // Cập nhật lại giao diện
 
              // Lưu thông tin fullname và phoneNumber vào localStorage
               localStorage.setItem('fullname', fullname);
