@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import {useCallback, useContext, useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 import SweetAlert2 from "sweetalert2";
 import ScreenNameConfig from "../../../configs/ScreenNameConfig";
 import RootLayout from "../../layouts/RootLayout";
@@ -12,12 +12,15 @@ import Variant from "../../../models/Variant";
 import ConfigValue from "../../../configs/ConfigValue";
 import CartItemSkeleton from "../../components/CartItem/CartItemSkeleton";
 import FooterComponent from "../../components/Footer/Footer";
+import CartContext from "../../../configs/CartConfig";
 
 const expires = ConfigValue.CART_COOKIE_EXPRIRATION_LIMIT;
 
 export default function Cart() {
+  //contexts
+  const cartContext = useContext(CartContext);
+
   // states
-  const [cartItems, setCartItems] = useState<CartCookie[]>([]);
   const [cartVariants, setCartVariants] = useState<Variant[]>([]);
   const [cartUpdated, setCartUpdated] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -42,49 +45,21 @@ export default function Cart() {
     return existingCart ? JSON.parse(existingCart) : [];
   };
 
-  const deleteCartItem = useCallback(
-    (cartVariantId: number) => {
-      console.log("Xóa cart trong cookie");
-
-      // Lấy dữ liệu giỏ hàng từ cookie
-      const cart = getCartFromCookie();
-
-      // Loại bỏ item có variantId trùng với cartVariantId
-      const updatedCart = cart.filter(
-        (cartItem) => cartItem.variantId !== cartVariantId
-      );
-
-      // Cập nhật lại giỏ hàng vào cookie
-      Cookies.set("cart", JSON.stringify(updatedCart), { expires: expires });
-
-      // Cập nhật lại giỏ hàng trong state
-      setCartUpdated((prev) => !prev);
-      setCartItems(updatedCart);
-    },
-    [cartUpdated]
-  );
-
   const updateCartQuantity = (variantId: number, newQuantity: number) => {
     // Lấy giỏ hàng từ cookie
-    const cart = getCartFromCookie(); 
-  
+    const cart = getCartFromCookie();
+
     // Cập nhật quantity nếu đúng variantId
     const updatedCart = cart.map((item) =>
       item.variantId === variantId
-        ? { ...item, quantity: newQuantity } 
+        ? {...item, quantity: newQuantity}
         : item
     );
-  
-    // Lưu giỏ hàng cập nhật vào cookie
-    Cookies.set("cart", JSON.stringify(updatedCart), { expires: expires });
-  
-    // Cập nhật lại state giỏ hàng
-    setCartItems(updatedCart);
   };
 
   const handleOrderClick = () => {
     let valid = true;
-    const cart = getCartFromCookie(); 
+    const cart = getCartFromCookie();
 
     if (!fullname || !regexFullName.test(fullname)) {
       setIsFullNameValid(false);
@@ -104,7 +79,7 @@ export default function Cart() {
       ACart.placeOrder(
         fullname,
         phoneNumber,
-        cart,
+        cartContext.items,
         (message) => {
           SweetAlert2.fire({
             title: "Đơn hàng đã được ghi nhận",
@@ -112,12 +87,18 @@ export default function Cart() {
             icon: "success",
             confirmButtonText: "Đóng",
           }).then(() => {
-            Cookies.remove("cart"); // Xóa giỏ hàng
-            setCartItems([]); // Cập nhật lại giao diện
+            // Cookies.remove("cart"); // Xóa giỏ hàng
+            // setCartItems([]); // Cập nhật lại giao diện
+            cartContext.removeFromCart(cartContext.items.map(item => item.variantId));
 
-             // Lưu thông tin fullname và phoneNumber vào localStorage
-              localStorage.setItem('fullname', fullname);
-              localStorage.setItem('phoneNumber', phoneNumber);
+            // Lưu thông tin fullname và phoneNumber vào localStorage
+            localStorage.setItem('fullname', fullname);
+            localStorage.setItem('phoneNumber', phoneNumber);
+            // setCartItems([]); // Cập nhật lại giao diện
+
+            // Lưu thông tin fullname và phoneNumber vào localStorage
+            localStorage.setItem('fullname', fullname);
+            localStorage.setItem('phoneNumber', phoneNumber);
           });
         },
         (error) => {
@@ -135,22 +116,23 @@ export default function Cart() {
   // effects
   useEffect(() => {
     // Lấy giỏ hàng từ cookie
-    const cart = getCartFromCookie();
-    setCartItems(cart);
-    console.log("existingCart", cart);
+    // const cart = getCartFromCookie();
+    // setCartItems(cart);
+
+    console.log("existingCart", cartContext.items);
 
     ACart.getCartByVariantIds(
-      cart,
+      cartContext.items,
       (data) => {
         setCartVariants(data);
       },
       setLoading
     );
 
-    if (!cart.length) {
+    if (!cartContext.items.length) {
       console.warn("Không có sản phẩm nào trong giỏ hàng");
     }
-  }, [cartUpdated]);
+  }, [cartContext.items.length]);
 
   useEffect(() => {
     // Kiểm tra fullname
@@ -169,9 +151,9 @@ export default function Cart() {
   }, [fullname, phoneNumber]);
 
   function formatPrice(price: number) {
-    if(price) {
+    if (price) {
       return price
-        .toLocaleString("vi-VN", { style: "currency", currency: "VND" })
+        .toLocaleString("vi-VN", {style: "currency", currency: "VND"})
         .replace("₫", "đ");
     }
     return 0
@@ -180,7 +162,7 @@ export default function Cart() {
   useEffect(() => {
     const calculateTotal = () => {
       const total = cartVariants.reduce((sum, variant) => {
-        const cartItem = cartItems.find((item) => item.variantId === variant.id);
+        const cartItem = cartContext.items.find((item) => item.variantId === variant.id);
         if (cartItem) {
           const price = variant.price > 0 ? variant.price : variant.product?.descPrice || 0;
           return sum + price * cartItem.quantity;
@@ -189,9 +171,9 @@ export default function Cart() {
       }, 0);
       setTotalPrice(total);
     };
-  
+
     calculateTotal();
-  }, [cartItems, cartVariants]);
+  }, [cartContext.items, cartVariants]);
 
   useEffect(() => {
     // Đọc giá trị từ localStorage khi component được render
@@ -205,7 +187,7 @@ export default function Cart() {
     if (savedPhoneNumber) {
       setPhoneNumber(savedPhoneNumber);
     }
-  }, []); 
+  }, []);
 
   //render
   return (
@@ -234,9 +216,9 @@ export default function Cart() {
 
         {/* Body */}
         <div className="body-container">
-        {cartItems.length ? ( 
-          <table className="table align-middle">
-            <thead className="table-header">
+          {cartContext.items.length ? (
+            <table className="table align-middle">
+              <thead className="table-header">
               <tr className="text-center text-nowrap">
                 <th scope="col">Hình ảnh</th>
                 <th scope="col">Tên sản phẩm</th>
@@ -245,120 +227,120 @@ export default function Cart() {
                 <th scope="col">Thành tiền</th>
                 <th scope="col">Xóa</th>
               </tr>
-            </thead>
-            <tbody>
+              </thead>
+              <tbody>
               {loading ? (
-                <CartItemSkeleton limit={1} />
+                <CartItemSkeleton limit={1}/>
               ) : (
                 <>
-                {cartVariants &&
-                  cartVariants.map((variant, index) => {
-                    const cartItem = cartItems.find(
-                      (item) => item.variantId === variant.id
-                    );
-                    return (
-                    <CartItem  key={index} 
-                      cartVariant={variant}
-                     quantity={cartItem?.quantity || 1} 
-                     onDeleteCartItem={deleteCartItem}
-                     onChangeQuantity={updateCartQuantity}/>
-                    )
-                  })}
+                  {cartVariants &&
+                    cartVariants.map((variant, index) => {
+                      const cartItem = cartContext.items.find(
+                        (item) => item.variantId === variant.id
+                      );
+                      return (
+                        <CartItem key={index}
+                                  cartVariant={variant}
+                                  quantity={cartItem?.quantity || 1}
+                                  onDeleteCartItem={() => cartContext.removeFromCart([variant.id])}
+                                  onChangeQuantity={cartContext.updateQuantity}/>
+                      )
+                    })}
                 </>
               )}
-            </tbody>
-          </table>
-        ): (
-          <div className="empty-cart">
-          <img
-            src="/images/empty-product-list.png"
-            alt=""
-            width={100}
-            height={100}
-          />
-          <span>Chưa có sản phẩm nào trong giỏ hàng</span>
-        </div>
-        )
-        }
-
+              </tbody>
+            </table>
+          ) : (
+            <div className="empty-cart">
+              <img
+                src="/images/empty-product-list.png"
+                alt=""
+                width={100}
+                height={100}
+              />
+              <span>Chưa có sản phẩm nào trong giỏ hàng</span>
+            </div>
+          )
+          }
 
           {/* Order */}
-          {!loading && 
-          <div className="row orderContainer">
-            <div className="col-12 col-md-6">
-              <h3 className="titleInfomation">Thông tin đặt hàng</h3>
-              <div className="inputInfo">
-                <label>
-                  Họ và tên <span className="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="fullname"
-                  value={fullname}
-                  onChange={(e) => {
-                    setFullname(e.target.value);
-                    if (!hasFullNameInput) setHasFullNameInput(true); // Đánh dấu đã nhập
-                  }}
-                  className={`form-control ${
-                    isFullNameValid === false && hasFullNameInput
-                      ? "is-invalid"
-                      : isFullNameValid === true
-                      ? "is-valid"
-                      : ""
-                  }`}
-                />
-                {hasFullNameInput && isFullNameValid === false && (
-                  <div className="text-danger">
-                    Vui lòng nhập họ tên hợp lệ.
-                  </div>
-                )}
-              </div>
-
-              <div className="inputInfo">
-                <label>
-                  Số điện thoại <span className="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="numberphone"
-                  value={phoneNumber}
-                  onChange={(e) => {
-                    setPhoneNumber(e.target.value);
-                    if (!hasPhoneNumberInput) setHasPhoneNumberInput(true); // Đánh dấu đã nhập
-                  }}
-                  className={`form-control ${
-                    isPhoneNumberValid === false && hasPhoneNumberInput
-                      ? "is-invalid"
-                      : isPhoneNumberValid === true
-                      ? "is-valid"
-                      : ""
-                  }`}
-                />
-                {hasPhoneNumberInput && isPhoneNumberValid === false && (
-                  <div className="text-danger">
-                    Vui lòng nhập số điện thoại hợp lệ.
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="col-12 col-md-6">
-              <div className="order-container">
-                <div className="order-total">
-                  <h3>Tổnng tiền:</h3>
-                  <span>{formatPrice(totalPrice)}</span>
+          {!loading &&
+            <div className="row orderContainer">
+              <div className="col-12 col-md-6">
+                <h3 className="titleInfomation">Thông tin đặt hàng</h3>
+                <div className="inputInfo">
+                  <label>
+                    Họ và tên <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="fullname"
+                    value={fullname}
+                    onChange={(e) => {
+                      setFullname(e.target.value);
+                      if (!hasFullNameInput) setHasFullNameInput(true); // Đánh dấu đã nhập
+                    }}
+                    className={`form-control ${
+                      isFullNameValid === false && hasFullNameInput
+                        ? "is-invalid"
+                        : isFullNameValid === true
+                          ? "is-valid"
+                          : ""
+                    }`}
+                  />
+                  {hasFullNameInput && isFullNameValid === false && (
+                    <div className="text-danger">
+                      Vui lòng nhập họ tên hợp lệ.
+                    </div>
+                  )}
                 </div>
-                <button
-                disabled={cartItems.length === 0}
-                className={cartItems.length === 0 ? "btn-order-disabled" : "btn-order"}
-                onClick={handleOrderClick}
-                >
-                  Đặt hàng
-                </button>
+
+                <div className="inputInfo">
+                  <label>
+                    Số điện thoại <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="numberphone"
+                    value={phoneNumber}
+                    onChange={(e) => {
+                      setPhoneNumber(e.target.value);
+                      if (!hasPhoneNumberInput) setHasPhoneNumberInput(true); // Đánh dấu đã nhập
+                    }}
+                    className={`form-control ${
+                      isPhoneNumberValid === false && hasPhoneNumberInput
+                        ? "is-invalid"
+                        : isPhoneNumberValid === true
+                          ? "is-valid"
+                          : ""
+                    }`}
+                  />
+                  {hasPhoneNumberInput && isPhoneNumberValid === false && (
+                    <div className="text-danger">
+                      Vui lòng nhập số điện thoại hợp lệ.
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="col-12 col-md-6">
+                <div className="order-container">
+                  <div className="order-total">
+                    <h3>Tổnng tiền:</h3>
+                    <span>{formatPrice(totalPrice)}</span>
+                  </div>
+                  <button
+                    disabled={cartContext.items.length === 0}
+                    className={cartContext.items.length === 0 ? "btn-order-disabled" : "btn-order"}
+                    onClick={handleOrderClick}
+                  >
+                    Đặt hàng
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
           }
         </div>
+
       </div>
     </RootLayout>
   );
