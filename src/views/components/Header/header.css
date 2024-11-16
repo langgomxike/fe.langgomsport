@@ -6,11 +6,18 @@
     cursor: default;
 }
 
-@media only screen and (max-width: 720px) {
+
+
+@media only screen and (max-width: 960px) {
     .cart-badge {
         position: relative;
         bottom: 20%;
         left: -10%;
         font-size: .5em;
+    }
+
+    #multilanguage-dropdown-desktop {
+        position: absolute;
+        right: 0;
     }
 }

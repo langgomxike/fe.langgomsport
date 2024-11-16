@@ -5,6 +5,9 @@
 }
 
 /* Cart item */
+.item-cart {
+  height: 150px;
+}
 .item-cart .cart-item-image {
   width: 135px;
 }
@@ -106,6 +109,19 @@
   border-radius: 10px;
   color: #fff;
   cursor: pointer;
+  border: none;
+}
+
+.cart .btn-order-disabled {
+  background-color: var(--yellow);
+  cursor: not-allowed;
+  height: 46px;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  color: #fff;
 }
 
 .cart .btn-order:hover {
