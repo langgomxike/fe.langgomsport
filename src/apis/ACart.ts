@@ -53,6 +53,7 @@ export default class ACart {
        .then((response) => {
             onLoading(false);
 
+            console.log("getCartByVariantIds url: ",response.data);
             const cartVariants = response.data;
             onNext(cartVariants);
        })
@@ -79,8 +80,8 @@ export default class ACart {
             }))
         };
         console.log("payload: " + JSON.stringify(payload));
-        
-    
+
+
         axios.post(`${this.BASE_API_URL}/multi-order`, payload)
         .then((response) => {
             onSuccess(response.data.message || "Đặt hàng thành công!");
@@ -90,5 +91,5 @@ export default class ACart {
             onError("Đã xảy ra lỗi khi đặt hàng. Vui lòng thử lại!");
         });
     }
-    
+
 }

@@ -30,7 +30,7 @@ export default function CartItem({cartVariant, quantity ,onDeleteCartItem, onCha
 
   // Gọi hàm xóa khi nhấn vào nút xóa
   const handleDelete = () => {
-    onDeleteCartItem(cartVariant.id);  
+    onDeleteCartItem(cartVariant.id);
   };
   return (
     <>

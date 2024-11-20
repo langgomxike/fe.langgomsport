@@ -132,7 +132,7 @@ export default function Cart() {
     if (!cartContext.items.length) {
       console.warn("Không có sản phẩm nào trong giỏ hàng");
     }
-  }, [cartContext.items.length]);
+  }, [cartContext.items]);
 
   useEffect(() => {
     // Kiểm tra fullname
@@ -243,7 +243,7 @@ export default function Cart() {
                                   cartVariant={variant}
                                   quantity={cartItem?.quantity || 1}
                                   onDeleteCartItem={() => cartContext.removeFromCart([variant.id])}
-                                  onChangeQuantity={cartContext.updateQuantity}/>
+                                  onChangeQuantity={updateCartQuantity}/>
                       )
                     })}
                 </>
@@ -262,6 +262,7 @@ export default function Cart() {
             </div>
           )
           }
+
 
           {/* Order */}
           {!loading &&
@@ -340,7 +341,6 @@ export default function Cart() {
             </div>
           }
         </div>
-
       </div>
     </RootLayout>
   );
