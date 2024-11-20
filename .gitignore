@@ -27,7 +27,3 @@ yarn-error.log*
 
 # package-lock
 package-lock.json
-
-# docker
-Dockerfile
-.dockerignore
