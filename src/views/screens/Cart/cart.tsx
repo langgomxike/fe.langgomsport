@@ -13,12 +13,14 @@ import ConfigValue from "../../../configs/ConfigValue";
 import CartItemSkeleton from "../../components/CartItem/CartItemSkeleton";
 import FooterComponent from "../../components/Footer/Footer";
 import CartContext from "../../../configs/CartConfig";
+import LanguageContext from "../../../configs/LanguageConfig";
 
 const expires = ConfigValue.CART_COOKIE_EXPRIRATION_LIMIT;
 
 export default function Cart() {
   //contexts
   const cartContext = useContext(CartContext);
+  const languageContext = useContext(LanguageContext);
 
   // states
   const [cartVariants, setCartVariants] = useState<Variant[]>([]);
@@ -211,7 +213,7 @@ export default function Cart() {
           </div>
 
           {/* Title of layout */}
-          <h1 className="cart-header-title">Giỏ hàng</h1>
+          <h1 className="cart-header-title">{languageContext.language.CART}</h1>
         </div>
 
         {/* Body */}
@@ -220,12 +222,12 @@ export default function Cart() {
             <table className="table align-middle">
               <thead className="table-header">
               <tr className="text-center text-nowrap">
-                <th scope="col">Hình ảnh</th>
-                <th scope="col">Tên sản phẩm</th>
-                <th scope="col">Đơn giá</th>
-                <th scope="col">Số lượng</th>
-                <th scope="col">Thành tiền</th>
-                <th scope="col">Xóa</th>
+                <th scope="col">{languageContext.language.IMAGE}</th>
+                <th scope="col">{languageContext.language.PRODUCT_NAME}</th>
+                <th scope="col">{languageContext.language.PRICE}</th>
+                <th scope="col">{languageContext.language.QUANTITY}</th>
+                <th scope="col">{languageContext.language.TOTAL_PRICE}</th>
+                <th scope="col">{languageContext.language.DELETE}</th>
               </tr>
               </thead>
               <tbody>
@@ -267,10 +269,10 @@ export default function Cart() {
           {!loading &&
             <div className="row orderContainer">
               <div className="col-12 col-md-6">
-                <h3 className="titleInfomation">Thông tin đặt hàng</h3>
+                <h3 className="titleInfomation">{languageContext.language.ORDER_INFORMATION}</h3>
                 <div className="inputInfo">
                   <label>
-                    Họ và tên <span className="text-danger">*</span>
+                   {languageContext.language.FULL_NAME} <span className="text-danger">*</span>
                   </label>
                   <input
                     type="text"
@@ -290,14 +292,14 @@ export default function Cart() {
                   />
                   {hasFullNameInput && isFullNameValid === false && (
                     <div className="text-danger">
-                      Vui lòng nhập họ tên hợp lệ.
+                      {languageContext.language.INVALID_FULL_NAME}
                     </div>
                   )}
                 </div>
 
                 <div className="inputInfo">
                   <label>
-                    Số điện thoại <span className="text-danger">*</span>
+                  {languageContext.language.PHONE_NUMBER} <span className="text-danger">*</span>
                   </label>
                   <input
                     type="text"
@@ -317,7 +319,7 @@ export default function Cart() {
                   />
                   {hasPhoneNumberInput && isPhoneNumberValid === false && (
                     <div className="text-danger">
-                      Vui lòng nhập số điện thoại hợp lệ.
+                      {languageContext.language.INVALID_PHONE_NUMBER}
                     </div>
                   )}
                 </div>
@@ -325,7 +327,7 @@ export default function Cart() {
               <div className="col-12 col-md-6">
                 <div className="order-container">
                   <div className="order-total">
-                    <h3>Tổnng tiền:</h3>
+                    <h3>{languageContext.language.TOTAL_MONEY}:</h3>
                     <span>{formatPrice(totalPrice)}</span>
                   </div>
                   <button
@@ -333,7 +335,7 @@ export default function Cart() {
                     className={cartContext.items.length === 0 ? "btn-order-disabled" : "btn-order"}
                     onClick={handleOrderClick}
                   >
-                    Đặt hàng
+                   {languageContext.language.ORDER}
                   </button>
                 </div>
               </div>

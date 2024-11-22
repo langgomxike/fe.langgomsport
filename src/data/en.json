@@ -1,8 +1,28 @@
 {
   "TYPE": "EN",
-  "NAME" : "English",
+  "NAME": "English",
   "HOME": "Home",
   "PRODUCT": "Product",
   "SEARCH": "Search",
-  "SEARCH_PLACEHOLDER": "Search here..."
+  "SEARCH_PLACEHOLDER": "Search here...",
+
+  "CART": "Cart",
+  "ORDER": "Order",
+  "TOTAL_MONEY": "Total Money",
+  "IMAGE": "Image",
+  "PRODUCT_NAME": "Product Name",
+  "PRICE": "Price",
+  "QUANTITY": "Quantity",
+  "TOTAL_PRICE": "Total Price",
+  "DELETE": "Delete",
+  "ORDER_INFORMATION": "Order Information",
+  "FULL_NAME": "Full Name",
+  "PHONE_NUMBER": "Phone Number",
+  "INVALID_PHONE_NUMBER": "Please enter a valid phone number.",
+  "INVALID_FULL_NAME": "Please enter a valid full name.",
+
+  "ABOUT_US": "About Us",
+  "STORE_SYSTEM": "Store System",
+  "CUSTOMER_SUPPORT": "Customer Support",
+  "ABOUT_US_DESCRIPTION": "Langgomsport specializes in genuine running/trail running shoes, apparel, and accessories from the world's leading brands. We always have the latest, optimized, and high-performance products available for runners. Our young, enthusiastic team, who are experienced runners, will bring professional and in-depth service to our customers."
 }
