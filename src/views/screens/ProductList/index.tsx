@@ -101,11 +101,9 @@ export default function ProductListScreen() {
         setProducts(updatedProducts); // Cập nhật danh sách sản phẩm với giá đã giảm
 
         // Tính giá cao nhất từ danh sách sản phẩm, xem xét giá đã giảm (discountedPrice)
-        const maxPrice = Math.max(
-          ...updatedProducts.map(
-            (product) => product.discountedPrice || product.price
-          )
-        );
+        const maxPrice = data.highestPrice;
+        console.log("maxPrice: " + maxPrice);
+        
 
         // Làm tròn giá trị cao nhất lên hàng triệu
         const roundedMaxPrice = Math.ceil(maxPrice / 1000000) * 1000000;
@@ -201,7 +199,7 @@ export default function ProductListScreen() {
           {/* filter */}
           <Col md={{ span: 3 }}>
             <CategoryFilter categoryId={categoryId} />
-            <PriceFilter products={products} />
+            <PriceFilter maxPriceValue={maxPrice} />
             <SizeFilter
               categoryId={filters.categoryId}
               selectedSizeIds={selectedSizeIds}
