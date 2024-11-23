@@ -5,10 +5,10 @@ import "./PriceFilter.css";
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface PriceFilterProps {
-  products: { price: number; discountedPrice?: number }[]; // Thêm thuộc tính discountedPrice
+  maxPriceValue: number;
 }
 
-function PriceFilter({ products }: PriceFilterProps) {
+function PriceFilter({ maxPriceValue }: PriceFilterProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -24,29 +24,9 @@ function PriceFilter({ products }: PriceFilterProps) {
 
   // Tính giá trị `maxPrice` từ sản phẩm và làm tròn
   useEffect(() => {
-    if (products.length > 0) {
-      // Lấy giá đã giảm nếu có, nếu không thì lấy giá gốc
-      const prices = products.map(
-        (product) => product.discountedPrice || product.price
-      );
-
-      // Tìm giá trị lớn nhất trong danh sách sản phẩm
-      const max = Math.max(...prices);
-
-      // Hàm tự động làm tròn giá trị
-      const roundToNearest = (value: number) => {
-        const power = Math.floor(Math.log10(value)); // Tính số lượng chữ số của giá trị
-        const factor = Math.pow(10, power); // Tính bội số của 10 gần nhất (10, 100, 1000...)
-        return Math.ceil(value / factor) * factor; // Làm tròn lên bội số gần nhất
-      };
-
-      // Làm tròn giá trị maxPrice tự động
-      const roundedMax = roundToNearest(max);
-
-      setMaxPrice(roundedMax);
-      setPriceRange((prevRange) => [prevRange[0], roundedMax]);
-    }
-  }, [products]);
+    setMaxPrice(maxPriceValue);
+    setPriceRange((prevRange) => [prevRange[0], maxPriceValue]);
+  }, [maxPriceValue])
 
   // Cập nhật giá trị từ query param (nếu có)
   useEffect(() => {

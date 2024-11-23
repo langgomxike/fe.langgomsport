@@ -32,6 +32,7 @@ export default class AProduct {
     onNext: (data: {
       products: Product[];
       pagination: Pagination;
+      highestPrice: number;
     }) => void,
     onLoading: (loading: boolean) => void,
     categoryId?: number,
@@ -90,6 +91,7 @@ export default class AProduct {
         onNext({
           products: productsWithImages,
           pagination: response.data.pagination,
+          highestPrice:  response.data.highestPrice
         });
         
 
@@ -106,6 +108,7 @@ export default class AProduct {
         onNext({
           products: [],
           pagination: { page: 1, perPage: PERPAGE_PRODUCT_LIMIT, totalPages: 0, totalItems: 0 },
+          highestPrice: 0
         });
       });
   }
