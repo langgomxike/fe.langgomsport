@@ -35,9 +35,9 @@ function PriceFilter({ products }: PriceFilterProps) {
 
       // Hàm tự động làm tròn giá trị
       const roundToNearest = (value: number) => {
-        const power = Math.floor(Math.log10(value)); // Tính số lượng chữ số của giá trị
-        const factor = Math.pow(10, power); // Tính bội số của 10 gần nhất (10, 100, 1000...)
-        return Math.ceil(value / factor) * factor; // Làm tròn lên bội số gần nhất
+        const power = Math.floor(Math.log10(value)); 
+        const factor = Math.pow(10, power); 
+        return Math.ceil(value / factor) * factor;
       };
 
       // Làm tròn giá trị maxPrice tự động
