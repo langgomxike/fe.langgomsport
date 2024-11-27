@@ -9,7 +9,7 @@ type ProductIemProps = {
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-export default function ProductIem({ data }: ProductIemProps) {
+export default function ProductItem({ data }: ProductIemProps) {
   // handlers
   function formatPrice(price: number) {
     if(price) {
@@ -47,6 +47,7 @@ export default function ProductIem({ data }: ProductIemProps) {
             <img
               className="img-fluid img-main"
               src={`${BASE_URL}/${data.images[0].path}`}
+              loading="lazy"
               alt="Main Image"
             />
           )}

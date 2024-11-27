@@ -6,7 +6,6 @@ import ConfigValue from "../configs/ConfigValue";
 
 const RELATED_PRODUCT_LIMIT = ConfigValue.RELATED_PRODUCT_LIMIT;
 const PERPAGE_PRODUCT_LIMIT = ConfigValue.PERPAGE_PRODUCT_LIMIT;
-
 export default class AProduct {
   // public static getAllProducts(
   //     page: number,
@@ -26,6 +25,8 @@ export default class AProduct {
   //         onNext({ products: [], pagination: { page: 1, perPage: 10, totalPages: 0, totalItems: 0 } });
   //     });
   // }
+
+  public static BASE_URL = `${process.env.REACT_APP_API_BASE_URL}/products`;
 
   public static getProductsFilter(
     page: number,
@@ -149,5 +150,47 @@ export default class AProduct {
        
         onLoading(false);
       });
+  }
+
+  public static getProductsSaleOff(
+    onNext: (products: Product[]) => void,
+    onLoading: (loading: boolean) => void
+  ){
+      onLoading(true)
+      axios.get(`${this.BASE_URL}/sale-off?limit=10`)
+      .then((response) => {
+        const productsWithImages = response.data.map((item:any) => ({
+          ...item.product,      
+          images: item.images || [] 
+        }));
+
+        onNext(productsWithImages);
+
+        onLoading(false)
+      })
+      .catch((err) => {
+        console.log("getProductsSaleOff Error: ", err);
+      })
+  }
+
+  public static getProductsNewest(
+    onNext: (products: Product[]) => void,
+    onLoading: (loading: boolean) => void
+  ){
+      onLoading(true)
+      axios.get(`${this.BASE_URL}/newest?limit=10`)
+      .then((response) => {
+        const productsWithImages = response.data.map((item:any) => ({
+          ...item.product,      
+          images: item.images || [] 
+        }));
+
+        onNext(productsWithImages);
+
+        onLoading(false)
+      })
+      .catch((err) => {
+        console.log("getProductsNewest Error: ", err);
+      })
   }
 }
