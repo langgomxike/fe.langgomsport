@@ -2,6 +2,7 @@ import axios from "axios";
 import Order from "../models/Order";
 import CartCookie from "../models/CartCookies";
 import Variant from "../models/Variant";
+import {CartItem} from "../views/components/ProductDetail/ProductDetail";
 
 export default class ACart {
     private static BASE_API_URL = process.env.REACT_APP_API_BASE_URL + "/carts";
@@ -35,7 +36,7 @@ export default class ACart {
     }
 
     public static getCartByVariantIds(
-        cart: CartCookie[], 
+        cart: CartItem[],
         onNext: (cartVariants: Variant[]) => void,
         onLoading: (loading: boolean) => void
     ){
@@ -45,16 +46,15 @@ export default class ACart {
         // Chuyển mảng `variantIds` thành chuỗi các ID, ngăn cách bằng dấu phẩy
         const variantIdsString = cart.map((variant) => variant.variantId).join(",");
         console.log("getCartByVariantIds url: ", variantIdsString);
-        
+
         axios.get(`${this.BASE_API_URL}/variants?ids=${variantIdsString}`, {
             headers: { "Content-Type": "application/json" }
         })
        .then((response) => {
             onLoading(false);
-           
+
             const cartVariants = response.data;
             onNext(cartVariants);
-            
        })
        .catch((err) => {
             console.log("getCartByVariantIds", err);
