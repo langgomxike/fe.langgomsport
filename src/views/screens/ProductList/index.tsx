@@ -175,14 +175,20 @@ export default function ProductListScreen() {
       updateFilter("brandId", []);
     }
 
+    queryParams.delete("page");
+    navigate(`${location.pathname}?${queryParams.toString()}`);
+
+    console.log(">>> queryParams: " + queryParams);
+  }, [categoryParam, priceParam, sizesParam, brandsParam]);
+
+  useEffect(() => {
     if (pageParam) {
       const parsedPage = parseInt(pageParam, 10);
       if (!isNaN(parsedPage)) {
         handlePageChange(parsedPage);
       }
     }
-    console.log(">>> queryParams: " + queryParams);
-  }, [categoryParam, priceParam, sizesParam, brandsParam, pageParam]);
+  }, [pageParam]);
 
   function calculateDiscountedPrice(price: number, discount: number): number {
     if (!discount) return price; // Nếu không có discount, trả về giá gốc
