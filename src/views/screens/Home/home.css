@@ -1,0 +1,13 @@
+.home {
+    margin-top: 30px;
+}
+.home .home-title {
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.saleProductList {
+    margin: 20px 0;
+}
