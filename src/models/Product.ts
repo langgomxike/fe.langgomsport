@@ -22,7 +22,7 @@ export default class Product {
     updatedAt: number
 
 
-    constructor(id: number, name: string, enName: string ,slug:string, code:string ,price: number, description: string, discount:number = 0, descPrice = 0 ,brand: Brand | undefined = undefined, categories: Category[] | undefined, variants: Variant[] | undefined = [], images: ImageVariant[], createdAt: number, updatedAt: number) {
+    constructor(id: number = 0, name: string = "", enName: string = "" ,slug:string = "", code:string = "",price: number = 0, description: string = "", discount:number = 0, descPrice = 0 ,brand: Brand | undefined = undefined, categories: Category[] | undefined, variants: Variant[] | undefined = [], images: ImageVariant[], createdAt: number = 0, updatedAt: number = 0) {
         this.id = id;
         this.name = name;
         this.enName = enName;

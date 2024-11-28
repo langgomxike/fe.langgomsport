@@ -45,6 +45,7 @@ export default function ProductListScreen() {
   const brandsParam = queryParams.get("brands");
   const pageParam = queryParams.get("page");
 
+  const [maxPrice, setMaxPrice] = useState<number>(0);
   const [selectedBrandIds, setSelectedBrandIds] = useState<number[]>([]);
   const [selectedSizeIds, setSelectedSizeIds] = useState<number[]>([]);
   const [categoryId, setCategoryId] = useState<number | null>(null);
@@ -85,7 +86,30 @@ export default function ProductListScreen() {
     AProduct.getProductsFilter(
       page,
       (data) => {
-        setProducts(data.products);
+        // Tính giá giảm cho từng sản phẩm
+        const updatedProducts = data.products.map((product) => {
+          const discountedPrice = calculateDiscountedPrice(
+            product.price,
+            product.discount || 0
+          );
+          return {
+            ...product,
+            discountedPrice, // Thêm giá đã giảm vào sản phẩm
+          };
+        });
+
+        setProducts(updatedProducts); // Cập nhật danh sách sản phẩm với giá đã giảm
+
+        // Tính giá cao nhất từ danh sách sản phẩm, xem xét giá đã giảm (discountedPrice)
+        const maxPrice = data.highestPrice;
+        console.log("maxPrice: " + maxPrice);
+        
+
+        // Làm tròn giá trị cao nhất lên hàng triệu
+        const roundedMaxPrice = Math.ceil(maxPrice / 1000000) * 1000000;
+
+        setMaxPrice(roundedMaxPrice);
+
         setPagination((prev) => {
           const updatedPagination = data.pagination;
           return updatedPagination;
@@ -97,7 +121,7 @@ export default function ProductListScreen() {
       filters.brandId,
       filters.minPrice,
       filters.maxPrice,
-      filters.sort // sort
+      filters.sort
     );
   };
 
@@ -139,8 +163,7 @@ export default function ProductListScreen() {
       const sizeIds = sizesParam.split("-").map(Number);
       setSelectedSizeIds(sizeIds);
       updateFilter("sizeId", sizeIds);
-    }
-    else{
+    } else {
       updateFilter("sizeId", []);
     }
 
@@ -148,19 +171,30 @@ export default function ProductListScreen() {
       const brandIds = brandsParam.split("-").map(Number);
       setSelectedBrandIds(brandIds);
       updateFilter("brandId", brandIds);
-    }
-    else {
+    } else {
       updateFilter("brandId", []);
     }
 
+    queryParams.delete("page");
+    navigate(`${location.pathname}?${queryParams.toString()}`);
+
+    console.log(">>> queryParams: " + queryParams);
+  }, [categoryParam, priceParam, sizesParam, brandsParam]);
+
+  useEffect(() => {
     if (pageParam) {
       const parsedPage = parseInt(pageParam, 10);
       if (!isNaN(parsedPage)) {
         handlePageChange(parsedPage);
       }
     }
-    console.log(">>> queryParams: " + queryParams);
-  }, [categoryParam, priceParam, sizesParam, brandsParam, pageParam]);
+  }, [pageParam]);
+
+  function calculateDiscountedPrice(price: number, discount: number): number {
+    if (!discount) return price; // Nếu không có discount, trả về giá gốc
+    const discountedPrice = price - (price * discount) / 100;
+    return discountedPrice;
+  }
 
   //ui
   return (
@@ -171,7 +205,7 @@ export default function ProductListScreen() {
           {/* filter */}
           <Col md={{ span: 3 }}>
             <CategoryFilter categoryId={categoryId} />
-            <PriceFilter />
+            <PriceFilter maxPriceValue={maxPrice} />
             <SizeFilter
               categoryId={filters.categoryId}
               selectedSizeIds={selectedSizeIds}
