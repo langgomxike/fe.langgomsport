@@ -21,10 +21,10 @@ export default class ACollection {
 
         collectionsJson.map((item: any) => {
           const collection = item as Collection;
-        //   collection.products = item.products.map((item: any) => ({
-        //     ...item.product,
-        //     images: item.images || [],
-        //   }));
+          collection.products = item.products.map((item: any) => ({
+            ...item.product,
+            images: item.images || [],
+          }));
           collections.push(collection);
           console.log(collection);
         });
