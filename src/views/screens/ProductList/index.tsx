@@ -18,6 +18,7 @@ import Pagination from "../../../models/Pagination";
 import { useLocation, useNavigate } from "react-router-dom";
 import ConfigValue from "../../../configs/ConfigValue";
 import FooterComponent from "../../components/Footer/Footer";
+import ABrand from "../../../apis/ABrand";
 
 const MAX_AMOUNT_PRODUCTS_PER_PAGE = 20;
 const PRODUCTS_PER_ROW_IN_WEB = 4;
@@ -103,7 +104,6 @@ export default function ProductListScreen() {
         // Tính giá cao nhất từ danh sách sản phẩm, xem xét giá đã giảm (discountedPrice)
         const maxPrice = data.highestPrice;
         console.log("maxPrice: " + maxPrice);
-        
 
         // Làm tròn giá trị cao nhất lên hàng triệu
         const roundedMaxPrice = Math.ceil(maxPrice / 1000000) * 1000000;
@@ -126,6 +126,27 @@ export default function ProductListScreen() {
   };
 
   // Effects
+
+  useEffect(() => {
+    const brandId = queryParams.get("brandId");
+    if (brandId) {
+      const brandIdNumber = parseInt(brandId, 10);
+      if (!isNaN(brandIdNumber)) {
+        ABrand.getProductsByBrandId(
+          brandIdNumber, 
+          (data) => {
+            setProducts(data);
+            setLoading(false);
+          },
+          (loading) => {
+            setLoading(loading);
+          }
+        );
+      }
+    }
+  }, [queryParams]); // Điều này sẽ re-fetch khi queryParams thay đổi  
+  
+
   useEffect(() => {
     let timeoutId: NodeJS.Timeout | undefined = undefined;
 

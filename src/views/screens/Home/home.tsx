@@ -7,17 +7,21 @@ import ProductCarousel from "../../components/ProductsCarousel/ProductCarousel";
 import Banner from "../../../models/Banner";
 import ABanner from "../../../apis/ABanner";
 import Banners from "../../components/Banners/Banners";
+import HomeBrand from "../../components/Brand/HomeBrand/HomeBrand";
+import Brand from "../../../models/Brand";
+import ABrand from "../../../apis/ABrand";
 
 export default function Home() {
-  // states ----------------------------------------------------------------
+  // states
   const [banners, setBanners] = useState<Banner[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]); // Danh sách các thương hiệu
   const [productSaleOff, setProductSaleOff] = useState<Product[]>([]);
   const [productNewest, setproductNewest] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // handle ----------------------------------------------------------------
+  // handle
 
-  // effects ----------------------------------------------------------------
+  // effects
   useEffect(() => {
     // Lấy tất cả banner
     ABanner.getAllBanners((data) => {
@@ -34,6 +38,12 @@ export default function Home() {
     AProduct.getProductsNewest((data) => {
       setproductNewest(data);
     }, setLoading);
+
+    // Lấy tất cả thương hiệu
+    ABrand.getAllBrands((data) => {
+      setBrands(data); // Cập nhật danh sách thương hiệu hiển thị
+      setLoading(false);
+    }, setLoading);
   }, []);
 
   return (
@@ -45,9 +55,12 @@ export default function Home() {
       <div className="bannerContainer">
         <Banners banners={banners} />
       </div>
+
       <div className="home container">
         {/* Brands List*/}
-        <div className="brandsContainer"></div>
+        <div className="brandsContainer">
+          <HomeBrand brands={brands} />
+        </div>
 
         {/* New Product List */}
         <div className="newProductList">
@@ -64,7 +77,7 @@ export default function Home() {
         {/* Collection */}
         <div className="collectionContainer"></div>
 
-        {/* Policy notice  */}
+        {/* Policy notice */}
         <div className="policyNoticeContainer"></div>
       </div>
     </RootLayout>

@@ -41,27 +41,11 @@ export default function Cart() {
   const regexFullName = /^[a-zA-ZÀ-ỹ\s]{3,}$/i;
   const regexPhoneNumber = /^[0-9]{10,11}$/;
 
-  // Handlers
+  // handlers
   const getCartFromCookie = (): CartCookie[] => {
     const existingCart = Cookies.get("cart");
     return existingCart ? JSON.parse(existingCart) : [];
   };
-
-  const deleteCartItem = useCallback(
-    (cartVariantId: number) => {
-      console.log("Xóa cart trong cookie");
-
-      const cart = getCartFromCookie();
-      const updatedCart = cart.filter(
-        (cartItem) => cartItem.variantId !== cartVariantId
-      );
-
-      Cookies.set("cart", JSON.stringify(updatedCart), { expires: expires });
-      setCartUpdated((prev) => !prev);
-      setCartItems(updatedCart);
-    },
-    [cartUpdated]
-  );
 
   const updateCartQuantity = (variantId: number, newQuantity: number) => {
     // Lấy giỏ hàng từ cookie
@@ -81,7 +65,6 @@ export default function Cart() {
 
     if (!fullname || !regexFullName.test(fullname)) {
       setIsFullNameValid(false);
-      setHasFullNameInput(true);
       valid = false;
     } else {
       setIsFullNameValid(true);
@@ -89,7 +72,6 @@ export default function Cart() {
 
     if (!phoneNumber || !regexPhoneNumber.test(phoneNumber)) {
       setIsPhoneNumberValid(false);
-      setHasPhoneNumberInput(true);
       valid = false;
     } else {
       setIsPhoneNumberValid(true);
@@ -133,11 +115,8 @@ export default function Cart() {
     }
   };
 
-  // Effects
+  // effects
   useEffect(() => {
-    const cart = getCartFromCookie();
-    setCartItems(cart);
-    console.log("existingCart", cart);
     // Lấy giỏ hàng từ cookie
     // const cart = getCartFromCookie();
     // setCartItems(cart);
@@ -158,16 +137,18 @@ export default function Cart() {
   }, [cartContext.items.length]);
 
   useEffect(() => {
+    // Kiểm tra fullname
     if (fullname.trim() !== "") {
       setIsFullNameValid(regexFullName.test(fullname));
     } else {
-      setIsFullNameValid(null);
+      setIsFullNameValid(null); // Trạng thái mặc định, không hiển thị gì
     }
 
+    // Kiểm tra phoneNumber
     if (phoneNumber.trim() !== "") {
       setIsPhoneNumberValid(regexPhoneNumber.test(phoneNumber));
     } else {
-      setIsPhoneNumberValid(null);
+      setIsPhoneNumberValid(null); // Trạng thái mặc định, không hiển thị gì
     }
   }, [fullname, phoneNumber]);
 
@@ -228,7 +209,7 @@ export default function Cart() {
                 </li>
               </ol>
             </nav>
-            <hr />
+            <hr></hr>
           </div>
 
           {/* Title of layout */}
