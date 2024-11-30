@@ -7,12 +7,16 @@ import ProductCarousel from "../../components/ProductsCarousel/ProductCarousel";
 import Banner from "../../../models/Banner";
 import ABanner from "../../../apis/ABanner";
 import Banners from "../../components/Banners/Banners";
+import ACollection from "../../../apis/ACollection";
+import CollectionComponent from "../../components/Collection/Collection";
+import Collection from "../../../models/Collection";
 import HomeBrand from "../../components/Brand/HomeBrand/HomeBrand";
 import Brand from "../../../models/Brand";
 import ABrand from "../../../apis/ABrand";
 
 export default function Home() {
-  // states
+  // states ----------------------------------------------------------------
+  const [collections, setCollections] = useState<Collection[]>([]);
   const [banners, setBanners] = useState<Banner[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]); // Danh sách các thương hiệu
   const [productSaleOff, setProductSaleOff] = useState<Product[]>([]);
@@ -23,6 +27,11 @@ export default function Home() {
 
   // effects
   useEffect(() => {
+    // Lấy tất cả collection
+    ACollection.getAllCollections((data) => {
+      setCollections(data);
+    }, setLoading);
+
     // Lấy tất cả banner
     ABanner.getAllBanners((data) => {
       setBanners(data);
@@ -75,7 +84,9 @@ export default function Home() {
         </div>
 
         {/* Collection */}
-        <div className="collectionContainer"></div>
+        <div className="collectionContainer">
+          <CollectionComponent collections={collections} />
+        </div>
 
         {/* Policy notice */}
         <div className="policyNoticeContainer"></div>
