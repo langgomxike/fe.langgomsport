@@ -19,8 +19,9 @@ import LanguageContext from "../../../configs/LanguageConfig";
 import vn from "../../../data/vn.json";
 import en from "../../../data/en.json";
 import {Globe2} from "react-bootstrap-icons";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import CartContext from "../../../configs/CartConfig";
+import CategoryFilter from "../Category/CategoryFIlter";
 
 const MOBILE_MAX_WIDTH = 960;
 
@@ -29,12 +30,14 @@ export default function HeaderComponent() {
   const languageContext = useContext(LanguageContext);
   const navigate = useNavigate();
   const cartContext = useContext(CartContext);
+  const location = useLocation();
 
   //states
   const [showingCart, setShowingCart] = useState(false);
   const [showingSearchBar, setShowingSearchBar] = useState(false);
   const [showingDropdownLanguages, setShowingDropdownLanguages] = useState(false);
   const [quantityInCart, setQuantityInCart] = useState(0);
+  const [categoryId, setcCategoryId] = useState(1);
 
   //handlers
   const handleSetLanguage = useCallback((language: typeof vn) => {
@@ -55,6 +58,18 @@ export default function HeaderComponent() {
 
     setQuantityInCart(quantity);
   }, [cartContext]);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const categoryParam = queryParams.get("category_id");
+    if (categoryParam) {
+      let categoryId = parseInt(categoryParam || "null", 10) || null;
+
+      if (categoryId) {
+        setcCategoryId(categoryId);
+      }
+    }
+  }, []);
 
   // @ts-ignore
   return (
@@ -77,6 +92,8 @@ export default function HeaderComponent() {
             <Nav className="me-auto">
               <Nav.Link href={ScreenNameConfig.HOME}>{languageContext.language.HOME}</Nav.Link>
               <Nav.Link href={ScreenNameConfig.PRODUCTS}>{languageContext.language.PRODUCT}</Nav.Link>
+
+              {window.innerWidth < MOBILE_MAX_WIDTH && (<CategoryFilter categoryId={categoryId}/>)}
             </Nav>
           </Offcanvas.Body>
         </Navbar.Offcanvas>
