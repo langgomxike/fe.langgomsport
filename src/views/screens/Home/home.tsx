@@ -16,6 +16,10 @@ import {Link} from "react-router-dom";
 import CategoryInCategories from "../../../models/CategoryInCategories";
 import ACategory from "../../../apis/ACategory";
 import {MOBILE_MAX_WIDTH} from "../../components/Header/Header";
+import PolicyComponent from "../../components/Policy/Policy";
+import ABrand from "../../../apis/ABrand";
+import Brand from "../../../models/Brand";
+import HomeBrand from "../../components/HomeBrand/HomeBrand";
 
 export default function Home() {
   // states ----------------------------------------------------------------
@@ -25,11 +29,18 @@ export default function Home() {
   const [productNewest, setproductNewest] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<CategoryInCategories[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
 
   // handle ----------------------------------------------------------------
 
   // effects ----------------------------------------------------------------
   useEffect(() => {
+    // Lấy tất cả thương hiệu
+    ABrand.getAllBrands((data) => {
+    setBrands(data); // Cập nhật danh sách thương hiệu hiển thị
+    setLoading(false);
+  }, setLoading);
+
     // Lấy tất cả collection
     ACollection.getAllCollections((data) => {
       setCollections(data);
@@ -56,7 +67,6 @@ export default function Home() {
     ACategory.getAllCategories(categories => {
       setCategories(categories);
     }, () => {
-
     });
   }, []);
 
@@ -102,7 +112,9 @@ export default function Home() {
       </div>
       <div className="home container">
         {/* Brands List*/}
-        <div className="brandsContainer"></div>
+        <div className="brandsContainer">
+        <HomeBrand brands={brands} />
+        </div>
 
         {/* New Product List */}
         <div className="newProductList">
@@ -122,7 +134,9 @@ export default function Home() {
         </div>
 
         {/* Policy notice  */}
-        <div className="policyNoticeContainer"></div>
+        <div className="policyNoticeContainer">
+        <PolicyComponent/>
+        </div>
       </div>
     </RootLayout>
   );

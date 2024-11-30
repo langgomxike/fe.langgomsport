@@ -2,7 +2,7 @@ import "./policy.css";
 
 export default function PolicyComponent() {
   return (
-    <div className="row">
+    <div className="policy-component row">
       <div className="col-md-4 col-sm-12 col-lg-4 row">
         <div className="policyImg col-lg-2 col-md-2 col-sm-12 ">
           <img

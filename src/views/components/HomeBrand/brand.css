@@ -1,0 +1,69 @@
+.bannerContainer {
+  margin-bottom: 50px;
+}
+.banner {
+  max-width: 100%;
+  margin: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner img {
+  width: 100%;
+  height: auto;
+}
+
+/* .bannerContainer .slick-dots {
+  bottom: 15px; 
+} */
+
+.bannerContainer .slick-slide {
+  padding: 0;
+}
+
+.bannerContainer .slick-dots li button:before {
+  font-size: 12px;
+  color: #ccc;
+  transition: color 0.3s ease;
+}
+
+.bannerContainer .slick-dots li.slick-active button:before {
+  color: #007bff;
+}
+
+/* Thêm lớp CSS cho thương hiệu */
+/* Lớp cho mỗi thương hiệu */
+.brand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px; /* Khoảng cách giữa các thương hiệu */
+  cursor: pointer; /* Chuyển con trỏ thành ngón tay chỉ khi hover */
+}
+
+/* Kích thước hình ảnh thương hiệu */
+.brandImage {
+  width: 100%;
+  max-width: 120px; /* Giới hạn kích thước tối đa */
+  height: auto;
+  object-fit: contain; /* Giữ tỉ lệ khung hình */
+  transition: transform 0.3s ease-in-out; /* Hiệu ứng khi hover */
+}
+
+/* Hiệu ứng phóng to khi hover */
+.brand:hover .brandImage {
+  transform: scale(1.05); /* Phóng to hình ảnh khi hover */
+}
+
+/* Điều chỉnh kích thước hình ảnh trên các thiết bị nhỏ */
+@media (max-width: 1024px) {
+  .brandImage {
+    max-width: 100px; /* Kích thước nhỏ hơn trên tablet */
+  }
+}
+
+@media (max-width: 768px) {
+  .brandImage {
+    max-width: 80px; /* Kích thước nhỏ hơn trên mobile */
+  }
+}
