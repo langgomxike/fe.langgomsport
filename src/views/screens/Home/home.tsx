@@ -13,6 +13,9 @@ import Collection from "../../../models/Collection";
 import {Container} from "react-bootstrap";
 import {ChevronDown} from "react-bootstrap-icons";
 import {Link} from "react-router-dom";
+import CategoryInCategories from "../../../models/CategoryInCategories";
+import ACategory from "../../../apis/ACategory";
+import {MOBILE_MAX_WIDTH} from "../../components/Header/Header";
 
 export default function Home() {
   // states ----------------------------------------------------------------
@@ -60,35 +63,38 @@ export default function Home() {
   return (
     <RootLayout>
       {/* Menu */}
-      <Container>
-        <div className={"home-category-list"}>
-          {categories.map(category => (
-            <div key={category.categoryParent.id} className={"home-category-list-item"}>
+      {window.innerWidth > MOBILE_MAX_WIDTH && (
+        <Container>
+          <div className={"home-category-list"}>
+            {categories.map(category => (
+              <div key={category.categoryParent.id} className={"home-category-list-item"}>
 
-              <Link className={"home-category-list-item-name"}
-                    to={"/products?category_id=" + category.categoryParent.id}>
-                {category.categoryParent.name}
-              </Link>
+                <Link className={"home-category-list-item-name"}
+                      to={"/products?category_id=" + category.categoryParent.id}>
+                  {category.categoryParent.name}
+                </Link>
 
-              {category.categories.length > 0 && (
-                <>
-                  <ChevronDown className={"ms-1"}/>
+                {category.categories.length > 0 && (
+                  <>
+                    <ChevronDown className={"ms-1"}/>
 
-                  <div className={"home-category-list-in-category"}>
-                    {category.categories.map(categoryInList => (
-                      <div key={categoryInList.id} className={"home-category-list-in-category-item"}>
-                        <Link className={"home-category-list-item-name"} to={"/products?category_id=" + categoryInList.id}>
-                          {categoryInList.name}
-                        </Link>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
-          ))}
-        </div>
-      </Container>
+                    <div className={"home-category-list-in-category"}>
+                      {category.categories.map(categoryInList => (
+                        <div key={categoryInList.id} className={"home-category-list-in-category-item"}>
+                          <Link className={"home-category-list-item-name"}
+                                to={"/products?category_id=" + categoryInList.id}>
+                            {categoryInList.name}
+                          </Link>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+        </Container>
+      )}
 
       {/* Banners */}
       <div className="bannerContainer">
