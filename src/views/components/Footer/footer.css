@@ -1,6 +1,7 @@
 .ctn {
     background-color: #00258b;
-    color: #fff
+    color: #fff;
+    margin-top: 50px;
 }
 .textAling{
     text-align: center;
@@ -16,4 +17,11 @@
 .ctn h3 {
     font-size: 18px;
     text-transform: uppercase;
+}
+
+.footer .footer-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
 }

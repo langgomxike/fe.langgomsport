@@ -4,5 +4,26 @@
   "HOME": "Trang Chủ",
   "PRODUCT": "Sản Phẩm",
   "SEARCH": "Tìm",
-  "SEARCH_PLACEHOLDER": "Tìm kiếm tại đây..."
+  "SEARCH_PLACEHOLDER": "Tìm kiếm tại đây...",
+
+  "CART": "Giỏ hàng",
+  "ORDER": "Đặt hàng",
+  "TOTAL_MONEY": "Tổng tiền",
+  "IMAGE": "Hình ảnh",
+  "PRODUCT_NAME": "Tên sản phẩm",
+  "PRICE": "Đơn giá",
+  "QUANTITY": "Số lượng",
+  "TOTAL_PRICE": "Thành tiền",
+  "DELETE": "Xóa",
+  "ORDER_INFORMATION": "Thông tin đặt hàng",
+  "FULL_NAME": "Họ và tên",
+  "PHONE_NUMBER": "Số điện thoại",
+  "INVALID_PHONE_NUMBER": "Vui lòng nhập số điện thoại hợp lệ.",
+  "INVALID_FULL_NAME": "Vui lòng nhập họ tên hợp lệ.",
+
+  "ABOUT_US": "Giới thiệu",
+  "STORE_SYSTEM": "Hệ thống cửa hàng",
+  "CUSTOMER_SUPPORT": "Chăm sóc khách hàng",
+  "ABOUT_US_DESCRIPTION": "Langgomsport chuyên giày dép, quần áo và phụ kiện chạy bộ/chạy địa hình chính hãng đến từ các thương hiệu hàng đầu thế giới. Chúng tôi luôn có sẵn những dòng sản phẩm mới nhất, tối ưu và hiệu suất cao dành cho runners. Đội ngũ nhân viên trẻ trung, nhiệt huyết, là những chân chạy đã được tích luỹ nhiều kinh nghiệm tập luyện và thi đấu sẽ mang đến tinh thần phục vụ chuyên nghiệp và chuyên sâu nhất cho khách hàng."
+
 }

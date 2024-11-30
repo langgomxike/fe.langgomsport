@@ -23,7 +23,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import CartContext from "../../../configs/CartConfig";
 import CategoryFilter from "../Category/CategoryFIlter";
 
-const MOBILE_MAX_WIDTH = 960;
+export const MOBILE_MAX_WIDTH = 960;
 
 export default function HeaderComponent() {
   //contexts, refs

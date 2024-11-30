@@ -5,6 +5,7 @@ import Variant from "../../../models/Variant";
 import CartCookie from "../../../models/CartCookies";
 import Cookies from "js-cookie";
 import { useCallback, useEffect, useState } from "react";
+import {IoIosAdd, IoIosRemove } from "react-icons/io";
 
 type CartItemProps = {
   cartVariant: Variant;
@@ -16,7 +17,11 @@ type CartItemProps = {
 const URL = process.env.REACT_APP_BASE_URL
 
 export default function CartItem({cartVariant, quantity ,onDeleteCartItem, onChangeQuantity}: CartItemProps) {
-  const isMobile = useMediaQuery({ maxWidth: 992 }); // Kiểm tra màn hình nhỏ hơn 768px (di động)
+ 
+  // Kiểm tra màn hình nhỏ hơn 768px (di động)
+  const isMobile = useMediaQuery({ maxWidth: 992 }); 
+
+  const [quantityVariant, setQuantityVariant] = useState(quantity);
   // handler
   function formatPrice(price: number) {
     if(price) {
@@ -27,11 +32,31 @@ export default function CartItem({cartVariant, quantity ,onDeleteCartItem, onCha
     return 0
   }
 
+  // Hàm xử lý khi nhấn nút tăng
+  const handleIncrease = () => {
+
+    setQuantityVariant((prev) => prev + 1); // Tăng giá trị lên 1
+  };
+
+  // Hàm xử lý khi nhấn nút giảm
+  const handleDecrease = () => {
+    setQuantityVariant((prev) => (prev > 1 ? prev - 1 : 1)); // Giảm giá trị, tối thiểu là 1
+  };
+
 
   // Gọi hàm xóa khi nhấn vào nút xóa
   const handleDelete = () => {
     onDeleteCartItem(cartVariant.id);
   };
+
+  useEffect(() => {
+    console.log("quantity : ", quantityVariant);
+    if(cartVariant) {
+      onChangeQuantity(cartVariant.id, quantityVariant);
+    }
+    
+  }, [quantityVariant])
+
   return (
     <>
       <tr className="item-cart">
@@ -123,9 +148,12 @@ export default function CartItem({cartVariant, quantity ,onDeleteCartItem, onCha
           <td>
             {/* Input quantity on moblie */}
             <div className="item-cart-input-quantity">
+              <div onClick={handleDecrease}>
+              <IoIosRemove />
+              </div>
               <input
                 type="number"
-                value={quantity}
+                value={quantityVariant}
                 min={1}
                 inputMode="numeric"
                 autoComplete="off"
@@ -136,6 +164,9 @@ export default function CartItem({cartVariant, quantity ,onDeleteCartItem, onCha
                   onChangeQuantity(cartVariant.id, newQuantity);
                 }}
               />
+              <div onClick={handleIncrease}>
+              <IoIosAdd />
+              </div>
             </div>
             {/* Button delete on moblie */}
             <div className="btn-delete mt-2" onClick={handleDelete}>

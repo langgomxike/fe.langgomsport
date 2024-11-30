@@ -1,3 +1,17 @@
+.home {
+    margin-top: 30px;
+}
+.home .home-title {
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.saleProductList {
+    margin: 20px 0;
+}
+
 .home-category-list {
     display: flex;
     gap: 20px;
@@ -31,10 +45,13 @@
     transform: translateY(100%);
     border-radius: 8px;
     display: none;
+    z-index: 100;
+    overflow: hidden;
+    background-color: white;
 }
 
 .home-category-list-item:hover .home-category-list-in-category {
-    animation: home-category-list-in-category-fade 1s ease-out;
+    animation: home-category-list-in-category-fade .5s ease-out;
     display: flex;
     flex-direction: column;
     border: 0.1px solid gray;
