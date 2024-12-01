@@ -12,12 +12,12 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 export default function ProductItem({ data }: ProductIemProps) {
   // handlers
   function formatPrice(price: number) {
-    if(price) {
+    if (price) {
       return price
         .toLocaleString("vi-VN", { style: "currency", currency: "VND" })
         .replace("₫", "đ");
     }
-    return 0
+    return 0;
   }
 
   function calculateDiscountedPrice(price: number, discount: number) {
