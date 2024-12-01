@@ -16,7 +16,7 @@ export default function HomeBrand({ brands }: HomeBrandProps) {
 
   // Handle click khi chọn nhãn hiệu
   const handleBrandClick = (brandId: number) => {
-    navigation(`/products?brand=${brandId}`);
+    navigation(`/products?brands=${brandId}`);
   };
 
   // Cấu hình slider
@@ -25,7 +25,7 @@ export default function HomeBrand({ brands }: HomeBrandProps) {
     infinite: true, // Cho phép cuộn vô hạn
     speed: 500,
     slidesToShow: 6, // Hiển thị 6 thương hiệu trên desktop
-    slidesToScroll: 1, // Cuộn 1 thương hiệu mỗi lần
+    slidesToScroll: 3, // Cuộn 1 thương hiệu mỗi lần
     autoplay: true, // Tự động cuộn
     autoplaySpeed: 6000, // Mỗi 6 giây cuộn qua trái
     arrows: false,
