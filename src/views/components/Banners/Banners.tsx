@@ -1,40 +1,43 @@
+
 import React from 'react'
-import Banner from '../../../models/Banner'
-import Slider from 'react-slick'
-import { Link } from 'react-router-dom'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper-bundle.css';
+import 'swiper/css/pagination';
+import { Autoplay, Pagination } from 'swiper/modules';
+import { Link } from 'react-router-dom';
 import "./banner.css"
 
 type BannerProps = {
-    banners: Banner[]
-}
+  banners: { image: string; link: string }[];
+};
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
-export default function Banners({banners}: BannerProps) {
-    const settings = {
-        dots: banners.length > 1,
-        infinite: banners.length > 1,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: banners.length > 1, 
-        autoplaySpeed: 10000,
-        arrows: false,
-        draggable: banners.length > 1,
-      };
-
+export default function Banners({ banners }: BannerProps) {
   return (
-    <Slider {...settings}>
-    {banners.map((banner, index) => (
-      <div key={index} className="banner">
-          <Link to={banner.link} target="_self"> {/* Redirect trên cùng cửa sổ */}
-            <img
-              src={`${BASE_URL}/${banner.image}`}
-              alt={`Banner ${index}`}
-              className="bannerImage"
-            />
-          </Link>
-      </div>
-    ))}
-  </Slider>
+    <Swiper
+      spaceBetween={30}
+      loop={banners.length > 1}
+      autoplay={{ delay: 10000, disableOnInteraction: false }}
+      pagination={{
+        clickable: true
+      }}
+      modules={[Autoplay, Pagination]}
+      draggable={banners.length > 1}
+    >
+      {banners.map((banner, index) => (
+        <SwiperSlide key={index}>
+          <div className="banner">
+            <Link to={banner.link} target="_self">
+              <img
+                src={`${BASE_URL}/${banner.image}`}
+                alt={`Banner ${index}`}
+                className="bannerImage"
+                onDragStart={(e) => e.preventDefault()} // Ngăn kéo ảnh
+              />
+            </Link>
+          </div>
+        </SwiperSlide>
+      ))}
+    </Swiper>
   )
 }
