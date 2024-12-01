@@ -1,5 +1,6 @@
 .bannerContainer {
     margin-bottom: 50px;
+    min-height: 400px;
 }
 .banner {
   max-width: 100%;

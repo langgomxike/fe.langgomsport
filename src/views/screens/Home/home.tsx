@@ -10,12 +10,12 @@ import Banners from "../../components/Banners/Banners";
 import ACollection from "../../../apis/ACollection";
 import CollectionComponent from "../../components/Collection/Collection";
 import Collection from "../../../models/Collection";
-import {Container} from "react-bootstrap";
-import {ChevronDown} from "react-bootstrap-icons";
-import {Link} from "react-router-dom";
+import { Container } from "react-bootstrap";
+import { ChevronDown } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
 import CategoryInCategories from "../../../models/CategoryInCategories";
 import ACategory from "../../../apis/ACategory";
-import {MOBILE_MAX_WIDTH} from "../../components/Header/Header";
+import { MOBILE_MAX_WIDTH } from "../../components/Header/Header";
 import PolicyComponent from "../../components/Policy/Policy";
 import ABrand from "../../../apis/ABrand";
 import Brand from "../../../models/Brand";
@@ -37,9 +37,8 @@ export default function Home() {
   useEffect(() => {
     // Lấy tất cả thương hiệu
     ABrand.getAllBrands((data) => {
-    setBrands(data); // Cập nhật danh sách thương hiệu hiển thị
-    setLoading(false);
-  }, setLoading);
+      setBrands(data); // Cập nhật danh sách thương hiệu hiển thị
+    }, setLoading);
 
     // Lấy tất cả collection
     ACollection.getAllCollections((data) => {
@@ -64,10 +63,12 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    ACategory.getAllCategories(categories => {
-      setCategories(categories);
-    }, () => {
-    });
+    ACategory.getAllCategories(
+      (categories) => {
+        setCategories(categories);
+      },
+      () => {}
+    );
   }, []);
 
   return (
@@ -76,23 +77,32 @@ export default function Home() {
       {window.innerWidth > MOBILE_MAX_WIDTH && (
         <Container>
           <div className={"home-category-list"}>
-            {categories.map(category => (
-              <div key={category.categoryParent.id} className={"home-category-list-item"}>
-
-                <Link className={"home-category-list-item-name"}
-                      to={"/products?category_id=" + category.categoryParent.id}>
+            {categories.map((category) => (
+              <div
+                key={category.categoryParent.id}
+                className={"home-category-list-item"}
+              >
+                <Link
+                  className={"home-category-list-item-name"}
+                  to={"/products?category_id=" + category.categoryParent.id}
+                >
                   {category.categoryParent.name}
                 </Link>
 
                 {category.categories.length > 0 && (
                   <>
-                    <ChevronDown className={"ms-1"}/>
+                    <ChevronDown className={"ms-1 chevron-down-category"} />
 
                     <div className={"home-category-list-in-category"}>
-                      {category.categories.map(categoryInList => (
-                        <div key={categoryInList.id} className={"home-category-list-in-category-item"}>
-                          <Link className={"home-category-list-item-name"}
-                                to={"/products?category_id=" + categoryInList.id}>
+                      {category.categories.map((categoryInList) => (
+                        <div
+                          key={categoryInList.id}
+                          className={"home-category-list-in-category-item"}
+                        >
+                          <Link
+                            className={"home-category-list-item-name"}
+                            to={"/products?category_id=" + categoryInList.id}
+                          >
                             {categoryInList.name}
                           </Link>
                         </div>
@@ -113,7 +123,7 @@ export default function Home() {
       <div className="home container">
         {/* Brands List*/}
         <div className="brandsContainer">
-        <HomeBrand brands={brands} />
+          <HomeBrand brands={brands} />
         </div>
 
         {/* New Product List */}
@@ -135,7 +145,7 @@ export default function Home() {
 
         {/* Policy notice  */}
         <div className="policyNoticeContainer">
-        <PolicyComponent/>
+          <PolicyComponent />
         </div>
       </div>
     </RootLayout>

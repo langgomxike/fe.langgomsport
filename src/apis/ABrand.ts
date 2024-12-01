@@ -18,6 +18,7 @@ export default class ABrand {
         const brandsJson = response.data;
         const brands: Array<Brand> = [];
         brandsJson.map((item: any) => {
+          onLoading(false);
           const brand = item.brands as Brand;
           brands.push(brand);
         });

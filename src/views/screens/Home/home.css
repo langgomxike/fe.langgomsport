@@ -45,13 +45,16 @@
     transform: translateY(100%);
     border-radius: 8px;
     display: none;
+    z-index: 999;
+    background-color: var(--white);
 }
 
 .home-category-list-item:hover .home-category-list-in-category {
-    animation: home-category-list-in-category-fade 1s ease-out;
+    animation: home-category-list-in-category-fade 0.3s ease-out;
     display: flex;
     flex-direction: column;
     border: 0.1px solid gray;
+    overflow: hidden;
 }
 
 .home-category-list-in-category-item {
@@ -59,11 +62,14 @@
     font-weight: 500;
     cursor: default;
     text-align: left;
-    transition: 1s;
 }
 
 .home-category-list-in-category-item:hover {
     background-color: #eee;
+}
+
+.chevron-down-category {
+    font-size: 10px;
 }
 
 @keyframes home-category-list-in-category-fade {
