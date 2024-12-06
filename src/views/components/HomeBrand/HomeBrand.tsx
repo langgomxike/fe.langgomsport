@@ -1,6 +1,6 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import 'swiper/swiper-bundle.css';
 import '../HomeBrand/brand.css';
 import Brand from '../../../models/Brand';
@@ -17,9 +17,7 @@ export default function HomeBrand({ brands }: HomeBrandProps) {
   const navigation = useNavigate();
 
   // Handle click khi chọn nhãn hiệu
-  const handleBrandClick = (brandId: number) => {
-    navigation(`/products?brands=${brandId}`);
-  };
+
 
   return (
     <Swiper
@@ -46,14 +44,18 @@ export default function HomeBrand({ brands }: HomeBrandProps) {
         <SwiperSlide key={index}>
           <div
             className="brand"
-            onClick={() => handleBrandClick(brand.id)} // Gọi hàm xử lý khi click
             style={{ cursor: 'pointer' }} // Đổi con trỏ thành ngón tay chỉ
           >
+            <Link to={`/products?brands=${brand.id}`}>
             <img
               src={`${BASE_URL}/${brand.image}`}
               alt={brand.name}
               className="brandImage"
+              onError={(e: any) => {
+                e.target.src = '/images/image-default.png'; // Đường dẫn đến hình ảnh mặc định
+              }}
             />
+            </Link>
           </div>
         </SwiperSlide>
       ))}
