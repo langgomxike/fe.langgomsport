@@ -49,6 +49,9 @@ export default function ProductItem({ data }: ProductIemProps) {
               src={`${BASE_URL}/${data.images[0].path}`}
               loading="lazy"
               alt="Main Image"
+              onError={(e: any) => {
+                e.target.src = '/images/image-default.png'; // Đường dẫn đến hình ảnh mặc định
+              }}
             />
           )}
           {data.images && data.images[1] && (
@@ -56,6 +59,9 @@ export default function ProductItem({ data }: ProductIemProps) {
               className="img-fluid img-sub"
               src={`${BASE_URL}/${data.images[1].path}`}
               alt="Sub Image"
+              onError={(e: any) => {
+                e.target.src = '/images/image-default.png'; // Đường dẫn đến hình ảnh mặc định
+              }}
             />
           )}
           {data.discount > 0 && data.discount !== null && (

@@ -1,36 +1,7 @@
-.bannerContainer {
-  margin-bottom: 50px;
+.brands-container {
+  padding: 30px 0;
+  margin-bottom: 20px;
 }
-.banner {
-  max-width: 100%;
-  margin: auto;
-  position: relative;
-  overflow: hidden;
-}
-
-.banner img {
-  width: 100%;
-  height: auto;
-}
-
-/* .bannerContainer .slick-dots {
-  bottom: 15px; 
-} */
-
-.bannerContainer .slick-slide {
-  padding: 0;
-}
-
-.bannerContainer .slick-dots li button:before {
-  font-size: 12px;
-  color: #ccc;
-  transition: color 0.3s ease;
-}
-
-.bannerContainer .slick-dots li.slick-active button:before {
-  color: #007bff;
-}
-
 /* Thêm lớp CSS cho thương hiệu */
 /* Lớp cho mỗi thương hiệu */
 .brand {
@@ -55,6 +26,10 @@
   transform: scale(1.05); /* Phóng to hình ảnh khi hover */
 }
 
+.brands-container .swiper-wrapper {
+  align-items: center;
+}
+
 /* Điều chỉnh kích thước hình ảnh trên các thiết bị nhỏ */
 @media (max-width: 1024px) {
   .brandImage {
@@ -65,5 +40,8 @@
 @media (max-width: 768px) {
   .brandImage {
     max-width: 80px; /* Kích thước nhỏ hơn trên mobile */
+  }
+  .brands-container {
+    padding: 10px 0;
   }
 }

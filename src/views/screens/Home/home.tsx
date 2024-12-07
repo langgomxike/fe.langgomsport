@@ -36,7 +36,7 @@ export default function Home() {
   // effects ----------------------------------------------------------------
   useEffect(() => {
     // Lấy tất cả thương hiệu
-    ABrand.getAllBrands((data) => {
+    ABrand.getHomeBrands((data) => {
       setBrands(data); // Cập nhật danh sách thương hiệu hiển thị
     }, setLoading);
 
@@ -48,7 +48,6 @@ export default function Home() {
     // Lấy tất cả banner
     ABanner.getAllBanners((data) => {
       setBanners(data);
-      console.log("Banners: ", data);
     }, setLoading);
 
     // Lấy tất cả sản phẩm sale off
@@ -117,12 +116,12 @@ export default function Home() {
       )}
 
       {/* Banners */}
-      <div className="bannerContainer">
+      <div className="banner-container">
         <Banners banners={banners} />
       </div>
       <div className="home container">
         {/* Brands List*/}
-        <div className="brandsContainer">
+        <div className="brands-container">
           <HomeBrand brands={brands} />
         </div>
 

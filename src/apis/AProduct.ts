@@ -157,7 +157,7 @@ export default class AProduct {
     onLoading: (loading: boolean) => void
   ){
       onLoading(true)
-      axios.get(`${this.BASE_URL}/sale-off?limit=10`)
+      axios.get(`${this.BASE_URL}/sale-off`)
       .then((response) => {
         const productsWithImages = response.data.map((item:any) => ({
           ...item.product,      
@@ -178,7 +178,7 @@ export default class AProduct {
     onLoading: (loading: boolean) => void
   ){
       onLoading(true)
-      axios.get(`${this.BASE_URL}/newest?limit=10`)
+      axios.get(`${this.BASE_URL}/newest`)
       .then((response) => {
         const productsWithImages = response.data.map((item:any) => ({
           ...item.product,      

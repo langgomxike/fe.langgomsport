@@ -9,8 +9,12 @@
   box-shadow: 0 0 5px #ccc;
 }
 
-.product-item:hover {
-  box-shadow: 0 0 5px #ccc;
+.swiper-products {
+    padding: 20px 10px
+}
+
+.product-item:hover{
+    box-shadow: 0 0 5px #ccc;
 }
 
 .product-sale {

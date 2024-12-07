@@ -11,6 +11,10 @@
   object-fit: cover; /* Đảm bảo ảnh luôn phủ kín khung */
 }
 
+.slider-image .swiper-button-prev:after, .swiper-button-next:after{
+  font-size: 20px;
+}
+
 @media (max-width: 768px) {
   .imageManify {
     height: 350px;
