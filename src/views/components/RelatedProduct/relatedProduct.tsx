@@ -1,101 +1,82 @@
 import React, { useState, useEffect } from "react";
-import Slider from "react-slick";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-import "./relatedProduct.css";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/autoplay";
+import SkeletonProductItem from "../Product/SkeletonProductItem";
 import ProductItem from "../Product/ProductItem";
 import Product from "../../../models/Product";
-import SkeletonProductItem from "../Product/SkeletonProductItem";
-import { Col, Row } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import ConfigValue from "../../../configs/ConfigValue";
+import "./relatedProduct.css";
 
-type RealatedProductsProps = {
+type RelatedProductsProps = {
   relatedProductsData: Product[];
-  loading: boolean
-}
+  loading: boolean;
+};
 
 const LIMIT = ConfigValue.RELATED_PRODUCT_LIMIT;
 
-const RelatedProduct = ({relatedProductsData, loading}:RealatedProductsProps) => {
+const RelatedProduct = ({ relatedProductsData, loading }: RelatedProductsProps) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const settings = {
-    // trên máy tính
-    dots: true,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 2,
-    responsive: [
-      {
-        // trên mobile
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
 
   useEffect(() => {
-    // Kiểm tra kích thước ban đầu
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
     };
-
-    // Lắng nghe sự thay đổi kích thước màn hình
     window.addEventListener("resize", handleResize);
-
-    // Dọn dẹp event listener khi component unmount
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []); 
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div className="related-products">
       <h2>SẢN PHẨM LIÊN QUAN</h2>
-      {!isMobile &&
-      <Slider {...settings}>
-      {loading && 
-        Array(LIMIT)
-        .fill(0)
-        .map((_, index) => (
-          <div key={index} className="product-item">
-             <SkeletonProductItem />
-          </div>
-        ))
-        }
-     {!loading && relatedProductsData.map((product, index) => (
-            <div key={`${product.id}-${index}`}>
-              <ProductItem data={product}/>
-            </div>
-            ))
-          }
-      </Slider>
-      }
+      {!isMobile && (
+        <Swiper
+          slidesPerView={4}
+          slidesPerGroup={2}
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 3000 }}
+          breakpoints={{
+            768: { slidesPerView: 4, slidesPerGroup: 2 },
+            1024: { slidesPerView: 4, slidesPerGroup: 2 },
+          }}
+        >
+          {loading &&
+            Array(LIMIT)
+              .fill(0)
+              .map((_, index) => (
+                <SwiperSlide key={index}>
+                  <SkeletonProductItem />
+                </SwiperSlide>
+              ))}
+          {!loading &&
+            relatedProductsData.map((product, index) => (
+              <SwiperSlide style={{padding:"20px 10px"}} key={`${product.id}-${index}`}>
+                <ProductItem data={product} />
+              </SwiperSlide>
+            ))}
+        </Swiper>
+      )}
 
-      {isMobile &&
-      <Row>
-      {loading && 
-      Array(LIMIT)
-      .fill(0)
-      .map((_, index) => (
-        <Col key={index} xs={6} className="mb-3">
-            <SkeletonProductItem/>
-            </Col>
-      ))
-      }
-      {!loading && relatedProductsData.map((product, index) => (
-            <Col key={`${product.id}-${index}`} xs={6} className="mb-3">
-              <ProductItem data={product}/>
+      {isMobile && (
+        <Row>
+          {loading &&
+            Array(LIMIT)
+              .fill(0)
+              .map((_, index) => (
+                <Col key={index} xs={6} className="mb-3">
+                  <SkeletonProductItem />
+                </Col>
+              ))}
+          {!loading &&
+            relatedProductsData.map((product, index) => (
+              <Col key={`${product.id}-${index}`} xs={6} className="mb-3">
+                <ProductItem data={product} />
               </Col>
-            ))
-          }
-      </Row>
-      }
+            ))}
+        </Row>
+      )}
     </div>
   );
 };

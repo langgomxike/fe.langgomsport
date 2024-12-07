@@ -56,4 +56,8 @@
 .title-item.active, .item-category.active{
     font-weight: bold;
     color: #007bff;
- }
+}
+
+.title-item.active-child{
+    font-weight: bold;
+}

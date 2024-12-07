@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import Slider from "react-slick";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Navigation } from 'swiper/modules';
 import ImageVariant from "../../../models/ImageVariant";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -11,66 +13,37 @@ type ImageSliderProps = {
 };
 
 const ImageSlider = ({ images, onImageClick }: ImageSliderProps) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const handlePrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex((prevIndex) => prevIndex - 1);
-    }
-  };
-
-  const handleNext = () => {
-    if (currentIndex < images.length - 3) {
-      setCurrentIndex((prevIndex) => prevIndex + 1);
-    }
-  };
-
-
-  const settings = {
-    className: "slider variable-width",
-    dots: false,
-    infinite: false,
-    centerMode: false,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    variableWidth: true,
-  };
 
   return (
-    // <div style={{ display: "flex", alignItems: "center" }}>
-    //   {/* Nút Prev */}
-    //     <FaChevronLeft onClick={handlePrev}  aria-disabled={currentIndex === 0}/>
-
-    //   {/* Hiển thị 3 ảnh */}
-    //   <div style={{ display: "flex", justifyContent: "center" }}>
-    //     {images.slice(currentIndex, currentIndex + 3).map((image, index) => (
-    //       <img
-    //         key={index}
-    //         src={`${BASE_URL}/${image.filePath}`}
-    //         alt={`image-${index}`}
-    //         style={{ width: "100px", height: "100px", margin: "0 5px" }}
-    //         onClick={() => onImageClick(image.filePath)}
-    //       />
-    //     ))}
-    //   </div>
-
-    //   {/* Nút Next */}
-    //     <FaChevronRight onClick={handleNext} aria-disabled={currentIndex >= images.length - 3}/>
-    // </div>
     <div className="slider-image">
-      <Slider {...settings}>
-        {images.slice(currentIndex, currentIndex + 3).map((image, index) => (
-          <div key={index}>
+      {/* Swiper slider */}
+      <Swiper
+        spaceBetween={10}
+        slidesPerView={3}
+        navigation={true}
+        modules={[Navigation]}
+        breakpoints={{
+          640: { slidesPerView: 3, spaceBetween: 10 },
+          1024: { slidesPerView: 5, spaceBetween: 15 },
+        }}
+      >
+        {images.map((image, index) => (
+          <SwiperSlide key={index}>
             <img
-              key={index}
               src={`${BASE_URL}/${image.path}`}
               alt={`image-${index}`}
-              style={{ width: "100px", height: "100px", margin: "0 5px", border: "1px solid #ccc"}}
+              style={{
+                width: "100px",
+                height: "100px",
+                margin: "0 5px",
+                border: "1px solid #ccc",
+                cursor: "pointer",
+              }}
               onClick={() => onImageClick(image.path)}
             />
-          </div>
+          </SwiperSlide>
         ))}
-      </Slider>
+      </Swiper>
     </div>
   );
 };
