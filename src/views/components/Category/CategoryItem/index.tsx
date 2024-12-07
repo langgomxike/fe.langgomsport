@@ -1,9 +1,9 @@
 import "./style.css";
 import Category from "../../../../models/Category";
-import { FaAngleDown, FaCaretDown, FaCaretRight } from "react-icons/fa6";
-import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import ScreenNameConfig from "../../../../configs/ScreenNameConfig";
+import {FaAngleDown, FaCaretRight} from "react-icons/fa6";
+import React, {useEffect, useState} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
+import SLog, {LogType} from "../../../../services/SLog";
 
 export type CategoryItemProps = {
   parentCategory: Category;
@@ -11,6 +11,8 @@ export type CategoryItemProps = {
   onCategorySelect: (id: number | null, parentId: number | null) => void;
   activeCategory: number | null;
   activeParentCategory: number | null;
+  route?: string;
+  onAfterClick?: () => void;
 };
 
 export default function CategoryItem({
@@ -19,6 +21,8 @@ export default function CategoryItem({
   onCategorySelect,
   activeCategory,
   activeParentCategory,
+  route,
+  onAfterClick
 }: CategoryItemProps) {
   //ref, context
     const navigate = useNavigate();
@@ -40,7 +44,8 @@ export default function CategoryItem({
     onCategorySelect(id, parentCategory.id);
     // Cập nhật `page` vào URL
     searchParams.set("category_id", id.toString());
-    navigate(`${location.pathname}?${searchParams.toString()}`);
+    navigate(`${location.pathname}${route && !location.pathname.includes(route) ? route : ""}?${searchParams.toString()}`);
+    onAfterClick && onAfterClick();
   };
 
 
