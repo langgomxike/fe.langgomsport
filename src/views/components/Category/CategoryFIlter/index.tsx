@@ -12,9 +12,11 @@ import CategoryItem from "../CategoryItem";
 
 type CategoryFilterProps = {
   categoryId: number | null;
+  route?: string;
+  onAfterClick? : () => void;
 };
 
-export default function CategoryFilter({ categoryId }: CategoryFilterProps) {
+export default function CategoryFilter({ categoryId , route, onAfterClick}: CategoryFilterProps) {
   //ref, context
   //state
   const [isActive, setActive] = useState(true); // Trạng thái hiển thị toàn bộ danh mục
@@ -108,6 +110,8 @@ export default function CategoryFilter({ categoryId }: CategoryFilterProps) {
                   activeCategory={activeCategory}
                   activeParentCategory={activeParentCategory}
                   onCategorySelect={handleCategorySelect}
+                  route={route}
+                  onAfterClick={onAfterClick}
                 />
               </li>
             ))}

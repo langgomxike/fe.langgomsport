@@ -33,7 +33,7 @@ export default function HeaderComponent() {
   const location = useLocation();
 
   //states
-  const [showingCart, setShowingCart] = useState(false);
+  const [showingMenu, setShowingMenu] = useState(false);
   const [showingSearchBar, setShowingSearchBar] = useState(false);
   const [showingDropdownLanguages, setShowingDropdownLanguages] = useState(false);
   const [quantityInCart, setQuantityInCart] = useState(0);
@@ -75,15 +75,16 @@ export default function HeaderComponent() {
   return (
     <Navbar bg="primary" data-bs-theme="dark" expand={"xl"}>
       <Container>
-        <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-xl`}/>
+        <Navbar.Toggle onClick={() => setShowingMenu(true)} aria-controls={`offcanvasNavbar-expand-xl`}/>
 
         <Navbar.Brand className={"mx-auto"} href={ScreenNameConfig.HOME}>LanggomSport</Navbar.Brand>
 
         <Navbar.Offcanvas
           id={`offcanvasNavbar-expand-xl`}
           aria-labelledby={`offcanvasNavbarLabel-expand-xl`}
+          show={showingMenu}
         >
-          <Offcanvas.Header closeButton>
+          <Offcanvas.Header closeButton onHide={() => setShowingMenu(false)}>
             <Offcanvas.Title id={`offcanvasNavbarLabel-expand-xl`}>
               Menu
             </Offcanvas.Title>
@@ -93,7 +94,7 @@ export default function HeaderComponent() {
               <Nav.Link href={ScreenNameConfig.HOME}>{languageContext.language.HOME}</Nav.Link>
               <Nav.Link href={ScreenNameConfig.PRODUCTS}>{languageContext.language.PRODUCT}</Nav.Link>
 
-              {window.innerWidth < MOBILE_MAX_WIDTH && (<CategoryFilter categoryId={categoryId}/>)}
+              {window.innerWidth < MOBILE_MAX_WIDTH && (<CategoryFilter route={"products"} onAfterClick={() => setShowingMenu(false)} categoryId={categoryId}/>)}
             </Nav>
           </Offcanvas.Body>
         </Navbar.Offcanvas>
@@ -175,18 +176,6 @@ export default function HeaderComponent() {
             </Row>
           </Form>
         </Nav>
-
-        {/*cart*/
-        }
-        <Offcanvas show={showingCart} onHide={() => setShowingCart(false)} placement={"end"}>
-          <Offcanvas.Header closeButton>
-            <Offcanvas.Title>CART</Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-            Some text as placeholder. In real life you can have the elements you
-            have chosen. Like, text, images, lists, etc.
-          </Offcanvas.Body>
-        </Offcanvas>
       </Container>
 
       {showingSearchBar && <Container>
