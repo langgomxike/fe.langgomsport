@@ -17,7 +17,6 @@ import AProduct from "../../../apis/AProduct";
 import Pagination from "../../../models/Pagination";
 import { useLocation, useNavigate } from "react-router-dom";
 import ConfigValue from "../../../configs/ConfigValue";
-import FooterComponent from "../../components/Footer/Footer";
 
 const MAX_AMOUNT_PRODUCTS_PER_PAGE = 20;
 const PRODUCTS_PER_ROW_IN_WEB = 4;
@@ -94,15 +93,15 @@ export default function ProductListScreen() {
           );
           return {
             ...product,
-            discountedPrice, // Thêm giá đã giảm vào sản phẩm
+            discountedPrice,
           };
         });
 
-        setProducts(updatedProducts); // Cập nhật danh sách sản phẩm với giá đã giảm
+        // Cập nhật danh sách sản phẩm với giá đã giảm
+        setProducts(updatedProducts); 
 
         // Tính giá cao nhất từ danh sách sản phẩm, xem xét giá đã giảm (discountedPrice)
         const maxPrice = data.highestPrice;
-        console.log("maxPrice: " + maxPrice);
         
 
         // Làm tròn giá trị cao nhất lên hàng triệu
@@ -176,7 +175,7 @@ export default function ProductListScreen() {
     }
 
     queryParams.delete("page");
-    navigate(`${location.pathname}?${queryParams.toString()}`);
+    navigate(`${location.pathname}?${queryParams.toString()}`, { replace: true });
 
     console.log(">>> queryParams: " + queryParams);
   }, [categoryParam, priceParam, sizesParam, brandsParam]);

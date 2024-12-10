@@ -44,7 +44,6 @@ export default class ACategory {
             .then(response => {
                 onLoading(false);
                 onNext(response.data);
-                console.log(">>> category a", response.data);
             })
             .catch(err => {
                 onLoading(false);

@@ -79,7 +79,10 @@ export default function CartItem({cartVariant, quantity ,onDeleteCartItem, onCha
             {/* Product name, price on destop */}
             <td width={"33%"}>
             <h3>
-              <Link to="#" className="cart-item-name">
+            <Link
+              to={`/products/detail/${cartVariant.product?.slug}`}
+              className="cart-item-name"
+            >
                 {cartVariant.product?.name}
               </Link>
               </h3>
@@ -96,7 +99,10 @@ export default function CartItem({cartVariant, quantity ,onDeleteCartItem, onCha
             {/* Product name, price on mobile */}
             <td>
               <h3>
-                <Link to="#" className="cart-item-name">
+              <Link
+              to={`/products/detail/${cartVariant.product?.slug}`}
+              className="cart-item-name"
+            >
                   {cartVariant.product?.name}
                 </Link>
               </h3>

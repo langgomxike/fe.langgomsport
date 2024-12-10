@@ -26,7 +26,6 @@ export default class ACollection {
             images: item.images || [],
           }));
           collections.push(collection);
-          console.log(collection);
         });
 
         onNext(collections);

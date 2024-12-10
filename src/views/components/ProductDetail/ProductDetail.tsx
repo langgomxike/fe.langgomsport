@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import CryptoJS from "crypto-js";
 import ConfigValue from "../../../configs/ConfigValue";
 import CartContext from "../../../configs/CartConfig";
+import LanguageContext from "../../../configs/LanguageConfig";
 
 type ProductDetailProps = {
   detailData: Product | undefined;
@@ -38,6 +39,7 @@ export default function ProductInfo({
   //contexts
   const navigate = useNavigate();
   const cartContext = useContext(CartContext);
+  const language = useContext(LanguageContext).language
 
   // states
   const [quantity, setQuantity] = useState(1);
@@ -195,8 +197,6 @@ export default function ProductInfo({
 
     console.log(detailData);
   }, [detailData]);
-
-  console.log("Show", showWarning);
   
 
   // render
@@ -205,18 +205,18 @@ export default function ProductInfo({
       {loading && <ProductDetailSkeleton />}
       {!loading && detailData && (
         <div>
-          <h1 className="detail-title">{detailData.name}</h1>
+          <h1 className="detail-title">{language.TYPE === ConfigValue.TYPE_VI ?  detailData.name : detailData.enName ?? detailData.name}</h1>
 
           <div className="detail-header-info">
             <div>
-              <span className="header-info-title">Thương hiệu: </span>
+              <span className="header-info-title">{language.BRAND}: </span>
               <span>{detailData.brand?.name}</span>
             </div>
             <div>
               <span>|</span>
             </div>
             <div>
-              <span className="header-info-title">Mã SP: </span>
+              <span className="header-info-title">{language.PRODUCT_CODE}: </span>
               <span>{detailData.code}</span>
             </div>
           </div>
@@ -224,7 +224,7 @@ export default function ProductInfo({
           <hr />
           {/* Product price */}
           <div className="detail-product-price">
-            <span className="price-title">Giá:</span>
+            <span className="price-title">{language.PRICE_A}:</span>
             {detailData.discount > 0 && (
               <>
                 <del className="product-price-compare">
@@ -243,7 +243,7 @@ export default function ProductInfo({
 
           {/* Product sizes */}
           <div className="detail-product-size">
-            <span className="size-title">Kích thước</span>
+            <span className="size-title">{language.SIZE}</span>
             <div className="size-container">
               {variantsSize &&
                 variantsSize.map((item) => (
@@ -261,7 +261,7 @@ export default function ProductInfo({
                 ))}
             </div>
             {showWarning && selectedSize === -1 && (
-              <span className="titleWarming">Vui lòng chọn kích thước</span>
+              <span className="titleWarming">{language.SELECT_SIZE}</span>
             )}
 
           </div>
@@ -293,13 +293,13 @@ export default function ProductInfo({
             className="btn-detail btn-add-to-cart"
             onClick={() => addToCart()}
           >
-            Thêm vào giỏ hàng
+            {language.ADD_TO_CART}
           </div>
           <div className="btn-detail btn-heart">
             <FaHeart className="wishlist-icon" />
           </div>
         </div>
-        <div className="btn-detail btn-order">Đặt hàng</div>
+        <div className="btn-detail btn-order">{language.ORDER}</div>
       </div>
     </div>
   );

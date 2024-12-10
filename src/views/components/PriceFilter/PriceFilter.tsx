@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Range from "rc-slider";
 import "rc-slider/assets/index.css";
 import "./PriceFilter.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import LanguageContext from "../../../configs/LanguageConfig";
 
 interface PriceFilterProps {
   maxPriceValue: number;
@@ -11,6 +12,8 @@ interface PriceFilterProps {
 function PriceFilter({ maxPriceValue }: PriceFilterProps) {
   const navigate = useNavigate();
   const location = useLocation();
+  const language = useContext(LanguageContext).language
+
   const queryParams = new URLSearchParams(location.search);
   const priceParam = queryParams.get("price");
 
@@ -39,7 +42,7 @@ function PriceFilter({ maxPriceValue }: PriceFilterProps) {
   // Hàm kiểm tra hợp lệ của min và max
   const validateRange = (min: number, max: number) => {
     if (min > max) {
-      setError("Giá min phải nhỏ hơn giá max!");
+      setError(language.MIN_PRICE_MAX_PRICE_ERROR);
       setIsMinError(true);
       setIsMaxError(true);
       return false;
@@ -86,7 +89,7 @@ function PriceFilter({ maxPriceValue }: PriceFilterProps) {
 
   return (
     <div className="price-filter">
-      <h3>GIÁ</h3>
+      <h3>{language.PRICE_A}</h3>
       <Range
         range
         min={0}
@@ -122,7 +125,7 @@ function PriceFilter({ maxPriceValue }: PriceFilterProps) {
         />
       </div>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <button onClick={handleSubmit}>Tìm kiếm</button>
+      <button onClick={handleSubmit}>{language.SEARCH_A}</button>
     </div>
   );
 }

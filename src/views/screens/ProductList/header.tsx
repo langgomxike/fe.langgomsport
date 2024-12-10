@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ACategory from "../../../apis/ACategory";
 import Category from "../../../models/Category";
 import Skeleton from "react-loading-skeleton";
+import LanguageContext from "../../../configs/LanguageConfig";
 
 type HeaderProductListProps = {
   productQuantity: number;
@@ -15,6 +16,7 @@ export default function HeaderProductList({
   onFilterChange,
   setPageFirst,
 }: HeaderProductListProps) {
+  const language = useContext(LanguageContext).language
   const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -44,7 +46,6 @@ export default function HeaderProductList({
 
   useEffect(() => {
     if (categoryId) {
-      console.log("id", categoryId);
       ACategory.getCategoryById(
         categoryId ?? 1,
         (data) => {
@@ -59,22 +60,21 @@ export default function HeaderProductList({
     <>
       <div className="product-list-container-title">
         <div className="titleProducts">
-              <h1>{category?.name}</h1>
-              <span>({productQuantity} sản phẩm)</span>
+              <h1>{(language.TYPE === "VI" ? category?.name : category?.enName) ?? language.ALL}</h1>
+              <span>({productQuantity} <span style={{textTransform: "lowercase"}}>{language.PRODUCT}</span>)</span>
         </div>
         <select
           className="form-select select-container"
           onChange={handleSortChange}
-          defaultValue=""
           value={sort}
-          aria-label="-- Sắp xếp theo --"
+          aria-label={language.SORT_BY}
         >
           <option value="" disabled>
-            -- Sắp xếp theo --
+            {language.SORT_BY}
           </option>
-          <option value="priceasc">Giá tăng dần</option>
-          <option value="pricedesc">Giá giảm dần</option>
-          <option value="discount">Mức giảm giá</option>
+          <option value="priceasc">{language.PRICE_ASC}</option>
+          <option value="pricedesc">{language.PRICE_DESC}</option>
+          <option value="discount">{language.DISCOUNT}</option>
         </select>
       </div>
     </>

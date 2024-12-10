@@ -1,4 +1,4 @@
-import {useCallback, useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import SweetAlert2 from "sweetalert2";
 import ScreenNameConfig from "../../../configs/ScreenNameConfig";
@@ -11,7 +11,6 @@ import CartCookie from "../../../models/CartCookies";
 import Variant from "../../../models/Variant";
 import ConfigValue from "../../../configs/ConfigValue";
 import CartItemSkeleton from "../../components/CartItem/CartItemSkeleton";
-import FooterComponent from "../../components/Footer/Footer";
 import CartContext from "../../../configs/CartConfig";
 import LanguageContext from "../../../configs/LanguageConfig";
 
@@ -34,8 +33,8 @@ export default function Cart() {
   const [isPhoneNumberValid, setIsPhoneNumberValid] = useState<null | boolean>(
     null
   );
-  const [hasFullNameInput, setHasFullNameInput] = useState(false);
-  const [hasPhoneNumberInput, setHasPhoneNumberInput] = useState(false);
+  const [hasFullNameInput, setHasFullNameInput] = useState(true);
+  const [hasPhoneNumberInput, setHasPhoneNumberInput] = useState(true);
 
   // Regex patterns
   const regexFullName = /^[a-zA-ZÀ-ỹ\s]{3,}$/i;
@@ -62,7 +61,7 @@ export default function Cart() {
   const handleOrderClick = () => {
     let valid = true;
     const cart = getCartFromCookie();
-
+    
     if (!fullname || !regexFullName.test(fullname)) {
       setIsFullNameValid(false);
       valid = false;
@@ -84,8 +83,8 @@ export default function Cart() {
         cartContext.items,
         (message) => {
           SweetAlert2.fire({
-            title: "Đơn hàng đã được ghi nhận",
-            text: "Nhân viên chúng tôi sẽ liên hệ quý khách sớm nhất có thể để xác nhận đơn.",
+            title: languageContext.language.ORDER_RECEIVED,
+            text: languageContext.language.ORDER_CONFIRMATION_MESSAGE,
             icon: "success",
             confirmButtonText: "Đóng",
           }).then(() => {
@@ -105,8 +104,8 @@ export default function Cart() {
         },
         (error) => {
           SweetAlert2.fire({
-            title: "Có lỗi trong quá trình ghi nhận đơn đặt hàng",
-            text: "Xin thử lại hoặc liên hệ số 0371234567 để được hỗ trợ.",
+            title: languageContext.language.ORDER_ERROR,
+            text: languageContext.language.ORDER_ERROR_SUPPORT,
             icon: "error",
             confirmButtonText: "Đóng",
           });

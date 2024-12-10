@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import RootLayout from "../../layouts/RootLayout";
 import { Col, Container, Row } from "react-bootstrap";
@@ -9,18 +9,34 @@ import RelatedProduct from "../../components/RelatedProduct/relatedProduct";
 import Product from "../../../models/Product";
 import ProductDetailLeft from "../../components/ProductDetail/ProductDetailLeft";
 import "./tabMoreInfoDetail.css";
-import tabs from "./detail-tabs.json";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import AProduct from "../../../apis/AProduct";
 import Skeleton from "react-loading-skeleton";
 import "./detail.css";
 import FooterComponent from "../../components/Footer/Footer";
+import LanguageContext from "../../../configs/LanguageConfig";
 
 export default function DetailScreen() {
   //contexts
   const location = useLocation();
   const { slug } = useParams();
-  
+  const language = useContext(LanguageContext).language
+
+  const tabs =
+    [
+      {
+          "index": 1,
+          "title": language.DETAILED_DESCRIPTION,
+      },
+      {
+          "index": 2,
+          "title": language.COMMENTS
+      },
+      {
+          "index": 3,
+          "title": language.REVIEWS
+      }
+  ]
 
   //states
   const { id, name } = location.state || {};
@@ -35,11 +51,11 @@ export default function DetailScreen() {
   //useEffect
   useEffect(() => {
     
-     document.title = `${name} - Chi tiết sản phẩm`;
+     document.title = `${name} - ${language.PRODUCT_DETAILS}|Langgomsport `;
       if(slug) {
         AProduct.getProductById(slug, (product, realatedProducts) => {
           setProduct(product);
-          document.title = `${product.name} - Chi tiết sản phẩm`;
+          document.title = `${product.name} - ${language.PRODUCT_DETAILS}|Langgomsport`;
           
           setRelatedProducts(realatedProducts);
         }, setLoading);
@@ -106,7 +122,7 @@ export default function DetailScreen() {
                       width={100}
                       height={100}
                     />
-                    <span>Sản phẩm không có mô tả</span>
+                    <span>{language.NO_DESCRIPTION}</span>
                   </p>
                 ))}
 
@@ -119,7 +135,7 @@ export default function DetailScreen() {
                     width={100}
                     height={100}
                   />
-                  <p>Tính năng đang phát triển</p>
+                  <p>{language.FEATURES_UNDER_DEVELOPMENT}</p>
                 </p>
               )}
 
@@ -132,7 +148,7 @@ export default function DetailScreen() {
                     width={100}
                     height={100}
                   />
-                  <p>Tính năng đang phát triển</p>
+                  <p>{language.FEATURES_UNDER_DEVELOPMENT}</p>
                 </p>
               )}
             </>
