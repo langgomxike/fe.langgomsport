@@ -1,8 +1,4 @@
 /* CSS BRANDS */
-.filter-panel {
-    max-width: 250px;
-  }
-  
   .filter-header {
     display: flex;
     justify-content: space-between;

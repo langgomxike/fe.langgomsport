@@ -58,3 +58,14 @@
     display: flex;
     justify-content: center;
 }
+
+@media (max-width: 768px) {
+    .product-list-container-title {
+        margin-top: 30px;
+        flex-direction: column;
+        gap: 15px
+    }
+    .select-container {
+        width: 50%;
+    }
+}
