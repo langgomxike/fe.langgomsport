@@ -13,6 +13,8 @@ export type CategoryItemProps = {
   onCategorySelect: (id: number | null, parentId: number | null) => void;
   activeCategory: number | null;
   activeParentCategory: number | null;
+  route?: string;
+  onAfterClick?: () => void;
 };
 
 export default function CategoryItem({
@@ -21,6 +23,8 @@ export default function CategoryItem({
   onCategorySelect,
   activeCategory,
   activeParentCategory,
+  route,
+  onAfterClick
 }: CategoryItemProps) {
   //ref, context
     const navigate = useNavigate();
@@ -30,9 +34,9 @@ export default function CategoryItem({
 
   //state
   // Để lưu id của mục con được chọn
-  const [active, setActive] = useState<number | null>(activeCategory); 
+  const [active, setActive] = useState<number | null>(activeCategory);
   // Để lưu id của mục cha được chọn
-  const [activeParent, setActiveParent] = useState<number | null>(activeParentCategory); 
+  const [activeParent, setActiveParent] = useState<number | null>(activeParentCategory);
   const [activeChild, setActiveChild] = useState<number | null>(null);
 
   //handlers
@@ -46,7 +50,8 @@ export default function CategoryItem({
     onCategorySelect(id, parentCategory.id);
     // Cập nhật `page` vào URL
     searchParams.set("category_id", id.toString());
-    navigate(`${location.pathname}?${searchParams.toString()}`);
+    navigate(`${location.pathname}${route && !location.pathname.includes(route) ? route : ""}?${searchParams.toString()}`);
+    onAfterClick && onAfterClick();
   };
 
 

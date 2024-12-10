@@ -13,9 +13,11 @@ import LanguageContext from "../../../../configs/LanguageConfig";
 
 type CategoryFilterProps = {
   categoryId: number | null;
+  route?: string;
+  onAfterClick? : () => void;
 };
 
-export default function CategoryFilter({ categoryId }: CategoryFilterProps) {
+export default function CategoryFilter({ categoryId , route, onAfterClick}: CategoryFilterProps) {
   //ref, context
   const language = useContext(LanguageContext).language
   //state
@@ -110,6 +112,8 @@ export default function CategoryFilter({ categoryId }: CategoryFilterProps) {
                   activeCategory={activeCategory}
                   activeParentCategory={activeParentCategory}
                   onCategorySelect={handleCategorySelect}
+                  route={route}
+                  onAfterClick={onAfterClick}
                 />
               </li>
             ))}
