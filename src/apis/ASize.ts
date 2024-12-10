@@ -19,7 +19,6 @@ export default class ASize {
             .then(response => {
                 onLoading(false);
                 onNext(response.data);
-                console.log(">> size",response.data);
             })
             .catch(err => {
                 SLog.log(LogType.Error, "getSizesByCategory", "Cannot get sizes by category", err);

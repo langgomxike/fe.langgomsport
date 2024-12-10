@@ -39,7 +39,7 @@
 
 @media (max-width: 768px) {
   .brandImage {
-    max-width: 80px; /* Kích thước nhỏ hơn trên mobile */
+    max-width: 50px; /* Kích thước nhỏ hơn trên mobile */
   }
   .brands-container {
     padding: 10px 0;

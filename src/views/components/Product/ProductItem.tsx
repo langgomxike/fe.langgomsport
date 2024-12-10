@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./productItem.css";
 import Product from "../../../models/Product";
 import { Link } from "react-router-dom";
+import LanguageContext from "../../../configs/LanguageConfig";
 
 type ProductIemProps = {
   data: Product;
@@ -10,6 +11,7 @@ type ProductIemProps = {
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export default function ProductItem({ data }: ProductIemProps) {
+  const language = useContext(LanguageContext).language;
   // handlers
   function formatPrice(price: number) {
     if (price) {
@@ -77,7 +79,7 @@ export default function ProductItem({ data }: ProductIemProps) {
           state={{ id: data.id, name: data.name }}
           title={data.name}
         >
-          {data.name}
+          {language.TYPE === "VI" ?   data.name : data.enName ?? data.name}
         </Link>
       </h3>
       <div className="product-price">

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import RootLayout from "../../layouts/RootLayout";
 import Product from "../../../models/Product";
 import AProduct from "../../../apis/AProduct";
@@ -20,8 +20,12 @@ import PolicyComponent from "../../components/Policy/Policy";
 import ABrand from "../../../apis/ABrand";
 import Brand from "../../../models/Brand";
 import HomeBrand from "../../components/HomeBrand/HomeBrand";
+import LanguageContext from "../../../configs/LanguageConfig";
+import ConfigValue from "../../../configs/ConfigValue";
 
 export default function Home() {
+  // contexts, refs --------------------------------------------------------
+  const language = useContext(LanguageContext).language;
   // states ----------------------------------------------------------------
   const [collections, setCollections] = useState<Collection[]>([]);
   const [banners, setBanners] = useState<Banner[]>([]);
@@ -85,7 +89,7 @@ export default function Home() {
                   className={"home-category-list-item-name"}
                   to={"/products?category_id=" + category.categoryParent.id}
                 >
-                  {category.categoryParent.name}
+                  {language.TYPE === ConfigValue.TYPE_VI ? category.categoryParent.name :   category.categoryParent.enName}
                 </Link>
 
                 {category.categories.length > 0 && (
@@ -102,7 +106,7 @@ export default function Home() {
                             className={"home-category-list-item-name"}
                             to={"/products?category_id=" + categoryInList.id}
                           >
-                            {categoryInList.name}
+                            {language.TYPE === ConfigValue.TYPE_VI ?  categoryInList.name : categoryInList.enName}
                           </Link>
                         </div>
                       ))}
@@ -127,13 +131,13 @@ export default function Home() {
 
         {/* New Product List */}
         <div className="newProductList">
-          <h2 className="home-title">Sản phẩm mới</h2>
+          <h2 className="home-title">{language.NEW_PRODUCT}</h2>
           <ProductCarousel productList={productNewest} loading={loading} />
         </div>
 
         {/* Sale Product List */}
         <div className="saleProductList">
-          <h2 className="home-title">Sản phẩm sale off</h2>
+          <h2 className="home-title">{language.SALE_OFF_PRODUCT}</h2>
           <ProductCarousel productList={productSaleOff} loading={loading} />
         </div>
 

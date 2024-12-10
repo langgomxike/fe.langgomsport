@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -9,6 +9,7 @@ import Product from "../../../models/Product";
 import { Row, Col } from "react-bootstrap";
 import ConfigValue from "../../../configs/ConfigValue";
 import "./relatedProduct.css";
+import LanguageContext from "../../../configs/LanguageConfig";
 
 type RelatedProductsProps = {
   relatedProductsData: Product[];
@@ -18,6 +19,7 @@ type RelatedProductsProps = {
 const LIMIT = ConfigValue.RELATED_PRODUCT_LIMIT;
 
 const RelatedProduct = ({ relatedProductsData, loading }: RelatedProductsProps) => {
+  const language = useContext(LanguageContext).language
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
@@ -30,7 +32,7 @@ const RelatedProduct = ({ relatedProductsData, loading }: RelatedProductsProps) 
 
   return (
     <div className="related-products">
-      <h2>SẢN PHẨM LIÊN QUAN</h2>
+      <h2>{language.RELATED_PRODUCTS}</h2>
       {!isMobile && (
         <Swiper
           slidesPerView={4}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import "./index.css";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
@@ -9,6 +9,7 @@ import Skeleton from "react-loading-skeleton";
 import CategorySkeleton from "./CategorySkeleton";
 import { log } from "console";
 import CategoryItem from "../CategoryItem";
+import LanguageContext from "../../../../configs/LanguageConfig";
 
 type CategoryFilterProps = {
   categoryId: number | null;
@@ -18,6 +19,7 @@ type CategoryFilterProps = {
 
 export default function CategoryFilter({ categoryId , route, onAfterClick}: CategoryFilterProps) {
   //ref, context
+  const language = useContext(LanguageContext).language
   //state
   const [isActive, setActive] = useState(true); // Trạng thái hiển thị toàn bộ danh mục
   const [categories, setCategories] = useState<Array<CategoryInCategories>>([]); // Danh sách danh mục từ API
@@ -94,7 +96,7 @@ export default function CategoryFilter({ categoryId , route, onAfterClick}: Cate
     <div className="category-container">
       {/* Categories title */}
       <div className="title-block" onClick={handleIConCategory}>
-        <h2 className="title">Danh Mục</h2>
+        <h2 className="title">{language.CATEGORY}</h2>
         <span className="icon-angle">{icon}</span>
       </div>
       {/* Categories list */}

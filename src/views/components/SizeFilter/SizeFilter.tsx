@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./sizeFilter.css";
 import ASize from "../../../apis/ASize";
 import Size from "../../../models/Size";
 import SizeSkeleton from "./SizeSkeleton";
 import { useLocation, useNavigate } from "react-router-dom";
+import LanguageContext from "../../../configs/LanguageConfig";
 
 type SizeFilterProps = {
   categoryId: number | undefined;
@@ -15,6 +16,7 @@ export default function ({ categoryId, selectedSizeIds }: SizeFilterProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
+  const language = useContext(LanguageContext).language;
 
   // state
   const [selectedSizes, setSelectedSizes] = useState<number[]>([]);
@@ -75,7 +77,7 @@ export default function ({ categoryId, selectedSizeIds }: SizeFilterProps) {
 
   return (
     <div className="size-filter-container">
-      <h3 className="size-filter-title">Kích cỡ</h3>
+      <h3 className="size-filter-title">{language.SIZE}</h3>
       {loading && <SizeSkeleton />}
       {!loading && (
         <div className="size-block">

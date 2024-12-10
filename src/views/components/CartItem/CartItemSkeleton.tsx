@@ -12,8 +12,7 @@ export default function CartItemSkeleton({ limit }: CartItemSkeletonProps) {
   return (
     <>
       {Array.from({ length: limit }).map((_, index) => (
-        <>
-          <tr className="item-cart">
+          <tr className="item-cart" key={index}>
 
             {/* Product name, price */}
             {!isMobile ? (
@@ -74,7 +73,6 @@ export default function CartItemSkeleton({ limit }: CartItemSkeletonProps) {
               </td>
             )}
           </tr>
-        </>
       ))}
     </>
   );

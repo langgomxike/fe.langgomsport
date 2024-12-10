@@ -45,7 +45,6 @@ export default class ACart {
         
         // Chuyển mảng `variantIds` thành chuỗi các ID, ngăn cách bằng dấu phẩy
         const variantIdsString = cart.map((variant) => variant.variantId).join(",");
-        console.log("getCartByVariantIds url: ", variantIdsString);
 
         axios.get(`${this.BASE_API_URL}/variants?ids=${variantIdsString}`, {
             headers: { "Content-Type": "application/json" }

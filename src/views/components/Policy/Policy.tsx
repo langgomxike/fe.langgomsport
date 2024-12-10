@@ -1,6 +1,9 @@
+import { useContext } from "react";
 import "./policy.css";
+import LanguageContext from "../../../configs/LanguageConfig";
 
 export default function PolicyComponent() {
+  const language = useContext(LanguageContext).language;
   return (
     <div className="policy-component">
       <div className="policy-item">
@@ -12,7 +15,7 @@ export default function PolicyComponent() {
           />
         </div>
         <div className="text">
-          <b>MIỄN PHÍ VẬN CHUYỂN (BILL &gt; 1M)</b>
+          <b>{language.FREE_SHIPPING}</b>
         </div>
       </div>
       <div className="policy-item">
@@ -24,7 +27,7 @@ export default function PolicyComponent() {
           />
        </div>
         <div className="text">
-          <b>ĐỔI TRẢ TRONG VÒNG 7 NGÀY</b>
+          <b>{language.RETURN_POLICY}</b>
         </div>
       </div>
       <div className="policy-item">
@@ -36,7 +39,7 @@ export default function PolicyComponent() {
           />
         </div>
         <div className="text">
-          <b>SẢN PHẨM TRẢI NGHIỆM SẴN TẠI STORE</b>
+        <b>{language.IN_STORE_EXPERIENCE}</b>
         </div>
       </div>
     </div>

@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
 import "./index.css";
 import ABrand from "../../../../apis/ABrand";
 import Brand from "../../../../models/Brand";
 import BrandSkeleton from "./BrandSkeleton";
 import { useLocation, useNavigate } from "react-router-dom";
+import LanguageContext from "../../../../configs/LanguageConfig";
 
 type BrandFilterProps = {
   selectedBrandIds: number[];
@@ -14,6 +15,7 @@ export default function BrandFilter({ selectedBrandIds }: BrandFilterProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
+  const language = useContext(LanguageContext).language;
 
   // states
   const [isOpen, setIsOpen] = useState(true); // State để kiểm soát mở/đóng
@@ -66,7 +68,7 @@ export default function BrandFilter({ selectedBrandIds }: BrandFilterProps) {
   return (
     <div className="filter-panel">
       <div className="filter-header" onClick={togglePanel}>
-        <h3>THƯƠNG HIỆU</h3>
+        <h3>{language.BRAND}</h3>
         <span className="toggle-icon" style={{ color: "#1e272e" }}>
           {isOpen ? <FaAngleDown /> : <FaAngleUp />}
         </span>

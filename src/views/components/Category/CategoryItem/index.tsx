@@ -1,10 +1,11 @@
 import "./style.css";
 import Category from "../../../../models/Category";
 import { FaAngleDown, FaCaretDown, FaCaretRight } from "react-icons/fa6";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ScreenNameConfig from "../../../../configs/ScreenNameConfig";
 import { log } from "console";
+import LanguageContext from "../../../../configs/LanguageConfig";
 
 export type CategoryItemProps = {
   parentCategory: Category;
@@ -29,6 +30,7 @@ export default function CategoryItem({
     const navigate = useNavigate();
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
+    const language = useContext(LanguageContext).language
 
   //state
   // Để lưu id của mục con được chọn
@@ -70,7 +72,7 @@ export default function CategoryItem({
           className={`title-item ${
             activeParent === parentCategory.id ? "active" : activeChild === parentCategory.id ? "active-child" : ""
           }`}
-        > {parentCategory.name} </div>
+        > {language.TYPE === "VI"?  parentCategory.name : parentCategory.enName} </div>
 
         <span className="icon-angle-item" onClick={() => {handleIconCategory(parentCategory.id)}}>
           <FaAngleDown style={{ fontSize: 12 }} />
@@ -93,7 +95,7 @@ export default function CategoryItem({
                     active === item.id ? "active" : ""
                   }`}
 
-                > {item.name} </div>
+                > {language.TYPE === "VI"?  item.name : item.enName } </div>
               </div>
             </li>
           ))}

@@ -59,8 +59,7 @@ export default class AProduct {
         queryParams.push(`brandIds=${brandIds.join("&brandIds=")}`); // Sử dụng 'brands' để truyền nhiều giá trị
       });
     }
-
-    console.log("Sort", sort);
+    
     if (minPrice !== undefined) queryParams.push(`minPrice=${minPrice}`);
     if (maxPrice !== undefined) queryParams.push(`maxPrice=${maxPrice}`);
     if (sort !== undefined) queryParams.push(`sort=${sort}`);
