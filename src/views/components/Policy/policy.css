@@ -2,14 +2,22 @@
 .policy-component {
   margin-top: 50px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
 } 
+
+.row-policy {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
 
 .policy-item {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
+  width: 33.33%;
 }
 .policy-component .img{
     width: 50px;
@@ -46,6 +54,7 @@
       flex-direction: column;
       align-items: center;
       gap: 10px;
+      width: 100%;
     }
   }
 }
