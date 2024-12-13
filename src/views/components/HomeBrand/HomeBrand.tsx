@@ -5,6 +5,8 @@ import 'swiper/swiper-bundle.css';
 import '../HomeBrand/brand.css';
 import Brand from '../../../models/Brand';
 import { Autoplay, Pagination } from 'swiper/modules';
+import ConfigValue from '../../../configs/ConfigValue';
+import { useMediaQuery } from 'react-responsive';
 
 type HomeBrandProps = {
   brands: Brand[]; // Nhận danh sách các nhãn hiệu
@@ -15,7 +17,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 export default function HomeBrand({ brands }: HomeBrandProps) {
   // Navigation
   const navigation = useNavigate();
-
+  const isMobile = useMediaQuery({ query: '(max-width: 1024px)' });
   // Handle click khi chọn nhãn hiệu
 
 
@@ -26,7 +28,7 @@ export default function HomeBrand({ brands }: HomeBrandProps) {
         delay: 6000, // Tự động cuộn sau 6 giây
         disableOnInteraction: false,
       }}
-      loop={true} // Cho phép cuộn vô hạn
+      loop={isMobile? brands.length > ConfigValue.HOME_BRAND_LIMIT_MOBILE : brands.length > ConfigValue.HOME_BRAND_LIMIT_DESKTOP} // Cho phép cuộn vô hạn
       modules={[Autoplay]}
       breakpoints={{
         640: {
