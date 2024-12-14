@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import ScreenNameConfig from "../../../../configs/ScreenNameConfig";
 import { log } from "console";
 import LanguageContext from "../../../../configs/LanguageConfig";
+import ConfigValue from "../../../../configs/ConfigValue";
 
 export type CategoryItemProps = {
   parentCategory: Category;
@@ -50,7 +51,7 @@ export default function CategoryItem({
     onCategorySelect(id, parentCategory.id);
     // Cập nhật `page` vào URL
     searchParams.set("category_id", id.toString());
-    navigate(`${location.pathname}${route && !location.pathname.includes(route) ? route : ""}?${searchParams.toString()}`);
+    navigate(`${ConfigValue.PRODUCT_CATEGORY_ROUTE}?${searchParams.toString()}`);
     onAfterClick && onAfterClick();
   };
 

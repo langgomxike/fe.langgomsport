@@ -6,4 +6,5 @@ export default class ConfigValue {
     public static PERPAGE_PRODUCT_LIMIT = 20;
     public static CART_COOKIE_EXPRIRATION_LIMIT = 14;
     public static TYPE_VI = "VI";
+    public static PRODUCT_CATEGORY_ROUTE = "/products"
 }
